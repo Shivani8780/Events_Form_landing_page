@@ -42,7 +42,7 @@ def send_confirmation_email(instance, excel_path):
     subject = 'Biodata Form Submission Confirmation'
     body = f'Thank you {instance.candidate_name} for submitting your biodata form.'
     email = EmailMessage(subject, body, settings.DEFAULT_FROM_EMAIL, [instance.email if hasattr(instance, "email") else ''])
-    email.attach_file(excel_path)
+    # Removed attachment of biodata record as per user request
     email.send()
 
 def generate_pdf(instance):

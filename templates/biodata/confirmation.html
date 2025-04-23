@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Submission Confirmation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .confirmation-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #343a40;
+        }
+        .details {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 1rem;
+            color: #495057;
+        }
+        .details strong {
+            display: inline-block;
+            width: 180px;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <h1>Thank you, {{ candidate.candidate_name }}!</h1>
+        <p>Your biodata form has been successfully submitted.</p>
+        <div class="details">
+            <p><strong>Confirmation Email:</strong> {% if email_sent %}Sent to {{ candidate.email }}{% else %}Failed to send{% endif %}</p>
+            <p><strong>WhatsApp Message Status:</strong> {{ whatsapp_sid }}</p>
+            <p>The WhatsApp message includes a PDF copy of your submitted form.</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

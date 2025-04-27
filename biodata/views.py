@@ -6,10 +6,11 @@ from .models import CandidateBiodata
 import openpyxl
 import os
 from io import BytesIO
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from twilio.rest import Client
+from twilio.twiml.messaging_response import MessagingResponse
 
 import uuid
 from django.core.files.storage import default_storage
@@ -70,28 +71,27 @@ def generate_pdf(instance):
     buffer.seek(0)
     return buffer
 
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import uuid
+
 def upload_pdf_to_public_url(pdf_buffer):
     # Generate a unique filename
     filename = f"biodata_pdf_{uuid.uuid4().hex}.pdf"
     # Save the PDF buffer to the default storage (e.g., MEDIA_ROOT)
-    path = default_storage.save(filename, ContentFile(pdf_buffer.read()))
-    # Construct the full URL to access the file
-    if settings.DEBUG:
-        # In debug mode, assume media files are served at /media/
-        url = settings.MEDIA_URL + filename
-    else:
-        # In production, you should configure your media URL accordingly
-        url = settings.MEDIA_URL + filename
+    path = default_storage.save(f"photographs/{filename}", ContentFile(pdf_buffer.read()))
+    # Construct the full public URL using the PUBLIC_BASE_URL from settings
+    url = f"{settings.PUBLIC_BASE_URL}/media/photographs/{filename}"
     return url
 
-def send_whatsapp_message(to_number, pdf_buffer):
+def send_whatsapp_message(to_number, media_url):
     account_sid = settings.TWILIO_ACCOUNT_SID
     auth_token = settings.TWILIO_AUTH_TOKEN
     client = Client(account_sid, auth_token)
-    media_url = upload_pdf_to_public_url(pdf_buffer)  # Now implemented
     message = client.messages.create(
         body="Thank you for submitting your biodata form. Please find the attached PDF.",
-        from_='whatsapp:' + settings.TWILIO_WHATSAPP_NUMBER,
+        from_= settings.TWILIO_WHATSAPP_NUMBER,
         to='whatsapp:' + to_number,
         media_url=[media_url]
     )
@@ -107,7 +107,14 @@ def biodata_form(request):
             pdf_buffer = generate_pdf(instance)
             whatsapp_sid = None
             try:
-                whatsapp_sid = send_whatsapp_message(instance.whatsapp_number, pdf_buffer)
+                # Log the public URL of the PDF for debugging
+                public_pdf_url = upload_pdf_to_public_url(pdf_buffer)
+                # Ensure the URL uses https and the correct PUBLIC_BASE_URL
+                if public_pdf_url.startswith('http://localhost'):
+                    public_pdf_url = public_pdf_url.replace('http://localhost:8000', settings.PUBLIC_BASE_URL)
+                print(f"Public PDF URL: {public_pdf_url}")
+                # Pass the public URL to the send_whatsapp_message function
+                whatsapp_sid = send_whatsapp_message(instance.whatsapp_number, public_pdf_url)
             except Exception as e:
                 whatsapp_sid = f"Failed to send WhatsApp message: {str(e)}"
             return render(request, 'biodata/confirmation.html', {
@@ -118,6 +125,28 @@ def biodata_form(request):
     else:
         form = CandidateBiodataForm()
     return render(request, 'biodata/form.html', {'form': form})
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+@csrf_exempt
+def whatsapp_webhook(request):
+    if request.method == 'POST':
+        incoming_msg = request.POST.get('Body', '').strip().lower()
+        from_number = request.POST.get('From', '')
+        response = MessagingResponse()
+        msg = response.message()
+
+        if 'hello' in incoming_msg:
+            msg.body("Hi! Thanks for messaging. How can I help you today?")
+        elif 'help' in incoming_msg:
+            msg.body("You can submit your biodata form at our website.")
+        else:
+            msg.body("Sorry, I didn't understand that. Please type 'help' for assistance.")
+
+        return HttpResponse(str(response), content_type='application/xml')
+    else:
+        return HttpResponseBadRequest("Invalid request method.")
 
 # Note: You need to implement upload_pdf_to_public_url to upload the PDF to a publicly accessible URL
 # or use a service that supports media upload for WhatsApp messages.

@@ -7,47 +7,130 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #eebde3 0%, #ad509e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .confirmation-container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            max-width: 700px;
+            width: 100%;
+            background: #f0f4f8;
+            padding: 60px 50px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            animation: fadeInUp 0.8s ease forwards;
         }
         h1 {
-            color: #28a745;
-            margin-bottom: 20px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 800;
+            font-size: 3rem;
+            display: block;
+            text-align: center;
+            gap: 15px;
+            text-shadow: none;
+        }
+        h1 svg {
+            width: 40px;
+            height: 40px;
+            fill: #28a745;
+            animation: bounce 1.5s infinite;
         }
         p {
-            font-size: 1.2rem;
-            color: #343a40;
+            font-size: 1.3rem;
+            color: #444;
+            margin-bottom: 25px;
+            text-shadow: none;
+            text-align: center;
         }
         .details {
-            margin-top: 20px;
-            text-align: left;
+            margin-top: 25px;
+            text-align: center;
             font-size: 1rem;
             color: #495057;
         }
         .details strong {
             display: inline-block;
-            width: 180px;
+            width: auto;
+            min-width: 100px;
+            margin-right: 10px;
+            text-align: right;
+        }
+        .download-btn {
+            margin-top: 40px;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            background: #ff6a00;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            color: white;
+            box-shadow: 0 8px 20px rgba(238, 9, 121, 0.6);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+        .download-btn:hover {
+            background: linear-gradient(45deg, #ee0979, #ff6a00);
+            box-shadow: 0 10px 25px rgba(255, 106, 0, 0.8);
+        }
+        @media (max-width: 768px) {
+            .confirmation-container {
+                padding: 30px 20px;
+                border-radius: 20px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1.1rem;
+            }
+            .download-btn {
+                padding: 12px 25px;
+                font-size: 1.1rem;
+            }
+        }
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="confirmation-container">
-        <h1>Thank you, {{ candidate.candidate_name }}!</h1>
+    <div class="confirmation-container shadow-lg">
+        <h1>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            Thank you, {{ candidate.candidate_name }}!
+        </h1>
         <p>Your biodata form has been successfully submitted.</p>
         <div class="details">
             <p><strong>Confirmation Email:</strong> {% if email_sent %}Sent to {{ candidate.email }}{% else %}Failed to send{% endif %}</p>
-            <p><strong>WhatsApp Message Status:</strong> {{ whatsapp_sid }}</p>
-            <p>The WhatsApp message includes a PDF copy of your submitted form.</p>
+            {# Removed WhatsApp message status and description #}
         </div>
+        <p>For detailed information and updates, please join our WhatsApp group now: <a href="{{ whatsapp_group_link }}" target="_blank">Join WhatsApp Group</a></p>
+        <a href="{% url 'download_biodata_pdf' candidate.id %}" class="btn btn-success download-btn" download>Download Your Biodata PDF</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

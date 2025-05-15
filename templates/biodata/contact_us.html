@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - Bhudev Foundation</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #333;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      overscroll-behavior-y: none; /* Prevent overscroll bounce on top and bottom */
+      box-sizing: border-box;
+      background-image: url('https://i0.wp.com/detechter.com/wp-content/uploads/2017/07/Hindu-Wedding-India.jpg?fit=886%2C535&ssl=1');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+    body {
+      margin: 0;
+      padding: 20px;
+      background: transparent;
+    }
+    header {
+      background-color: #1d4e89;
+      padding: 15px 40px;
+      box-sizing: border-box;
+      border-radius: 0 0 0 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+      z-index: 1100;
+    }
+    .navbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 45px;
+    }
+    .nav-links li {
+      display: inline;
+    }
+    .nav-links a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 22px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .nav-links a:hover {
+      background-color: #154a6a;
+      box-shadow: 0 4px 12px rgba(21, 74, 106, 0.7);
+    }
+    main {
+      max-width: 600px;
+      margin: 100px auto 40px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      backdrop-filter: saturate(180%) blur(10px);
+    }
+    h1 {
+      color: #1d4e89;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    label {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      resize: vertical;
+    }
+    textarea {
+      max-height: 150px;
+    }
+    button {
+      background-color: #1d4e89;
+      color: white;
+      font-weight: 700;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #154a6a;
+    }
+    .contact-info {
+      margin-top: 30px;
+      font-size: 16px;
+      color: #555;
+      line-height: 1.5;
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .contact-column {
+      flex: 1;
+    }
+    .contact-column h3 {
+      color: #1d4e89;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+    .contact-column p {
+      margin: 5px 0;
+    }
+    @media (max-width: 480px) {
+      .contact-info {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .contact-column p {
+        font-size: 14px;
+      }
+    }
+    .address-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      margin-top: 10px;
+    }
+    .address-box {
+      flex: 1;
+    }
+    /* Responsive Hamburger Navbar Styling */
+    @media (max-width: 650px) {
+      header {
+        padding: 0;
+      }
+      .navbar {
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        height: 40px;
+      }
+      .nav-toggle {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 28px;
+        color: #fff;
+        padding: 12px 18px 12px 0;
+        z-index: 2001;
+        background: none;
+        border: none;
+        outline: none;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 50px;
+        left: 3vw;
+        width: 150px;
+        background: #1d4e89;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+        padding: 0 0 10px 0;
+        z-index: 5000;
+        margin: 0;
+        text-align: right;
+      }
+      .nav-links.show {
+        display: flex;
+        animation: slideDown 0.22s cubic-bezier(.41,-0.03,.38,1.54);
+      }
+      @keyframes slideDown {
+        from {transform: translateY(-30px);opacity: 0;}
+        to {transform: translateY(0);opacity:1;}
+      }
+      .nav-links li {
+        display: block;
+        width: 100%;
+        margin: 0;
+        text-align: left;
+      }
+      .nav-links a {
+        width: 100%;
+        display: block;
+        padding: 17px 24px;
+        font-size: 1.1em;
+        background: none;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 0;
+        border-bottom: 1px solid #164d7a;
+        box-shadow: none;
+        margin: 0;
+        letter-spacing: 0.02em;
+      }
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+      .nav-links a:hover, .nav-links a:focus {
+        background: #154a6a;
+        color: #fff;
+      }
+    }
+
+    /* Hide the burger on desktop */
+    .nav-toggle {display:none;}
+    @media (max-width:650px) {
+        .nav-toggle {display:inline-block;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+       <span class="nav-toggle" id="js-nav-toggle">&#9776;</span>
+        <ul class="nav-links" id="js-menu">
+          <li><a href="{% url 'home_page' %}">Home</a></li>
+          <li><a href="{% url 'gallery_page' %}">Gallery</a></li>
+          <li><a href="{% url 'contact_us_page' %}">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Connect With Us</h1>
+    <form method="post" action="#">
+      {% csrf_token %}
+      <label for="name">Your Name*</label>
+      <input type="text" id="name" name="name" required />
+      
+      <label for="email">Email Address*</label>
+      <input type="email" id="email" name="email" required />
+      
+      <label for="subject">Subject*</label>
+      <input type="text" id="subject" name="subject" required />
+      
+      <label for="message">Message (Max 300 Characters)*</label>
+      <textarea id="message" name="message" maxlength="300" required></textarea>
+      
+      <button type="submit">Send Message</button>
+    </form>
+    <div class="contact-info">
+      <div class="contact-column">
+        <h3>Phone Numbers</h3>
+        <p>+91-9099048986</p>
+        <p>+91-6352144677</p>
+        <p>+91-7990208986</p>
+        <p>+91-9081042525</p>
+        <p>+91-9099798986</p>
+      </div>
+      <div class="contact-column">
+        <h3>Email</h3>
+        <p>support@bhudevnetworkvivah.com</p>
+      </div>
+    </div>
+    <div class="address-container">
+      <div class="address-box">
+        <h3>Vadodara (Sayajiganj)</h3>
+        <p>601, 602, 603, 604, 6th Floor, Galav Chambers, Dairy Den Circle, Sayajiganj, Vadodara - 390020</p>
+        <p>M # 7990208986, 9081522111, 9099828986</p>
+      </div>
+      <div class="address-box">
+        <h3>Amdavad (Navrangpura)</h3>
+        <p>A-703, 7th Floor, Nar - Narayan Complex, Near Swastik Char Rasta, Opp. Side of Navrangpura Post office, Navrangpura, Amdavad - 380009</p>
+        <p>M # 9499701462, 9016992328, 9099048986, 7990252977, 9099798986</p>
+      </div>
+    </div>
+  </main>
+  <script>
+    const toggle = document.getElementById('js-nav-toggle');
+    const menu = document.getElementById('js-menu');
+    toggle.onclick = function() {
+      menu.classList.toggle('show');
+    }
+    // Optional: close menu after click a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.onclick = function(){ menu.classList.remove('show'); }
+    });
+  </script>
+</body>
+</html>

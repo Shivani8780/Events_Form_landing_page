@@ -1,2 +1,0 @@
-[32mForwarding HTTP traffic from https://293374d49a13543a76668d4d2fbddf27.serveo.net
-[0m

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Free Biodata Form Data</title>
+    <style>
+        @font-face {
+            font-family: 'NotoSansGujarati';
+            src: url("data:font/truetype;charset=utf-8;base64,{{ font_base64_data }}") format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'NotoSansGujarati', Arial, sans-serif;
+            margin: 30px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #d6336c;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2dede;
+            color: #a94442;
+            width: 30%;
+            font-family: 'NotoSansGujarati', Arial, sans-serif;
+        }
+        .footer-container {
+            width: 100%;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #555;
+            overflow: hidden;
+            clear: both;
+        }
+        .address-left {
+            float: left;
+            width: 45%;
+            text-align: left;
+        }
+        .address-right {
+            float: right;
+            width: 45%;
+            text-align: right;
+        }
+        .website-links {
+            clear: both;
+            margin-top: 120px; /* Further increased margin to add more space between website links and addresses */
+            text-align: center;
+            font-weight: bold;
+            color: #1d4e89;
+        }
+        .website-links a {
+            color: #1d4e89;
+            text-decoration: underline;
+            display: block;
+            margin: 2px 0;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: absolute; top: -1px; left: 10px;">
+        {% if logo_data %}
+            <img src="data:image/png;base64,{{ logo_data }}"  style="max-width: 250px; height: auto;" />
+        {% else %}
+            <p>Logo not found</p>
+        {% endif %}
+    </div>
+    <h1 style="margin-top: 120px; text-align: center;">Free Biodata Form Data</h1>
+    <table>
+        <tr><th>Photograph</th><td>{% if photo_data %}<img src="data:image/jpeg;base64,{{ photo_data }}" alt="Photograph" style="max-width: 150px; max-height: 150px;"/>{% else %}No Photograph{% endif %}</td></tr>
+        <tr><th>Name</th><td>{{ instance.candidate_name }}</td></tr>
+        <tr><th>Gender</th><td>{{ instance.gender }}</td></tr>
+        <tr><th>Registration By</th><td>{{ instance.registration_by }}</td></tr>
+        <tr><th style="font-family: 'NotoSansGujarati', Arial, sans-serif;">Registrant Mobile</th><td>{{ instance.registrant_mobile }}</td></tr>
+        <tr><th style="font-family: 'NotoSansGujarati', Arial, sans-serif;">Candidate Current City</th><td>{{ instance.candidate_current_city }}</td></tr>
+        <tr><th>Residence Area Category</th><td>{{ instance.residence_area_category }}</td></tr>
+        <tr><th>Current Country</th><td>{{ instance.current_country }}</td></tr>
+        <tr><th>Visa Status</th><td>{{ instance.visa_status }}</td></tr>
+        <tr><th>Marital Status</th><td>{{ instance.marital_status }}</td></tr>
+        <tr><th>Shani / Mangal</th><td>{{ instance.shani_mangal }}</td></tr>
+        <tr><th>Date of Birth</th><td>{{ instance.dob }}</td></tr>
+        <tr><th>Time of Birth</th><td>{{ instance.birth_time }}</td></tr>
+        <tr><th>Birth Place</th><td>{{ instance.birth_place }}</td></tr>
+        <tr><th>Height</th><td>{{ instance.height }}</td></tr>
+        <tr><th>Weight</th><td>{{ instance.weight }}</td></tr>
+        <tr><th>Education</th><td>{{ instance.education }}</td></tr>
+        <tr><th>Occupation</th><td>{{ instance.occupation }}</td></tr>
+        <tr><th>Details on Job / Business / Occupation</th><td>{{ instance.occupation_details }}</td></tr>
+        <tr><th>Monthly Income</th><td>{{ instance.monthly_income }}</td></tr>
+        <tr><th>Father's Name</th><td>{{ instance.father_name }}</td></tr>
+        <tr><th>Father's Mobile</th><td>{{ instance.father_mobile }}</td></tr>
+        <tr><th>Mother's Name</th><td>{{ instance.mother_name }}</td></tr>
+        <tr><th>Mother's Mobile</th><td>{{ instance.mother_mobile }}</td></tr>
+        <tr><th>Siblings</th><td>{{ instance.siblings }}</td></tr>
+        <tr><th>Partner Education</th><td>{{ instance.partner_education }}</td></tr>
+        <tr><th>Partner Location</th><td>{{ instance.partner_location }}</td></tr>
+        <tr><th>Partner Age Bracket</th><td>{{ instance.partner_age_bracket }}</td></tr>
+        <tr><th>Other Specific Choice</th><td>{{ instance.other_specific_choice }}</td></tr>
+        <tr><th style="font-family: 'NotoSansGujarati', Arial, sans-serif;">Declaration</th><td>{{ instance.declaration }}</td></tr>
+    </table>
+    <div class="footer-container">
+        <div class="address-left">
+            <strong>Vadodara (Sayajiganj):</strong><br/>
+            601, 602, 603, 604, 6th Floor, Galav Chambers, Dairy Den Circle, Sayajiganj, Vadodara - 390020<br/>
+            M #  7990208986, 9081522111
+        </div>
+        <div class="address-right">
+            <strong>Amdavad (Navrangpura):</strong><br/>
+            A-703, 7th Floor, Nar - Narayan Complex, Near Swastik Char Rasta, Opp. Side of Navrangpura Post office, Navrangpura, Amdavad - 380009.<br/>
+            M # 9499701462, 9016992328, 9099048986, 7990252977, 9099798986
+        </div>
+        <div class="website-links">
+            BhudevNetwork Vivah Website :<br/>
+            <a href="http://BhudevNetworkVivah.com" target="_blank" rel="noopener noreferrer">BhudevNetworkVivah.com</a>
+            <a href="http://NRI.BhudevNetworkVivah.com" target="_blank" rel="noopener noreferrer">NRI.BhudevNetworkVivah.com</a>
+            <a href="http://All.BhudevNetworkVivah.com" target="_blank" rel="noopener noreferrer">All.BhudevNetworkVivah.com</a>
+        </div>
+    </div>
+
+    <style>
+        .form-button-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .form-button-container a {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #1d4e89;
+            color: white;
+            font-weight: 900;
+            font-size: 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 6px 18px rgba(29, 78, 137, 0.7);
+            transition: background-color 0.3s ease;
+        }
+        .form-button-container a:hover {
+            background-color: #154a6a;
+        }
+        @media (max-width: 480px) {
+            .form-button-container {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 10px 0;
+                background-color: #1d4e89;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+                z-index: 1000;
+            }
+            .form-button-container a {
+                font-size: 16px;
+                padding: 12px 0;
+                width: 100%;
+                display: block;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</body>
+</html>
+</create_file>

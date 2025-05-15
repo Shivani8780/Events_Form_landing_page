@@ -1,0 +1,360 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Bhudev Foundation</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #333;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      overscroll-behavior-y: none; /* Prevent overscroll bounce on top and bottom */
+    }
+    body {
+      background-image: url('https://i0.wp.com/detechter.com/wp-content/uploads/2017/07/Hindu-Wedding-India.jpg?fit=886%2C535&ssl=1');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+    .container {
+      background: #ffffff;
+      max-width: 650px;
+      margin: 0 auto 30px auto;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
+    .container:hover {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    }
+    .banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+    .banner img {
+      width: 100px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .banner img:hover {
+      transform: scale(1.05);
+    }
+    .banner-text {
+      text-align: left;
+      flex: 1;
+    }
+    .banner-text h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #d9534f;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .orange-text {
+      color: #f37021;
+    }
+    .blue-text {
+      color: #1d4e89;
+    }
+    .reg-text {
+      font-size: 16px;
+      color: #555;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    .info-container {
+      background: #fff8f0;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 30px 35px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(243, 112, 33, 0.3);
+      font-size: 17px;
+      color: #5a3e1b;
+      line-height: 1.6;
+      white-space: pre-line;
+      font-weight: 600;
+      border: 2px solid #f37021;
+      transition: background-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    .info-container:hover {
+      background-color: #fff3e0;
+    }
+    .info-highlight {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #d9534f;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .image-container {
+      background: #e9f0f7;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(29, 78, 137, 0.3);
+      text-align: center;
+      border: 2px solid #1d4e89;
+      transition: background-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    .image-container:hover {
+      background-color: #d6e4f0;
+    }
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(29, 78, 137, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .image-container img:hover {
+      transform: scale(1.03);
+    }
+    .team-container {
+      background: #f7f9fc;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 2px solid #1d4e89;
+      text-align: center;
+      color: #2c3e50;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.4;
+      box-sizing: border-box;
+    }
+    .team-image {
+      margin-top: 15px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(44, 62, 80, 0.15);
+      transition: transform 0.3s ease;
+    }
+    .team-image:hover {
+      transform: scale(1.02);
+    }
+    .new-info-container {
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(29, 78, 137, 0.3);
+      text-align: center;
+      border: 2px solid #1d4e89;
+      font-size: 18px;
+      font-weight: 700;
+      color: #2c50;
+      box-sizing: border-box;
+      background-color: #e9f0f7;
+    }
+    .form-button-container {
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      text-align: center;
+      display: block !important;
+    }
+    .form-button-container a {
+      display: inline-block;
+      padding: 20px 50px;
+      background-color: #1d4e89;
+      color: white;
+      font-weight: 900;
+      font-size: 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(29, 78, 137, 0.7);
+      transition: background-color 0.3s ease;
+    }
+    .form-button-container a:hover {
+      background-color: #154a6a;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+        background-size: cover;
+        background-attachment: scroll;
+      }
+      .container {
+        padding: 15px 20px;
+        margin: 0 auto 20px auto;
+        max-width: 98%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 12px;
+      }
+      .banner {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .banner-text {
+        text-align: center;
+      }
+      .banner-text h1 {
+        font-size: 22px;
+      }
+      .reg-text {
+        font-size: 13px;
+      }
+      .info-container {
+        padding: 15px 20px;
+        font-size: 14px;
+      }
+      .info-highlight {
+        font-size: 16px;
+      }
+      .image-container {
+        padding: 15px 20px;
+      }
+      .team-container {
+        padding: 10px 15px;
+        font-size: 16px;
+      }
+      .team-image {
+        margin-top: 8px;
+      }
+      .form-button-container {
+        display: block !important;
+      }
+      .form-button-container a {
+        padding: 15px 30px;
+        font-size: 18px;
+      }
+    }
+    @media (max-width: 480px) {
+      html, body {
+        height: 100%;
+      }
+      body {
+        padding: 8px;
+        background-size: cover;
+        background-attachment: scroll;
+      }
+      .container {
+        padding: 10px 15px;
+        max-width: 98%;
+      }
+      .banner-text h1 {
+        font-size: 18px;
+      }
+      .reg-text {
+        font-size: 12px;
+      }
+      .info-container {
+        padding: 10px 15px;
+        font-size: 13px;
+      }
+      .info-highlight {
+        font-size: 14px;
+      }
+      .image-container {
+        padding: 10px 15px;
+      }
+      .team-container {
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+      .team-image {
+        margin-top: 5px;
+      }
+      .form-button-container {
+        display: block !important;
+      }
+      .form-button-container a {
+        padding: 12px 25px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="banner">
+      <img src="{% static 'images/foundation_logo.png' %}" alt="Foundation Logo">
+      <div class="banner-text">
+        <h1>
+          <span class="orange-text">BHUDEV NETWORK</span><br>
+          <span class="blue-text">CHARITABLE FOUNDATION</span>
+        </h1>
+        <div class="reg-text">(Trust, NGO Reg. No. # AHMD / 120129)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-container">
+    <div class="info-highlight">
+      29મુ સમસ્ત બ્રાહ્મણ - ભૂદેવ જીવનસાથી પરિચય સંમેલન // 15-September-2024 (Sunday) // 8 AM to 4 PM // Riddhi Siddhi AC Banquet Hall , Fortune Gateway Lane , Chhani Road , Vadodara
+    </div>
+    
+💢29મુ ભૂદેવ જીવનસાથી પરિચય સંમેલન 
+(સમસ્ત બ્રાહ્મણ - ભૂદેવ ઉમેદવારો માટે)
+
+🔴  ખાસ નોંધ :  આ Google ફોર્મ સબમિટ કર્યા પછી Form Confirmation -  Registration Number મેળવવા માટે,  આપ નીચે આપેલા નંબર પર કોલ કરી ને આપનું ફોર્મ નું Confirmation કરાવી દેવું : ( Phone Time : 10:00 am to 06:00 pm Only )
+//  9265307465, 9313183494, 6351522259, 7990856889, 9099828986, 9099798986 
+
+🟠   સંમેલન તારીખ : 15-Sep-2024
+🟠  સમય : 08 AM to 4 PM
+🟠  સ્થળ :   Riddhi - Siddhi AC Banquet Hall, Amantran Complex, Nr. Fortune Gateway, ICICI Bank Lane, Chhani Road , Vadodara. M # 9099798986, 7990208986, 9081522111
+
+
+🔵  બાયોડેટા રેજીસ્ટ્રેશન છેલ્લી તારીખ :  08-Sep-2024
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+🔵 ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ (OFFICE) :
+
+ 🟡  અમદાવાદ (નવરંગપુરા) :
+ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ
+A-703, Nar-Narayan Complex, Opp Navrangpura Post Office
+Near Swastik Char Rasta, Navrangpura , Amdavad
+M # 9099798986, 9499701462, 9081522111
+
+ 🟡  વડોદરા (સયાજીગંજ) :
+ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ
+601,602, 603, 604A 6th Floor, Galav Chambers, 
+Near Dairy Den Circle, Sayajigunj, Vadodara-390020,
+M : 9081522111, 9099798986, 9099828986
+  </div>
+
+  <div class="image-container">
+    <img src="{% static 'images/Banner.jpg' %}">
+  </div>
+
+  <div class="team-container">
+    Bhudev Network , MangalFera Vivah & Employa Technologies Team
+    <img src="{% static 'images/Team_Banner.jpg' %}"  class="team-image">
+  </div>
+
+  <div class="new-info-container">
+    સમસ્ત ગુજરાતી બ્રાહ્મણ-ભૂદેવ 29 જીવનસાથી પરિચય સંમેલન - મેળો (Riddhi-Siddhi AC Banquet Hall , Chhani Road, VADODARA)<br><br>
+    🔵🟣નીચે આપેલા બટન પર ક્લિક કર્યા પછી તમારે free બાયોડેટા ઓનલાઇન ફોર્મ ભરવાનું રહેશે.
+  </div>
+  
+  <div class="form-button-container">
+    <a href="{% url 'biodata_form' %}">Go to Biodata Form</a>
+  </div>
+</body>
+</html>

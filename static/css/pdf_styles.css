@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+}
+
+@font-face {
+    font-family: 'NotoSansGujarati';
+    src: url('../fonts/NotoSansGujarati-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0A80-0AFF; /* Gujarati Unicode range */
+}
+
+body {
+    font-family: 'NotoSansGujarati', 'Roboto', Arial, sans-serif;
+    margin: 30px;
+    color: #333;
+    /* Ensure Gujarati font is used for relevant text */
+    unicode-bidi: isolate;
+    direction: ltr;
+}
+
+h1 {
+    text-align: center;
+    color: #d6336c;
+    margin-bottom: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+th, td {
+    border: 1px solid #999;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2dede;
+    color: #a94442;
+    width: 30%;
+}

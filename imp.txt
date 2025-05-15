@@ -2,4 +2,74 @@ Recovery code
 HJB44NQLV2NHZ426VLZTK9NX
 
 
-cscs ak hua hain all staff entry
+plan of WhatsApp business api 
+
+aisensy
+1)https://www.app.aisensy.com/projects/6815a9409e5ccf0c019a8c8e/dashboard(it is too cost and setup more)
+
+
+
+2) ChatMitra
+Platform Fee: ₹0.10 per conversation (in addition to Meta’s fee)
+
+Highlights: No extra charges for media messages; pay-per-conversation model
+
+Best For: Startups and small businesses seeking a cost-effective solution
+
+Website: 
+chatmitra.com
+
+
+3) Heltar
+Lite Plan: ₹0/month (includes 100 free automated conversations)
+
+Starter Plan: ₹2,099/month (includes 5,000 automated conversations)
+
+Additional Sessions: Starting at ₹1.5 per session
+
+Meta Fees: Marketing: ₹0.7846; Utility/Authentication: ₹0.115; Service: Free
+
+Website: 
+Heltar
+
+
+
+4) ✅ ChatMitra
+Pros:
+
+Extremely affordable (₹0.10 per conversation + Meta fee)
+
+API available for sending media messages (like PDFs)
+
+Easily integrates with webhooks and backend apps
+
+Cons:
+
+May require custom development on your side for full integration
+
+Best For: Cost-efficient, developer-ready solutions
+
+✅ Heltar
+Pros:
+
+Has automation flows and APIs
+
+Allows media file sending (PDFs included)
+
+Free plan includes 100 automated conversations — good for testing
+
+Cons:
+
+Slightly more complex pricing as volume increases
+
+Best For: Startups with moderate dev resources, and need a scalable model
+
+
+WhatsApp cloud api(this will be go with first)
+https://developers.facebook.com/apps/979708770819310/whatsapp-business/wa-dev-console/
+https://www.facebook.com/business/help/1710077379203657
+
+
+wisesender:
+599/month
+5000/year

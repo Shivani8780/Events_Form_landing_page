@@ -98,12 +98,8 @@ import os
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('PA_DB_NAME', 'biodata_db'),  # Use environment variable or default
-        'USER': os.environ.get('PA_DB_USER', 'biodata_user'),  # Use environment variable or default
-        'PASSWORD': os.environ.get('PA_DB_PASSWORD', 'shivu'),  # Use environment variable or default
-        'HOST': os.environ.get('PA_DB_HOST', 'localhost'),  # Use environment variable or default
-        'PORT': os.environ.get('PA_DB_PORT', '5432'),  # Use environment variable or default
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -173,10 +169,11 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 # Public base URL for media files - set to your current ngrok URL
-PUBLIC_BASE_URL = 'https://f40f-103-240-207-159.ngrok-free.app'
+# Removed ngrok URL as it is no longer needed
+# PUBLIC_BASE_URL = 'https://f40f-103-240-207-159.ngrok-free.app'
 
-# ALLOWED_HOSTS setup for current ngrok URL
-ALLOWED_HOSTS = ['SHIREE.pythonanywhere.com']
+# ALLOWED_HOSTS setup for current domain
+ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com']
 
 import cloudinary
 

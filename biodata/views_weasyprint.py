@@ -8,13 +8,12 @@ from django.conf import settings
 from weasyprint import HTML, CSS
 
 def generate_pdf(instance):
-    # Convert photograph to base64 string by fetching from URL
+    import base64
     photo_data = ''
-    if instance.photograph and hasattr(instance.photograph, 'url'):
+    if instance.photograph and hasattr(instance.photograph, 'path'):
         try:
-            response = requests.get(instance.photograph.url)
-            if response.status_code == 200:
-                photo_data = base64.b64encode(response.content).decode('utf-8')
+            with open(instance.photograph.path, 'rb') as image_file:
+                photo_data = base64.b64encode(image_file.read()).decode('utf-8')
         except Exception:
             photo_data = ''
 

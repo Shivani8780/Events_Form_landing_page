@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-please-replace-this-with-your-own-secret-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Add your PythonAnywhere domain or IP address here
 ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', 'www.yourdomain.com']

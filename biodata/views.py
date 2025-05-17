@@ -54,6 +54,13 @@ def confirmation_page(request, candidate_id):
     except Exception as e:
         logger.error(f"Failed to send confirmation email to {candidate.email}: {e}")
         email_sent = False
+        # Add detailed error message to context for debugging
+        return render(request, 'biodata/confirmation.html', {
+            'candidate': candidate,
+            'whatsapp_group_link': whatsapp_group_link,
+            'email_sent': email_sent,
+            'error_message': str(e),
+        })
     return render(request, 'biodata/confirmation.html', {'candidate': candidate, 'whatsapp_group_link': whatsapp_group_link, 'email_sent': email_sent})
 
 def confirmation_redirect(request):

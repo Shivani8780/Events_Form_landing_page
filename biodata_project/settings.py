@@ -45,18 +45,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'biodata',
     'widget_tweaks',
-    'cloudinary',
-    'cloudinary_storage',
+    # Removed cloudinary apps for PythonAnywhere free plan compatibility
+    # 'cloudinary',
+    # 'cloudinary_storage',
 ]
 
 # Cloudinary configuration
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dlapbhavc',  # Replace with your Cloudinary cloud name
-    'API_KEY': '837941825354552',        # Replace with your Cloudinary API key
-    'API_SECRET': 'SnwE8QAwc_LE-jz5hDlS922DrXM',  # Replace with your Cloudinary API secret
-}
+# Disabled Cloudinary settings for PythonAnywhere free plan compatibility
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'dlapbhavc',  # Replace with your Cloudinary cloud name
+#     'API_KEY': '837941825354552',        # Replace with your Cloudinary API key
+#     'API_SECRET': 'SnwE8QAwc_LE-jz5hDlS922DrXM',  # Replace with your Cloudinary API secret
+# }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Use local media storage instead of Cloudinary
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 MEDIA_URL = '/media/'
 
@@ -175,11 +178,11 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # ALLOWED_HOSTS setup for current domain
 ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com']
 
-import cloudinary
+#import cloudinary
 
-cloudinary.config(
-    cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
-    api_key=CLOUDINARY_STORAGE.get('API_KEY'),
-    api_secret=CLOUDINARY_STORAGE.get('API_SECRET'),
-    secure=True
-)
+#cloudinary.config(
+#    cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
+#    api_key=CLOUDINARY_STORAGE.get('API_KEY'),
+ #   api_secret=CLOUDINARY_STORAGE.get('API_SECRET'),
+ #   secure=True
+#)

@@ -1,5 +1,5 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
+from django.db import models
 
 class CandidateBiodata(models.Model):
     # Personal Details
@@ -113,8 +113,8 @@ class CandidateBiodata(models.Model):
     partner_education = models.CharField(max_length=255, blank=True, null=True)
     other_specific_choice = models.TextField(blank=True, null=True)
 
-    # Photograph - use CloudinaryField for Cloudinary storage
-    photograph = CloudinaryField('image')
+    # Photograph - use standard ImageField for local storage
+    photograph = models.ImageField(upload_to='photographs/')
 
     submitted_at = models.DateTimeField(auto_now_add=True)
 
@@ -129,7 +129,7 @@ class CandidateBiodata(models.Model):
 
 class GalleryImage(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
-    image = CloudinaryField('image')
+    image = models.ImageField(upload_to='gallery_images/')
     description = models.TextField(blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 

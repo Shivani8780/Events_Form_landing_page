@@ -41,6 +41,7 @@ class CandidateBiodata(models.Model):
         ('NRI - Student Visa', 'NRI - Student Visa'),
         ('NRI - Work Permit', 'NRI - Work Permit'),
         ('NRI - PR', 'NRI - PR'),
+        ('NRI - PR In Process', 'NRI - PR In Process'),
         ('NRI - Green Card (USA)', 'NRI - Green Card (USA)'),
         ('NRI - Blue Card (EU)', 'NRI - Blue Card (EU)'),
         ('NRI - Citizenship', 'NRI - Citizenship'),

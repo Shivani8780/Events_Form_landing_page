@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-please-replace-this-with-your-own-secret-key'
 DEBUG = True
 
 # Add your PythonAnywhere domain or IP address here
-ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', 'www.yourdomain.com']
+ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', 'www.yourdomain.com','127.0.0.1']
 
 # Add this to allow your ngrok URL as trusted origin for CSRF
 CSRF_TRUSTED_ORIGINS = [
@@ -37,18 +37,42 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
     'biodata',
     'widget_tweaks',
     # Removed cloudinary apps for PythonAnywhere free plan compatibility
     # 'cloudinary',
     # 'cloudinary_storage',
 ]
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+    },
+    'custom': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat'],
+            ['Font', 'FontSize'],
+            ['TextColor', 'BGColor'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+            ['Link', 'Unlink'],
+            ['Image', 'Table', 'HorizontalRule', 'SpecialChar'],
+            ['Maximize']
+        ],
+        'fontSize_sizes': '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px',
+        'removePlugins': 'elementspath',
+        'resize_enabled': False,
+        'extraPlugins': 'font',
+    }
+}
 
 # Cloudinary configuration
 # Disabled Cloudinary settings for PythonAnywhere free plan compatibility
@@ -176,7 +200,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # PUBLIC_BASE_URL = 'https://f40f-103-240-207-159.ngrok-free.app'
 
 # ALLOWED_HOSTS setup for current domain
-ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com']
+ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 #import cloudinary
 

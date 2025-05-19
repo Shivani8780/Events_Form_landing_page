@@ -6,6 +6,9 @@ from .models import CandidateBiodata, GalleryImage
 import os
 from django.conf import settings
 import openpyxl.utils
+from django import forms
+from ckeditor.widgets import CKEditorWidget
+from django.utils.html import format_html
 
 @admin.action(description='Export selected biodata records to Excel with embedded photographs')
 def export_to_excel(modeladmin, request, queryset):
@@ -60,6 +63,13 @@ def export_to_excel(modeladmin, request, queryset):
     wb.save(response)
     return response
 
+class GalleryImageAdminForm(forms.ModelForm):
+    description = forms.CharField(widget=CKEditorWidget(config_name='custom'))
+
+    class Meta:
+        model = GalleryImage
+        fields = '__all__'
+
 @admin.register(CandidateBiodata)
 class CandidateBiodataAdmin(admin.ModelAdmin):
     list_display = [field.name for field in CandidateBiodata._meta.fields if field.name != 'id']
@@ -67,4 +77,10 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
-    list_display = ['title', 'uploaded_at']
+    form = GalleryImageAdminForm
+    list_display = ['title', 'uploaded_at', 'description_display']
+
+    def description_display(self, obj):
+        # Render description with inline style for font size
+        return format_html('<div style="font-size:14px;">{}</div>', obj.description)
+    description_display.short_description = 'Description'

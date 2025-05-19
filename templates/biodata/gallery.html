@@ -73,10 +73,10 @@
       box-shadow: 0 4px 12px rgba(21, 74, 106, 0.7);
     }
     main {
-      max-width: 900px;
+      max-width: 1300px;
       margin: 100px auto 40px auto;
       padding: 20px;
-      background: white;
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
@@ -89,16 +89,16 @@
     .gallery-row {
       display: flex;
       justify-content: space-between;
-      gap: 20px;
+      gap: 2px;
       margin-bottom: 30px;
     }
     .gallery-item {
-      width: 30%;
+      width: 32%;
       position: relative;
       overflow: hidden;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      background: #fff;
+      background: transparent;
       text-align: center;
     }
     .gallery-item img {
@@ -229,7 +229,7 @@
           <img src="{{ image.image.url }}" alt="{{ image.title|default:'Gallery Image' }}" />
           <div class="caption">
             <strong>{{ image.title|default:"No Title" }}</strong><br/><br/>
-            {{ image.description|default:"No Description" }}
+            {{ image.description|safe|default:"No Description" }}
           </div>
         </div>
         {% if forloop.counter|divisibleby:3 or forloop.last %}

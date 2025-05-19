@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-please-replace-this-with-your-own-secret-key'
 DEBUG = True
 
 # Add your PythonAnywhere domain or IP address here
-ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', 'www.yourdomain.com','127.0.0.1']
+#ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', 'www.yourdomain.com','127.0.0.1']
 
 # Add this to allow your ngrok URL as trusted origin for CSRF
 CSRF_TRUSTED_ORIGINS = [
@@ -200,7 +200,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # PUBLIC_BASE_URL = 'https://f40f-103-240-207-159.ngrok-free.app'
 
 # ALLOWED_HOSTS setup for current domain
-ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', '127.0.0.1', 'www.yourdomain.com','localhost']
 
 #import cloudinary
 

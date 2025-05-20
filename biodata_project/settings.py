@@ -24,15 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-please-replace-this-with-your-own-secret-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Add your PythonAnywhere domain or IP address here
 #ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', 'www.yourdomain.com','127.0.0.1']
 
 # Add this to allow your ngrok URL as trusted origin for CSRF
-CSRF_TRUSTED_ORIGINS = [
-    'https://f40f-103-240-207-159.ngrok-free.app'
-]
+#CSRF_TRUSTED_ORIGINS = [
+ #   'https://73d3-103-241-224-251.ngrok-free.app'
+#]
 
 # Application definition
 
@@ -197,7 +197,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Public base URL for media files - set to your current ngrok URL
 # Removed ngrok URL as it is no longer needed
-# PUBLIC_BASE_URL = 'https://f40f-103-240-207-159.ngrok-free.app'
+#PUBLIC_BASE_URL = 'https://73d3-103-241-224-251.ngrok-free.app'
 
 # ALLOWED_HOSTS setup for current domain
 ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', '127.0.0.1', 'www.yourdomain.com','localhost']

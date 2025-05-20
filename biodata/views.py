@@ -5,8 +5,11 @@ from .forms import CandidateBiodataForm
 from .models import CandidateBiodata
 from biodata.views_weasyprint import generate_pdf
 
+from .forms import CandidateBiodataForm
+
 def home_page(request):
-    return render(request, 'biodata/home.html')
+    form = CandidateBiodataForm()
+    return render(request, 'biodata/home.html', {'form': form})
 
 def biodata_form(request):
     personal_fields = [field.name for field in CandidateBiodata._meta.fields if field.name != 'id']

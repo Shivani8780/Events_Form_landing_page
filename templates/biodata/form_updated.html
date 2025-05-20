@@ -104,15 +104,26 @@
         }
         /* Two column layout for form fields */
         .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 20px;
+            /* Removed flex layout and gap to eliminate container appearance */
+            display: block;
+            flex-wrap: unset;
+            gap: 0;
+            margin-bottom: 0;
+            overflow: visible;
         }
         .form-group {
             flex: 1 1 40%;
             min-width: 220px;
             margin-bottom: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        input.form-control, select.form-control, textarea.form-control {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 6px 8px;
         }
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -330,62 +341,58 @@
     <form method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
       {% for field in form %}
-        <div class="form-row">
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}" class="form-label {% if field.name == 'declaration' %}declaration-label{% endif %}" style="white-space: normal; word-wrap: break-word; display: inline-block; max-width: 100%; vertical-align: top; text-indent: -1.5em; padding-left: 1.5em;">
-              <span class="serial-number">{{ forloop.counter }}.</span>
-              {% if field.name == 'candidate_current_city' %}
-                Candidate Current City / ઉમેદવાર પોતે હાલ કાયા CITY / શહેર / ગામ માં રહે છે , તે અહીં લખો :
-              {% elif field.name == 'registrant_mobile' %}
-                જે આ રેજીસ્ટ્રેશન કરી રહ્યું છે , તે અહીં પોતાનો MOBILE નંબર લખશો // Mention here your own Mobile Number (for Reference & Verification Purpose)
-              {% elif field.name == 'father_name' %}
-                Father's Name
-              {% elif field.name == 'father_mobile' %}
-                Father's Whatsapp Number
-              {% elif field.name == 'mother_name' %}
-                Mother's Name
-              {% elif field.name == 'mother_mobile' %}
-                Mother's Whatsapp Number
-              {% elif field.name == 'siblings' %}
-                Siblings Details (Brother/Sister)
-              {% elif field.name == 'partner_education' %}
-                Choice Of Education (Partner Preference)
-              {% elif field.name == 'partner_location' %}
-                Choice Of Location (Partner Preference)
-              {% elif field.name == 'partner_age_bracket' %}
-                Choice Of Age Gap/ Difference in Year (Partner Preference)
-              {% elif field.name == 'other_specific_choice' %}
-                Any Other Choice (Partner Preference)
-              {% else %}
-                {{ field.label }}
-              {% endif %}
-            </label>
-            {% if field.field.widget.input_type == "select" %}
-              <select id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required>
-                <option value="" disabled selected>Select an Option</option>
-                {% for val, text in field.field.choices %}
-                  {% if val != "" %}
-                    <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ text }}</option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-            {% elif field.field.widget.input_type == "checkbox" %}
-              {{ field|add_class:"form-check-input" }}
-            {% elif field.name == "other_specific_choice" or field.name == "education_details" or field.name == "occupation_details" %}
-              {{ field|add_class:"form-control small-input" }}
-            {% elif field.name == "photograph" %}
-              <input type="file" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required />
+          <label for="{{ field.id_for_label }}" class="form-label {% if field.name == 'declaration' %}declaration-label{% endif %}" style="white-space: normal; word-wrap: break-word; display: inline-block; max-width: 100%; vertical-align: top; text-indent: -1.5em; padding-left: 1.5em;">
+            <span class="serial-number">{{ forloop.counter }}.</span>
+            {% if field.name == 'candidate_current_city' %}
+              Candidate Current City / ઉમેદવાર પોતે હાલ કાયા CITY / શહેર / ગામ માં રહે છે , તે અહીં લખો :
+            {% elif field.name == 'registrant_mobile' %}
+              જે આ રેજીસ્ટ્રેશન કરી રહ્યું છે , તે અહીં પોતાનો MOBILE નંબર લખશો // Mention here your own Mobile Number (for Reference & Verification Purpose)
+            {% elif field.name == 'father_name' %}
+              Father's Name
+            {% elif field.name == 'father_mobile' %}
+              Father's Whatsapp Number
+            {% elif field.name == 'mother_name' %}
+              Mother's Name
+            {% elif field.name == 'mother_mobile' %}
+              Mother's Whatsapp Number
+            {% elif field.name == 'siblings' %}
+              Siblings Details (Brother/Sister)
+            {% elif field.name == 'partner_education' %}
+              Choice Of Education (Partner Preference)
+            {% elif field.name == 'partner_location' %}
+              Choice Of Location (Partner Preference)
+            {% elif field.name == 'partner_age_bracket' %}
+              Choice Of Age Gap/ Difference in Year (Partner Preference)
+            {% elif field.name == 'other_specific_choice' %}
+              Any Other Choice (Partner Preference)
             {% else %}
-              {{ field|add_class:"form-control" }}
+              {{ field.label }}
             {% endif %}
-            {% if field.help_text %}
-              <div class="form-text">{{ field.help_text }}</div>
-            {% endif %}
-            {% for error in field.errors %}
-              <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-          </div>
-        </div>
+          </label>
+          {% if field.field.widget.input_type == "select" %}
+            <select id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required>
+              <option value="" disabled selected>Select an Option</option>
+              {% for val, text in field.field.choices %}
+                {% if val != "" %}
+                  <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ text }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          {% elif field.field.widget.input_type == "checkbox" %}
+            {{ field|add_class:"form-check-input" }}
+          {% elif field.name == "other_specific_choice" or field.name == "education_details" or field.name == "occupation_details" %}
+            {{ field|add_class:"form-control small-input" }}
+          {% elif field.name == "photograph" %}
+            <input type="file" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required />
+          {% else %}
+            {{ field|add_class:"form-control" }}
+          {% endif %}
+          {% if field.help_text %}
+            <div class="form-text">{{ field.help_text }}</div>
+          {% endif %}
+          {% for error in field.errors %}
+            <div class="text-danger">{{ error }}</div>
+          {% endfor %}
       {% endfor %}
       <button type="submit" class="btn btn-primary btn-lg mt-3">Submit</button>
     </form>

@@ -671,7 +671,7 @@ M : 9081522111, 9099798986, 9099828986
   </style>
   <div class="form-container">
     <h1>Free Biodata Online Form</h1>
-    <form method="post" enctype="multipart/form-data" novalidate>
+    <form method="post" action="{% url 'biodata_form' %}" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
       {% for field in form %}
         <div class="form-row">

@@ -112,3 +112,4 @@ class GalleryImageAdmin(admin.ModelAdmin):
         # Render description with inline style for font size
         return format_html('<div style="font-size:14px;">{}</div>', obj.description)
     description_display.short_description = 'Description'
+

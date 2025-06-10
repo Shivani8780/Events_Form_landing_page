@@ -12,10 +12,10 @@ from django.utils.html import format_html
 import zipfile
 import io
 import re
+import logging
 
 @admin.action(description='Export selected biodata records to Excel with embedded photographs')
 def export_to_excel(modeladmin, request, queryset):
-    import os
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     )
@@ -59,7 +59,6 @@ def export_to_excel(modeladmin, request, queryset):
                 # Adjust row height
                 ws.row_dimensions[row_num].height = 60
             except Exception as e:
-                import logging
                 logging.error(f"Failed to embed image for row {row_num}: {e}")
         row_num += 1
 
@@ -68,7 +67,6 @@ def export_to_excel(modeladmin, request, queryset):
 
 @admin.action(description='Download selected candidate images as zip')
 def download_selected_images(modeladmin, request, queryset):
-    import logging
     # Create in-memory zip file
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:

@@ -9,6 +9,9 @@ import openpyxl.utils
 from django import forms
 from ckeditor.widgets import CKEditorWidget
 from django.utils.html import format_html
+import zipfile
+import io
+import re
 
 @admin.action(description='Export selected biodata records to Excel with embedded photographs')
 def export_to_excel(modeladmin, request, queryset):
@@ -63,6 +66,33 @@ def export_to_excel(modeladmin, request, queryset):
     wb.save(response)
     return response
 
+@admin.action(description='Download selected candidate images as zip')
+def download_selected_images(modeladmin, request, queryset):
+    # Create in-memory zip file
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+        for obj in queryset:
+            photo_field = getattr(obj, 'photograph')
+            if photo_field and photo_field.name:
+                try:
+                    img_path = photo_field.path
+                    if os.path.exists(img_path):
+                        # Sanitize candidate name and mobile number for filename
+                        candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
+                        mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
+                        ext = os.path.splitext(img_path)[1]
+                        filename = f"{candidate_name}_{mobile_number}{ext}"
+                        with open(img_path, 'rb') as img_file:
+                            img_data = img_file.read()
+                        zip_file.writestr(filename, img_data)
+                except Exception as e:
+                    import logging
+                    logging.error(f"Failed to add image for candidate {obj.candidate_name}: {e}")
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=selected_candidate_images.zip'
+    return response
+
 class GalleryImageAdminForm(forms.ModelForm):
     description = forms.CharField(widget=CKEditorWidget(config_name='custom'))
 
@@ -73,7 +103,7 @@ class GalleryImageAdminForm(forms.ModelForm):
 @admin.register(CandidateBiodata)
 class CandidateBiodataAdmin(admin.ModelAdmin):
     list_display = [field.name for field in CandidateBiodata._meta.fields if field.name != 'id']
-    actions = [export_to_excel]
+    actions = [export_to_excel, download_selected_images]
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):

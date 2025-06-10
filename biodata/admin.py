@@ -68,6 +68,7 @@ def export_to_excel(modeladmin, request, queryset):
 
 @admin.action(description='Download selected candidate images as zip')
 def download_selected_images(modeladmin, request, queryset):
+    import logging
     # Create in-memory zip file
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
@@ -86,7 +87,6 @@ def download_selected_images(modeladmin, request, queryset):
                             img_data = img_file.read()
                         zip_file.writestr(filename, img_data)
                 except Exception as e:
-                    import logging
                     logging.error(f"Failed to add image for candidate {obj.candidate_name}: {e}")
     zip_buffer.seek(0)
     response = HttpResponse(zip_buffer, content_type='application/zip')

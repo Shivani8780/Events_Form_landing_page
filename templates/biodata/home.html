@@ -722,8 +722,8 @@ M : 9081522111, 9099798986, 9099828986
                   {{ field|add_class:"form-control small-input" }}
                 {% elif field.name == "photograph" %}
                   <input type="file" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required />
-                {% elif field.name == "dob" or field.name == "birth_time" %}
-                  <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" value="{{ field.value|stringformat:'s' }}" />
+                  {% elif field.name == "dob" or field.name == "birth_time" %}
+                  <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" value="{% if field.value %}{{ field.value|stringformat:'s' }}{% else %}{% endif %}" />
                 {% else %}
                   {{ field|add_class:"form-control" }}
                 {% endif %}

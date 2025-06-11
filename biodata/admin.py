@@ -79,8 +79,10 @@ def download_selected_images(modeladmin, request, queryset):
                         # Sanitize candidate name and mobile number for filename
                         candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
                         mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
+                        dob_str = obj.dob.strftime('%Y%m%d') if obj.dob else 'unknownDOB'
+                        serial_number = obj.id or 'unknownID'
                         ext = os.path.splitext(img_path)[1]
-                        filename = f"{candidate_name}_{mobile_number}{ext}"
+                        filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
                         with open(img_path, 'rb') as img_file:
                             img_data = img_file.read()
                         zip_file.writestr(filename, img_data)

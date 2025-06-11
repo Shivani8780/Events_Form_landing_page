@@ -24,10 +24,53 @@ class CandidateBiodataForm(forms.ModelForm):
     marital_status = forms.ChoiceField(choices=CandidateBiodata.MARITAL_STATUS_CHOICES, required=True, label="Marriage Status")
     shani_mangal = forms.ChoiceField(choices=CandidateBiodata.SHANI_MANGAL_CHOICES, required=False, label="Shani / Mangal", initial='')
 
-    birth_time = forms.TimeField(
+    birth_time = forms.CharField(
         required=False,
-        widget=forms.TimeInput(attrs={'type': 'time'}),
+        widget=forms.TextInput(attrs={'type': 'text'}),
         label="Time Of Birth"
+    )
+    dob = forms.CharField(
+        required=True,
+        widget=forms.TextInput(attrs={'type': 'text'}),
+        label="Date Of Birth"
+    )
+
+    def clean_dob(self):
+        dob = self.cleaned_data.get('dob')
+        # Accept any text, no validation
+        return dob
+
+    def clean_birth_time(self):
+        birth_time = self.cleaned_data.get('birth_time')
+        # Accept any text, no validation
+        return birth_time
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # Override dob and birth_time to bypass model validation
+        dob_raw = self.data.get('dob')
+        birth_time_raw = self.data.get('birth_time')
+        if dob_raw is not None:
+            cleaned_data['dob'] = dob_raw
+        if birth_time_raw is not None:
+            cleaned_data['birth_time'] = birth_time_raw
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Assign raw text values to model fields to bypass validation errors
+        dob_raw = self.cleaned_data.get('dob')
+        birth_time_raw = self.cleaned_data.get('birth_time')
+        if dob_raw is not None:
+            instance.dob = dob_raw
+        if birth_time_raw is not None:
+            instance.birth_time = birth_time_raw
+        if commit:
+            instance.save()
+        return instance
+    monthly_income = forms.CharField(
+        required=False,
+        label="Salary (optional) Per Month Salary)"
     )
 
     def __init__(self, *args, **kwargs):
@@ -114,7 +157,7 @@ class CandidateBiodataForm(forms.ModelForm):
         help_text='Example: Enter age range like 27 to 30.'
     )
 
-    dob = forms.DateField(label="Date Of Birth", widget=forms.DateInput(attrs={'type': 'date'}))
+#    dob = forms.DateField(label="Date Of Birth", widget=forms.DateInput(attrs={'type': 'date'}))
 
 
     class Meta:

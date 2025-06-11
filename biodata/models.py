@@ -12,7 +12,7 @@ class CandidateBiodata(models.Model):
     registration_by = models.CharField(max_length=255, blank=True, null=True)
     registrant_mobile = models.CharField(max_length=20, blank=True, null=True)
     candidate_current_city = models.CharField(max_length=255, blank=False, null=False)
-    dob = models.DateField()
+    dob = models.CharField(max_length=50, blank=True, null=True)
     MARITAL_STATUS_CHOICES = [
         ('Never Married', 'Never Married'),
         ('One Time Gol-Dhana But then Cancel', 'One Time Gol-Dhana But then Cancel'),
@@ -26,7 +26,7 @@ class CandidateBiodata(models.Model):
         ('Yes', 'Yes'),
         ('Minor Problem', 'Minor Problem'),
     ]
-    birth_time = models.TimeField(blank=True, null=True)
+    birth_time = models.CharField(max_length=50, blank=True, null=True)
     birth_place = models.CharField(max_length=255)
     RESIDENCE_AREA_CATEGORY_CHOICES = [
         ('Gujarat Region (North , Central , South)', 'Gujarat Region (North , Central , South)'),

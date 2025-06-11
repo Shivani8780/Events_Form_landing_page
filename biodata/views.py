@@ -17,7 +17,8 @@ def home_page(request):
             return redirect('confirmation', candidate_id=instance.id)
         else:
             # Form invalid, render home page with form and errors
-            return render(request, 'biodata/home.html', {'form': form})
+            # Add a flag to indicate form errors for template use
+            return render(request, 'biodata/home.html', {'form': form, 'form_errors': True})
     else:
         form = CandidateBiodataForm()
     return render(request, 'biodata/home.html', {'form': form})

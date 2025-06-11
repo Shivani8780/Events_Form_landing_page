@@ -8,11 +8,6 @@ from biodata.views_weasyprint import generate_pdf
 from .forms import CandidateBiodataForm
 
 def home_page(request):
-    form = CandidateBiodataForm()
-    return render(request, 'biodata/home.html', {'form': form})
-
-def biodata_form(request):
-    personal_fields = [field.name for field in CandidateBiodata._meta.fields if field.name != 'id']
     if request.method == 'POST':
         form = CandidateBiodataForm(request.POST, request.FILES)
         if form.is_valid():
@@ -20,12 +15,16 @@ def biodata_form(request):
             pdf_buffer = generate_pdf(instance)
             # You can save or email the PDF as needed here
             return redirect('confirmation', candidate_id=instance.id)
+        else:
+            # Form invalid, render home page with form and errors
+            return render(request, 'biodata/home.html', {'form': form})
     else:
         form = CandidateBiodataForm()
-    # Add debug print to check rendering
-    print("Rendering biodata form page")
-    debug_message = "DEBUG: Rendering form_updated.html template"
-    return render(request, 'biodata/form_updated.html', {'form': form, 'personal_fields': personal_fields, 'debug_message': debug_message})
+    return render(request, 'biodata/home.html', {'form': form})
+
+def biodata_form(request):
+    # Deprecated: form handled in home_page now
+    return redirect('home_page')
 
 def download_biodata_pdf(request, candidate_id):
     instance = get_object_or_404(CandidateBiodata, id=candidate_id)

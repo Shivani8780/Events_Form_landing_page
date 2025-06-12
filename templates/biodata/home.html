@@ -87,8 +87,8 @@
     .info-container {
       background: #fff8f0;
       max-width: 600px;
-      margin: 0 auto 30px auto;
-      padding: 30px 35px;
+      margin:10px auto 30px auto;
+      padding: 0px 35px 20px;
       border-radius: 15px;
       box-shadow: 0 6px 18px rgba(243, 112, 33, 0.3);
       font-size: 17px;
@@ -106,7 +106,8 @@
     .info-highlight {
       font-size: 22px;
       font-weight: 800;
-      margin-bottom: 20px;
+      margin-bottom: 0;
+      padding-top: 0;
       color: #d9534f;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
@@ -456,7 +457,7 @@
 
   <div class="info-container">
     <div class="info-highlight">
-    તા. 20-07-2025 ને રવિવારે 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન - અમદાવાદ  માં // Online બાયોડેટા રેજીસ્ટ્રેશન છે // Last Date for  Online Biodata Registration  :  10-07-2025
+    તા. 20-07-2025 ને રવિવારે 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન - અમદાવાદ  માં // Online બાયોડેટા રેજીસ્ટ્રેશન છે // Last Date for  Online Biodata Registration  :  10-07-2025 (Thursday)
     </div>
     
 💢 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન
@@ -467,9 +468,9 @@
 
 🟠  સંમેલન તારીખ : 20-July-2025
 🟠  સમય : 8 AM to 4 PM
-🟠  સ્થળ :  Shyama Prasad Vasavada Community Hall , Maninagar (East), Khokhra Amdavad. M # 9099798986
+🟠  સ્થળ :  Shree Shyam Prasad Vasavada Hall , Amdavad. M # 9099798986, 9081522111,
 
-🔵  બાયોડેટા રેજીસ્ટ્રેશન છેલ્લી તારીખ :  10-07-2025
+🔵  બાયોડેટા રેજીસ્ટ્રેશન છેલ્લી તારીખ :  10-07-2025 (Thursday)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -480,13 +481,13 @@
 A-703, Nar-Narayan Complex, 
 Opp Navrangpura Post Office
 Near Swastik Char Rasta, Navrangpura , Amdavad
-M # 9099798986, 9499701462
+M # 9099798986, 9499701462, 9081522111
 
  🟡  વડોદરા (સયાજીગંજ) :
 ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ
 601,602, 603, 604A 6th Floor, Galav Chambers, 
 Near Dairy Den Circle, Sayajigunj, Vadodara-390020,
-M :  9099798986, 9099828986
+M : 9081522111, 9099798986, 9099828986
   </div>
   <div class="image-container">
     <img src="{% static 'images/Banner.jpeg' %}">
@@ -496,7 +497,7 @@ M :  9099798986, 9099828986
     <img src="{% static 'images/Team_Banner.jpeg' %}"  class="team-image">
   </div>
   <div class="new-info-container">
-     સમસ્ત ગુજરાતી બ્રાહ્મણ-ભૂદેવ 33rd જીવનસાથી પરિચય સંમેલન ( Shyama Prasad Vasavada Community Hall , Maninagar (East), Khokhra Am)<br><br>
+     સમસ્ત ગુજરાતી બ્રાહ્મણ-ભૂદેવ 33st જીવનસાથી પરિચય સંમેલન - મેળો  ( Shree Shyam Prasad Vasavada Hall , Amdavad)<br><br>
     🔵🟣નીચે આપેલા free બાયોડેટા ઓનલાઇન ફોર્મ ભરવાનું રહેશે.
   </div>
 
@@ -704,6 +705,8 @@ M :  9099798986, 9099828986
                     Any Other Choice (Partner Preference)
                   {% elif field.name == 'type_of_brahmin' %}
                     Type of brahmin/ Caste
+                  {% elif field.name == 'kuldevi' %}
+                    Any Disability/ Details
                   {% else %}
                     {{ field.label }}
                   {% endif %}

@@ -194,5 +194,6 @@ class CandidateBiodataForm(forms.ModelForm):
         'mother_mobile': "Mother's Whatsapp Number",
         'father_mobile': "Father's Whatsapp Number",
         'whatsapp_number': "Whatsapp Number (For verification)",
+        'kuldevi': 'Any Disability/ Details',
 
         }

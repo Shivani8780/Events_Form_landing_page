@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', '127.0.0.1', 'www.yourdomain.co
 
 # Remove CSRF_TRUSTED_ORIGINS if not using ngrok or multiple domains
 # CSRF_TRUSTED_ORIGINS = [
-#     'https://73d3-103-241-224-251.ngrok-free.app'
+#  'https://cb65-2405-201-2012-4046-f98d-de04-55f0-17e0.ngrok-free.app'
 # ]
 
 # Application definition
@@ -198,10 +198,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Public base URL for media files - set to your current ngrok URL
 # Removed ngrok URL as it is no longer needed
-#PUBLIC_BASE_URL = 'https://73d3-103-241-224-251.ngrok-free.app'
+# PUBLIC_BASE_URL = 'https://cb65-2405-201-2012-4046-f98d-de04-55f0-17e0.ngrok-free.app'
 
 # ALLOWED_HOSTS setup for current domain
-ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com', '127.0.0.1', 'www.yourdomain.com','localhost', 'bhudevnetwork.pythonanywhere.com']
+ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com','127.0.0.1' ,'localhost', 'bhudevnetwork.pythonanywhere.com']
 
 #import cloudinary
 

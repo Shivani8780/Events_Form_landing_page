@@ -10,7 +10,7 @@ class CandidateBiodata(models.Model):
     ]
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='Male')
     registration_by = models.CharField(max_length=255, blank=True, null=True)
-    registrant_mobile = models.CharField(max_length=20, blank=True, null=True)
+    registrant_mobile = models.CharField(max_length=20, unique=True)
     candidate_current_city = models.CharField(max_length=255, blank=False, null=False)
     dob = models.CharField(max_length=50, blank=True, null=True)
     MARITAL_STATUS_CHOICES = [

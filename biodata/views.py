@@ -14,6 +14,7 @@ def home_page(request):
             instance = form.save()
             pdf_buffer = generate_pdf(instance)
             # You can save or email the PDF as needed here
+            # Redirect after POST to avoid resubmission on refresh
             return redirect('confirmation', candidate_id=instance.id)
         else:
             # Form invalid, render home page with form and errors

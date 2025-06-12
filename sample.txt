@@ -1,1 +1,784 @@
+
 This is a test file for Cloudinary upload.
+
+
+
+
+
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Bhudev Foundation</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #333;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      overscroll-behavior-y: none; /* Prevent overscroll bounce on top and bottom */
+      box-sizing: border-box;
+    }
+    body {
+      background-image: url('https://i0.wp.com/detechter.com/wp-content/uploads/2017/07/Hindu-Wedding-India.jpg?fit=886%2C535&ssl=1');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+      padding: 40px 40px 120px 40px; /* Added bottom padding for button space */
+      box-sizing: border-box;
+      position: relative;
+    }
+    .container {
+      background: #ffffff;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
+    .container:hover {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    }
+    .banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+    .banner img {
+      width: 100px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .banner img:hover {
+      transform: scale(1.05);
+    }
+    .banner-text {
+      text-align: left;
+      flex: 1;
+    }
+    .banner-text h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #d9534f;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .orange-text {
+      color: #f37021;
+    }
+    .blue-text {
+      color: #1d4e89;
+    }
+    .reg-text {
+      font-size: 16px;
+      color: #555;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    .info-container {
+      background: #fff8f0;
+      max-width: 600px;
+      margin:10px auto 30px auto;
+      padding: 0px 35px 20px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(243, 112, 33, 0.3);
+      font-size: 17px;
+      color: #5a3e1b;
+      line-height: 1.6;
+      white-space: pre-line;
+      font-weight: 600;
+      border: 2px solid #f37021;
+      transition: background-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    .info-container:hover {
+      background-color: #fff3e0;
+    }
+    .info-highlight {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 0;
+      padding-top: 0;
+      color: #d9534f;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .image-container {
+      background: #e9f0f7;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(29, 78, 137, 0.3);
+      text-align: center;
+      border: 2px solid #1d4e89;
+      transition: background-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    .image-container:hover {
+      background-color: #d6e4f0;
+    }
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(29, 78, 137, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .image-container img:hover {
+      transform: scale(1.03);
+    }
+    .team-container {
+      background: #f7f9fc;
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 2px solid #1d4e89;
+      text-align: center;
+      color: #2c3e50;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.4;
+      box-sizing: border-box;
+    }
+    .team-image {
+      margin-top: 15px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(44, 62, 80, 0.15);
+      transition: transform 0.3s ease;
+    }
+    .team-image:hover {
+      transform: scale(1.02);
+    }
+    .new-info-container {
+      max-width: 600px;
+      margin: 0 auto 30px auto;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(29, 78, 137, 0.3);
+      text-align: center;
+      border: 2px solid #1d4e89;
+      font-size: 18px;
+      font-weight: 700;
+      color: #2c3e50;
+      box-sizing: border-box;
+      background-color: #e9f0f7;
+    }
+  .form-button-container {
+      max-width: 600px;
+      margin: 30px auto 0 auto;
+      text-align: center;
+      
+      width: 90%;
+      max-width: 600px;
+      padding: 10px 0;
+      background-color: #1d4e89;
+      box-shadow: none;
+      border-radius: 12px;
+      z-index: 1000;
+      position: static;
+      box-shadow: 0 6px 18px rgba(29, 78, 137, 0.3);
+    }
+    .form-button-container a {
+      font-size: 18px;
+      padding: 12px 0;
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+      box-shadow: none;
+      color: white;
+      font-weight: 900;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .form-button-container a:hover {
+      background-color: #154a6a;
+    }
+  @media (max-width: 480px) {
+      body {
+        padding: 20px 0 100px 0;
+        background-attachment: scroll !important;
+      }
+      
+      .container, .info-container, .image-container, .team-container {
+        max-width: 80%;
+        margin: 10px auto;
+        padding: 15px 10px;
+      }
+
+      /* Decrease height of first container on mobile */
+      .container {
+        padding: 20px 10px;
+      }
+
+      /* Make text font size smaller in second container on mobile */
+      .info-container {
+        font-size: 13px;
+      }
+
+      /* Decrease height size of last container on mobile */
+      .new-info-container {
+        padding: 14px 10px;
+        max-height: none;     /* Remove the cut-off */
+        min-height: 105px;    /* Give more vertical space */
+        font-size: 16px;
+        overflow: visible;
+      }
+
+      /* Make text font size smaller in second last container on mobile */
+      .team-container {
+        font-size: 14px;
+      }
+
+
+      /* Decrease logo size in first container on mobile */
+      .banner img {
+        width: 50px;
+      }
+
+      /* Decrease font size of text in first container on mobile */
+      .banner-text h1 {
+        font-size: 18px;
+        text-align: left;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+        line-height: 1.1;
+      }
+
+      .info-highlight {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        line-height: 1.1;
+      }
+      
+      .reg-text {
+        font-size: 15px;
+        line-height: 1.0;
+      }
+
+       .form-button-container {
+        position: static;
+        margin: 30px auto 0 auto;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 12px;
+        padding: 10px 0;
+        background-color: #1d4e89;
+        box-shadow: none;
+        z-index: 1000;
+      }
+      
+      .form-button-container a {
+        font-size: 18px;
+        padding: 12px 0;
+        width: 100%;
+        display: block;
+        border-radius: 12px;
+        box-shadow: none;
+        color: white;
+        font-weight: 900;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+      .form-button-container a:hover {
+        background-color: #154a6a;
+      }
+
+      .info-container, .new-info-container {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div id="js-nav-toggle" class="nav-toggle">&#9776;</div>
+      <ul id="js-menu" class="nav-links">
+        <li><a href="{% url 'home_page' %}">Home</a></li>
+        <li><a href="{% url 'gallery_page' %}">Gallery</a></li>
+        <li><a href="{% url 'contact_us_page' %}">Contact Us</a></li>
+      </ul>
+    </nav>
+  </header>
+  <style>
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #1d4e89;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+      z-index: 1100;
+      padding: 15px 40px;
+      box-sizing: border-box;
+      border-radius: 0 0 0 0;
+    }
+    .navbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 45px;
+    }
+    .nav-links li {
+      display: inline;
+    }
+    .nav-links a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 22px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.35s ease, box-shadow 0.35s ease;
+    }
+    .nav-links a:hover {
+      background-color: #154a6a;
+      box-shadow: 0 4px 12px rgba(21, 74, 106, 0.7);
+    }
+    /* Responsive Hamburger Navbar Styling */
+    @media (max-width: 650px) {
+      header {
+        padding: 0;
+      }
+      .navbar {
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        height: 40px;
+      }
+      .nav-toggle {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 28px;
+        color: #fff;
+        padding: 12px 18px 12px 0;
+        z-index: 2001;
+        background: none;
+        border: none;
+        outline: none;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 50px;
+        left: 3vw;
+        width: 150px;
+        background: #1d4e89;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+        padding: 0 0 10px 0;
+        z-index: 5000;
+        margin: 0;
+        text-align: right;
+      }
+      .nav-links.show {
+        display: flex;
+        animation: slideDown 0.22s cubic-bezier(.41,-0.03,.38,1.54);
+      }
+      @keyframes slideDown {
+        from {transform: translateY(-30px);opacity: 0;}
+        to {transform: translateY(0);opacity:1;}
+      }
+      .nav-links li {
+        display: block;
+        width: 100%;
+        margin: 0;
+        text-align: left;
+      }
+      .nav-links a {
+        width: 100%;
+        display: block;
+        padding: 17px 24px;
+        font-size: 1.1em;
+        background: none;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 0;
+        border-bottom: 1px solid #164d7a;
+        box-shadow: none;
+        margin: 0;
+        letter-spacing: 0.02em;
+      }
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+      .nav-links a:hover, .nav-links a:focus {
+        background: #154a6a;
+        color: #fff;
+      }
+    }
+
+    /* Hide the burger on desktop */
+    .nav-toggle {display:none;}
+    @media (max-width:650px) {
+        .nav-toggle {display:inline-block;}
+    }
+  </style>
+  <div style="padding-top: 70px;"></div>
+  <div class="container">
+    <div class="banner">
+      <img src="{% static 'images/foundation_logo.png' %}" alt="Foundation Logo">
+      <div class="banner-text">
+        <h1>
+          <span class="orange-text">BHUDEV NETWORK</span><br>
+          <span class="blue-text">CHARITABLE FOUNDATION</span>
+        </h1>
+        <div class="reg-text">(Trust, NGO Reg. No. # AHMD / 120129)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-container">
+    <div class="info-highlight">
+    તા. 20-07-2025 ને રવિવારે 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન - અમદાવાદ  માં // Online બાયોડેટા રેજીસ્ટ્રેશન છે // Last Date for  Online Biodata Registration  :  10-07-2025 (Thursday)
+    </div>
+    
+💢 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન
+(સમસ્ત બ્રાહ્મણ - ભૂદેવ ઉમેદવારો માટે)
+
+🔴  ખાસ નોંધ :  આ  ફોર્મ સબમિટ કર્યા પછી Form Confirmation -  Registration Number મેળવવા માટે,  આપ નીચે આપેલા નંબર પર કોલ કરી ને આપનું ફોર્મ નું Confirmation કરાવી દેવું : ( Phone Time : 10:00 am to 06:00 pm Only )
+//  7990856889, 9265307465, 9313183494, 6351522259, 9099828986, 9099798986  ( Phone Time : 10:00 am to 06:00 pm Only )
+
+🟠  સંમેલન તારીખ : 20-July-2025
+🟠  સમય : 8 AM to 4 PM
+🟠  સ્થળ :  Shree Shyama Prasad Vasavada AC Hall (1st Floor), Khokhra, Maninagar (East), Amdavad.  M # 9099798986
+
+🔵  બાયોડેટા રેજીસ્ટ્રેશન છેલ્લી તારીખ :  10-07-2025 (Thursday)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+🔵 ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ (OFFICE) :
+
+ 🟡  અમદાવાદ (નવરંગપુરા) :
+ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ
+A-703, Nar-Narayan Complex, 
+Opp Navrangpura Post Office
+Near Swastik Char Rasta, Navrangpura , Amdavad
+M # 9099798986, 9499701462
+ 🟡  વડોદરા (સયાજીગંજ) :
+ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ
+601,602, 603, 604A 6th Floor, Galav Chambers, 
+Near Dairy Den Circle, Sayajigunj, Vadodara-390020,
+M :  9099798986, 9099828986
+  </div>
+  <div class="image-container">
+    <img src="{% static 'images/Banner.jpeg' %}">
+  </div>
+  <div class="team-container">
+    Bhudev Network , MangalFera Vivah & Employa Technologies Team
+    <img src="{% static 'images/Team_Banner.jpeg' %}"  class="team-image">
+  </div>
+  <div class="new-info-container">
+     સમસ્ત ગુજરાતી બ્રાહ્મણ-ભૂદેવ 33st જીવનસાથી પરિચય સંમેલન - મેળો  ( Shree Shyama Prasad Vasavada AC Hall (1st Floor), Khokhra, Maninagar (East), Amdavad.)<br><br>
+    🔵🟣નીચે આપેલા free બાયોડેટા ઓનલાઇન ફોર્મ ભરવાનું રહેશે.
+  </div>
+
+  <!-- Spacer div to create gap below last container for fixed button -->
+  
+  <!-- Removed the Go to Biodata Form button -->
+  
+  <!-- Removed the Go to Biodata Form button -->
+
+  <!-- Added form container below the last container with home page styles and transparency -->
+  <style>
+    .form-container {
+            max-width: 600px;
+            width: 100%;
+            margin: 40px auto ; /* Added bottom margin for mobile spacing */
+            background: rgba(253, 249, 249, 0.95);
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.15);
+            max-height: auto;
+            overflow-y: hidden;
+            box-sizing: border-box;
+        }
+        h1 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 700;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-bottom: 2px solid #d6336c;
+            padding-bottom: 8px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background-color: #d6336c;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #b52a58;
+        }
+        /* Custom smaller input size for hobbies and other habits */
+        .small-input {
+            max-height: 100px;
+        }
+        /* Custom color for section titles */
+        .section-title {
+            color: #d6336c;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #d6336c;
+            padding-bottom: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Increase input box border width */
+        input.form-control, textarea.form-control, select.form-control, input.form-check-input {
+            border-width: 1.5px !important;
+            border-style: solid !important;
+            border-color: #2c3e50 !important;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 0.9rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Serial number style */
+        .serial-number {
+            font-weight: 400;
+            margin-right: 5px;
+            color: #333435;
+        }
+        /* Two column layout for form fields */
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            flex: 1 1 40%;
+            min-width: 220px;
+            margin-bottom: 15px;
+        }
+        /* New smaller container for each field */
+        /* Removed field-container styles to eliminate container appearance */
+        /*
+        .field-container {
+            padding: 15px 20px;
+            border: 1px solid #d6336c;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(214, 51, 108, 0.15);
+            background-color: #fff;
+        }
+        */
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+                background-size: cover;
+                background-position: center center;
+                min-height: 90vh;
+            }
+            .form-container {
+                padding: 15px 20px;
+                max-width: 90%;
+                margin: 40px auto;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .form-group {
+                flex: 1 1 100%;
+                min-width: auto;
+            }
+            button {
+                font-size: 1rem;
+                padding: 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            html, body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+                height: 100vh;
+                background-size: cover;
+                background-position: center center;
+                min-height: 100vh;
+            }
+            .form-container {
+                padding: 12px 16px 50px;
+                max-width: 90%;
+                margin: 20px auto ; /* Reduced top margin to bring form closer to navbar */
+                height:auto;
+              }
+            h1 {
+                font-size: 20px;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                hyphens: auto;
+            }
+            .form-group {
+                margin-bottom: 12px;
+            }
+            button {
+                font-size: 0.95rem;
+                padding: 10px;
+            }
+        }
+        /* Pink color for declaration label */
+        label.declaration-label {
+            color: #d6336c !important;
+            font-weight: 600;
+        }
+  </style>
+  <div class="form-container">
+    <h1>Free Biodata Online Form</h1>
+    <form method="post" action="{% url 'home_page' %}" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-row">
+          <div class="form-group">
+              <div class="field-container" style="display: flex; flex-direction: column; gap: 6px;">
+                <label for="{{ field.id_for_label }}" class="form-label {% if field.name == 'declaration' %}declaration-label{% endif %}" style="margin-bottom: 0;">
+                  <span class="serial-number">{{ forloop.counter }}.</span>
+                  {% if field.name == 'candidate_current_city' %}
+                    Candidate Current City / ઉમેદવાર પોતે હાલ કાયા CITY / શહેર / ગામ માં રહે છે , તે અહીં લખો :
+                  {% elif field.name == 'registrant_mobile' %}
+                    જે આ રેજીસ્ટ્રેશન કરી રહ્યું છે , તે અહીં પોતાનો MOBILE નંબર લખશો // Mention here your own Mobile Number (for Reference & Verification Purpose)
+                  {% elif field.name == 'father_name' %}
+                    Father's Name
+                  {% elif field.name == 'father_mobile' %}
+                    Father's Whatsapp Number
+                  {% elif field.name == 'mother_name' %}
+                    Mother's Name
+                  {% elif field.name == 'mother_mobile' %}
+                    Mother's Whatsapp Number
+                  {% elif field.name == 'siblings' %}
+                    Siblings Details (Brother/Sister)
+                  {% elif field.name == 'partner_education' %}
+                    Choice Of Education (Partner Preference)
+                  {% elif field.name == 'partner_location' %}
+                    Choice Of Location (Partner Preference)
+                  {% elif field.name == 'partner_age_bracket' %}
+                    Choice Of Age Gap/ Difference in Year (Partner Preference)
+                  {% elif field.name == 'other_specific_choice' %}
+                    Any Other Choice (Partner Preference)
+                  {% elif field.name == 'type_of_brahmin' %}
+                    Type of brahmin/ Caste
+                  {% elif field.name == 'kuldevi' %}
+                    Any Disability/ Details
+                  {% else %}
+                    {{ field.label }}
+                  {% endif %}
+                </label>
+                {% if field.field.widget.input_type == "select" %}
+                  <select id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required>
+                    <option value="" disabled selected>Select an Option</option>
+                    {% for val, text in field.field.choices %}
+                      {% if val != "" %}
+                        <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ text }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                {% elif field.field.widget.input_type == "checkbox" %}
+                  {{ field|add_class:"form-check-input" }}
+                {% elif field.name == "other_specific_choice" or field.name == "education_details" or field.name == "occupation_details" %}
+                  {{ field|add_class:"form-control small-input" }}
+                {% elif field.name == "photograph" %}
+                  <input type="file" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" required />
+                  {% elif field.name == "dob" or field.name == "birth_time" %}
+                  <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control" value="{% if field.value %}{{ field.value|stringformat:'s' }}{% else %}{% endif %}" />
+                {% else %}
+                  {{ field|add_class:"form-control" }}
+                {% endif %}
+                {% if field.help_text %}
+                  <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% for error in field.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+          </div>
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-lg mt-3">Submit</button>
+    </form>
+  </div>
+  <script>
+    const toggle = document.getElementById('js-nav-toggle');
+    const menu = document.getElementById('js-menu');
+    toggle.onclick = function() {
+      menu.classList.toggle('show');
+    }
+    // Optional: close menu after click a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.onclick = function(){ menu.classList.remove('show'); }
+    });
+
+    // Scroll to first invalid input field on form submission with errors
+    window.onload = function() {
+      const firstErrorField = document.querySelector('.text-danger');
+      if (firstErrorField) {
+        // Scroll to the parent form-group of the first error field
+        const formGroup = firstErrorField.closest('.form-group');
+        if (formGroup) {
+          formGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Optionally, focus the first input inside the form group
+          const input = formGroup.querySelector('input, select, textarea');
+          if (input) {
+            input.focus();
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.botpress.cloud/webchat/v2.4/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/05/30/08/20250530085341-33QJ5GD5.js"></script>
+</body>
+</html>

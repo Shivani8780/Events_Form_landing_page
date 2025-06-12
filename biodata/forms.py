@@ -181,7 +181,7 @@ class CandidateBiodataForm(forms.ModelForm):
             'partner_education': 'Choice Of Education (Partner Preference)',
             'partner_location': 'Choice Of Location (Partner Preference)',
             'partner_age_bracket': 'Choice Of Age Gap/ Difference in Year (Partner Preference)',
-            'declaration': 'Declaration : હું અહીં ખાત્રી આપુ છું કે ઉપરોક્ત બધી માહિતી ખરી છે. સાચી છે, અને મે બધી માહિતી ચેક કરી લીધી છે. મારો બાયોડેટા લેટેસ્ટ બુકલેટ મા સમાવેશ કરશો. (I hereby declare that all above info is correct & all right and i have checked all info before submission of this Form. Please include my Biodata in latest Biodata Booklet)',
+            'declaration': 'Declaration : હું અહીં ખાત્રી આપુ છું કે, મે ભરેલી, ઉપરોક્ત બધી માહિતી ખરી છે. સાચી છે, અને મે બધી માહિતી ચેક કરી લીધી છે. મારો બાયોડેટા લેટેસ્ટ બુકલેટ મા સમાવેશ કરશો. (I hereby declare that all above info filled by myself is correct & all right and i have checked all info before submission of this Form. Please include my Biodata in latest Biodata Booklet)',
             'declaration_agree': 'Agree (ઉપર મુજબ હું માનું છું અને તેમ કરીશ) - મારો બાયોડેટા બુકલેટ માં ચોક્કસ સમાવેશ કરશોજી',
             'declaration_disagree': 'Disagree (ઉપર મુજબ હું નહિ માનું)  - મારો બાયોડેટા કેન્સલ કરી દેજો',
         'gender': 'Candidate Gender',

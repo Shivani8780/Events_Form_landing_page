@@ -25,7 +25,7 @@ class CandidateBiodataForm(forms.ModelForm):
     shani_mangal = forms.ChoiceField(choices=CandidateBiodata.SHANI_MANGAL_CHOICES, required=False, label="Shani / Mangal", initial='')
 
     birth_time = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(attrs={'type': 'text'}),
         label="Time Of Birth"
     )
@@ -72,6 +72,13 @@ class CandidateBiodataForm(forms.ModelForm):
         required=False,
         label="Salary (optional) Per Month Salary)"
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make all fields required except monthly_income
+        for field_name, field in self.fields.items():
+            if field_name != 'monthly_income':
+                field.required = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

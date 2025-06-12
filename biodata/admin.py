@@ -70,7 +70,8 @@ def download_selected_images(modeladmin, request, queryset):
     # Create in-memory zip file
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
-        for obj in queryset:
+        # Generate serial numbers starting from 1 for the queryset
+        for idx, obj in enumerate(queryset, start=1):
             photo_field = getattr(obj, 'photograph')
             if photo_field and photo_field.name:
                 try:
@@ -80,7 +81,7 @@ def download_selected_images(modeladmin, request, queryset):
                         candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
                         mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
                         dob_str = obj.dob.strftime('%d%m%Y') if obj.dob else 'unknownDOB'
-                        serial_number = obj.id or 'unknownID'
+                        serial_number = idx  # Use enumerated index as serial number
                         ext = os.path.splitext(img_path)[1]
                         filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
                         with open(img_path, 'rb') as img_file:

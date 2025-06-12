@@ -103,7 +103,7 @@ class GalleryImageAdminForm(forms.ModelForm):
 
 @admin.register(CandidateBiodata)
 class CandidateBiodataAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in CandidateBiodata._meta.fields if field.name != 'id']
+    list_display = ['visa_status'] + [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status')]
     actions = [export_to_excel, download_selected_images]
 
 @admin.register(GalleryImage)

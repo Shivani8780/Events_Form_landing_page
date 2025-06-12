@@ -103,11 +103,13 @@ class GalleryImageAdminForm(forms.ModelForm):
 
 @admin.register(CandidateBiodata)
 class CandidateBiodataAdmin(admin.ModelAdmin):
-    list_display = ['visa_status'] + [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status')]
-    actions = [export_to_excel, download_selected_images]
+    # Insert visa_status in the original field order, exclude visa_status_details
     def get_list_display(self, request):
-        list_display = super().get_list_display(request)
-        # Replace 'kuldevi' field label with custom label
+        fields = [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status_details')]
+        if 'visa_status' not in fields:
+            return fields
+        visa_index = fields.index('visa_status')
+        list_display = fields[:visa_index] + ['visa_status'] + fields[visa_index+1:]
         new_list_display = []
         for field_name in list_display:
             if field_name == 'kuldevi':
@@ -115,6 +117,8 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
             else:
                 new_list_display.append(field_name)
         return new_list_display
+
+    actions = [export_to_excel, download_selected_images]
 
     def any_disability_details(self, obj):
         return obj.kuldevi

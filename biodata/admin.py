@@ -105,6 +105,20 @@ class GalleryImageAdminForm(forms.ModelForm):
 class CandidateBiodataAdmin(admin.ModelAdmin):
     list_display = ['visa_status'] + [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status')]
     actions = [export_to_excel, download_selected_images]
+    def get_list_display(self, request):
+        list_display = super().get_list_display(request)
+        # Replace 'kuldevi' field label with custom label
+        new_list_display = []
+        for field_name in list_display:
+            if field_name == 'kuldevi':
+                new_list_display.append('any_disability_details')
+            else:
+                new_list_display.append(field_name)
+        return new_list_display
+
+    def any_disability_details(self, obj):
+        return obj.kuldevi
+    any_disability_details.short_description = 'Any Disability/Details'
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):

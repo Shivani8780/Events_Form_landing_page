@@ -48,9 +48,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'biodata',
     'widget_tweaks',
-    # Removed cloudinary apps for PythonAnywhere free plan compatibility
-    # 'cloudinary',
-    # 'cloudinary_storage',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 CKEDITOR_CONFIGS = {
@@ -75,13 +74,13 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-# Cloudinary configuration
+Cloudinary configuration
 # Disabled Cloudinary settings for PythonAnywhere free plan compatibility
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': 'dlapbhavc',  # Replace with your Cloudinary cloud name
-#     'API_KEY': '837941825354552',        # Replace with your Cloudinary API key
-#     'API_SECRET': 'SnwE8QAwc_LE-jz5hDlS922DrXM',  # Replace with your Cloudinary API secret
-# }
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dlapbhavc',  # Replace with your Cloudinary cloud name
+    'API_KEY': '837941825354552',        # Replace with your Cloudinary API key
+    'API_SECRET': 'SnwE8QAwc_LE-jz5hDlS922DrXM',  # Replace with your Cloudinary API secret
+}
 
 # Use local media storage instead of Cloudinary
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
@@ -203,11 +202,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # ALLOWED_HOSTS setup for current domain
 ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com','127.0.0.1' ,'localhost', 'bhudevnetwork.pythonanywhere.com']
 
-#import cloudinary
+import cloudinary
 
-#cloudinary.config(
-#    cloud_name=CLOUDINARY_STORAGE.get('CLOUD_NAME'),
-#    api_key=CLOUDINARY_STORAGE.get('API_KEY'),
-#    api_secret=CLOUDINARY_STORAGE.get('API_SECRET'),
-#    secure=True
-#)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/'  # Not actually used for serving files; you get Cloudinary URLs instead
+MEDIA_ROOT = '/home/BhudevNetwork/Events_Form_landing_page/media'  # Not used for uploads with Cloudinary

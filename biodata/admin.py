@@ -90,6 +90,8 @@ def download_selected_images(modeladmin, request, queryset):
                         filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
                         with open(img_path, 'rb') as img_file:
                             img_data = img_file.read()
+                        # Log the filename added to the zip for debugging
+                        logging.info(f"Adding file to zip: {filename}")
                         zip_file.writestr(filename, img_data)
                 except Exception as e:
                     logging.error(f"Failed to add image for candidate {obj.candidate_name}: {e}")

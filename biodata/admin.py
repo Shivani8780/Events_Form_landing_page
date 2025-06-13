@@ -86,8 +86,10 @@ def export_to_excel(modeladmin, request, queryset):
         if photo_field and image_found == 'Yes' and img_url:
             try:
                 # Download image from Cloudinary URL
+                logging.info(f"Downloading image for row {row_num} from URL: {img_url}")
                 response_img = requests.get(img_url)
                 response_img.raise_for_status()
+                logging.info(f"Image download successful for row {row_num}")
                 img_data = BytesIO(response_img.content)
                 pil_img = PILImage.open(img_data)
                 # Save to BytesIO in a format openpyxl supports (e.g., PNG)

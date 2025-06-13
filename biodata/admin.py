@@ -21,6 +21,9 @@ if sys.version_info >= (3, 13):
             mimetypes.types_map = new_types_map
             if hasattr(mimetypes, '_types_map'):
                 mimetypes._types_map = new_types_map
+            # Also add to types_map with True key to fix KeyError
+            if True in mimetypes.types_map and '.mpo' not in mimetypes.types_map[True]:
+                mimetypes.types_map[True]['.mpo'] = 'image/mpo'
         except Exception:
             pass
 else:
@@ -78,6 +81,7 @@ def export_to_excel(modeladmin, request, queryset):
                     row.append(str(value))
         # Check if image file exists
         photo_field = getattr(obj, 'photograph')
+        img_path = None
         if photo_field:
             try:
                 img_path = photo_field.path
@@ -95,7 +99,7 @@ def export_to_excel(modeladmin, request, queryset):
         ws.append(row)
 
         # Insert image if exists and file exists
-        if photo_field and image_found == 'Yes':
+        if photo_field and image_found == 'Yes' and img_path:
             try:
                 img = OpenpyxlImage(img_path)
                 # Resize image if needed

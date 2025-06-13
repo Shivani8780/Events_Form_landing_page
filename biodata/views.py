@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import FileResponse, HttpResponseRedirect
+from django.http import FileResponse, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import CandidateBiodataForm
 from .models import CandidateBiodata
@@ -30,9 +30,13 @@ def biodata_form(request):
 
 def download_biodata_pdf(request, candidate_id):
     instance = get_object_or_404(CandidateBiodata, id=candidate_id)
-    pdf_buffer = generate_pdf(instance)
-    pdf_buffer.seek(0)
-    return FileResponse(pdf_buffer, as_attachment=True, filename='biodata.pdf')
+    try:
+        pdf_buffer = generate_pdf(instance)
+        pdf_buffer.seek(0)
+        return FileResponse(pdf_buffer, as_attachment=True, filename='biodata.pdf')
+    except FileNotFoundError:
+        # Handle missing image file gracefully
+        return HttpResponse("Error: Some image files are missing. Please contact support.", status=404)
 
 from django.core.mail import EmailMessage
 from django.conf import settings

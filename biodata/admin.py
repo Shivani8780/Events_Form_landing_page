@@ -142,8 +142,7 @@ def download_selected_images(modeladmin, request, queryset):
                     if os.path.exists(img_path) and ext != '.mpo':
                         candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
                         mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
-                        dob_value = obj.dob
-                        dob_str = dob_value.strftime('%d%m%Y') if hasattr(dob_value, 'strftime') else 'unknownDOB'
+                        dob_str = str(obj.dob) if obj.dob else 'unknownDOB'
                         serial_number = id_to_serial.get(obj.id, 0)
                         filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
                         with open(img_path, 'rb') as img_file:

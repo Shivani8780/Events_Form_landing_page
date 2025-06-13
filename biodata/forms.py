@@ -1,5 +1,10 @@
 from django import forms
 from .models import CandidateBiodata
+from django.core.exceptions import ValidationError
+from .validators import validate_not_mpo
+from django.core.exceptions import ValidationError
+from .validators import validate_not_mpo
+
 
 class CandidateBiodataForm(forms.ModelForm):
     GENDER_CHOICES = [

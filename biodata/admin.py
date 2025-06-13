@@ -71,6 +71,11 @@ def export_to_excel(modeladmin, request, queryset):
             try:
                 # Use Cloudinary URL if available
                 img_url = photo_field.url
+                # Fix relative URLs by prepending domain or base URL
+                if img_url.startswith('/'):
+                    # Assuming MEDIA_URL is /media/, prepend full domain or base URL
+                    base_url = 'https://bhudevnetwork.pythonanywhere.com/'  # Replace with your actual domain or base URL
+                    img_url = base_url + img_url
                 ext = os.path.splitext(img_url)[1].lower()
                 if ext == '.mpo':
                     logging.info(f"Skipping unsupported file format for row {row_num}: {img_url}")

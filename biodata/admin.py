@@ -6,6 +6,9 @@ from django.contrib import admin
 from django.http import HttpResponse
 import openpyxl
 from openpyxl.drawing.image import Image as OpenpyxlImage
+import requests
+from PIL import Image as PILImage
+from io import BytesIO
 from django import forms
 from django.utils.html import format_html
 import io
@@ -63,28 +66,35 @@ def export_to_excel(modeladmin, request, queryset):
                     row.append(str(value))
 
         photo_field = getattr(obj, 'photograph')
-        img_path = None
+        img_url = None
         if photo_field:
             try:
-                img_path = photo_field.path
-                ext = os.path.splitext(img_path)[1].lower()
-                if os.path.exists(img_path) and ext != '.mpo':
-                    image_found = 'Yes'
+                # Use Cloudinary URL if available
+                img_url = photo_field.url
+                ext = os.path.splitext(img_url)[1].lower()
+                if ext == '.mpo':
+                    logging.info(f"Skipping unsupported file format for row {row_num}: {img_url}")
                 else:
-                    if ext == '.mpo':
-                        logging.info(f"Skipping unsupported file format for row {row_num}: {img_path}")
-                    else:
-                        logging.warning(f"Image file not found or unsupported format for row {row_num}: {img_path}")
+                    image_found = 'Yes'
             except Exception as e:
                 image_found = 'No'
-                logging.error(f"Error checking image file for row {row_num}: {e}")
+                logging.error(f"Error checking image URL for row {row_num}: {e}")
 
         row.append(image_found)
         ws.append(row)
 
-        if photo_field and image_found == 'Yes' and img_path:
+        if photo_field and image_found == 'Yes' and img_url:
             try:
-                img = OpenpyxlImage(img_path)
+                # Download image from Cloudinary URL
+                response_img = requests.get(img_url)
+                response_img.raise_for_status()
+                img_data = BytesIO(response_img.content)
+                pil_img = PILImage.open(img_data)
+                # Save to BytesIO in a format openpyxl supports (e.g., PNG)
+                img_byte_arr = BytesIO()
+                pil_img.save(img_byte_arr, format='PNG')
+                img_byte_arr.seek(0)
+                img = OpenpyxlImage(img_byte_arr)
                 img.width = 80
                 img.height = 80
                 img.anchor = f"{openpyxl.utils.get_column_letter(photo_col_idx)}{row_num}"
@@ -99,23 +109,11 @@ def export_to_excel(modeladmin, request, queryset):
         wb.save(response)
     except Exception as e:
         logging.error(f"Error saving Excel file: {e}")
-        # Add fallback: create new workbook without images and save to new response
-        try:
-            new_response = HttpResponse(
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            )
-            new_response['Content-Disposition'] = 'attachment; filename=biodata_records_without_images.xlsx'
-            new_wb = openpyxl.Workbook()
-            new_ws = new_wb.active
-            # Copy headers
-            new_ws.append(headers)
-            # Copy rows without images
-            for row in ws.iter_rows(min_row=2, values_only=True):
-                new_ws.append(row)
-            new_wb.save(new_response)
-            return new_response
-        except Exception as e2:
-            logging.error(f"Fallback save without images also failed: {e2}")
+        # Removed fallback save without images to ensure export always tries with images
+        # Consider using Cloudinary for image hosting if local images cause issues
+        # You can integrate Cloudinary URLs in export if needed
+        # For now, just raise the error to notify user
+        raise e
 
     return response
 
@@ -156,6 +154,8 @@ class GalleryImageAdminForm(forms.ModelForm):
 
 @admin.register(CandidateBiodata)
 class CandidateBiodataAdmin(admin.ModelAdmin):
+    search_fields = ['candidate_name']
+
     def get_list_display(self, request):
         fields = [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status_details')]
         if 'visa_status' not in fields:

@@ -1,6 +1,18 @@
 from django.contrib import admin
 from django.http import HttpResponse
 import openpyxl
+import mimetypes
+import sys
+
+# Add missing mimetype for .mpo files to avoid KeyError in openpyxl
+# Workaround for Python 3.13+ where mimetypes.types_map is a MappingProxyType
+if sys.version_info >= (3, 13):
+    import types
+    if not hasattr(mimetypes, '_custom_types_map'):
+        mimetypes._custom_types_map = {}
+    mimetypes._custom_types_map['.mpo'] = 'image/mpo'
+else:
+    mimetypes.add_type('image/mpo', '.mpo')
 from openpyxl.drawing.image import Image as OpenpyxlImage
 from .models import CandidateBiodata, GalleryImage
 import os
@@ -13,6 +25,9 @@ import zipfile
 import io
 import re
 import logging
+
+# Add missing mimetype for .mpo files to avoid KeyError in openpyxl
+mimetypes.add_type('image/mpo', '.mpo')
 
 @admin.action(description='Export selected biodata records to Excel with embedded photographs')
 def export_to_excel(modeladmin, request, queryset):

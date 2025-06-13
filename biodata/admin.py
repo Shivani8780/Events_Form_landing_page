@@ -11,6 +11,12 @@ if sys.version_info >= (3, 13):
     if not hasattr(mimetypes, '_custom_types_map'):
         mimetypes._custom_types_map = {}
     mimetypes._custom_types_map['.mpo'] = 'image/mpo'
+    # Also add to types_map if possible
+    if hasattr(mimetypes, 'types_map'):
+        try:
+            mimetypes.types_map['.mpo'] = 'image/mpo'
+        except Exception:
+            pass
 else:
     mimetypes.add_type('image/mpo', '.mpo')
 from openpyxl.drawing.image import Image as OpenpyxlImage
@@ -60,19 +66,22 @@ def export_to_excel(modeladmin, request, queryset):
                     row.append(str(value))
         ws.append(row)
 
-        # Insert image if exists
+        # Insert image if exists and file exists
         photo_field = getattr(obj, 'photograph')
         if photo_field:
             try:
                 img_path = photo_field.path
-                img = OpenpyxlImage(img_path)
-                # Resize image if needed
-                img.width = 80
-                img.height = 80
-                img.anchor = f"{openpyxl.utils.get_column_letter(photo_col_idx)}{row_num}"
-                ws.add_image(img)
-                # Adjust row height
-                ws.row_dimensions[row_num].height = 60
+                if not os.path.exists(img_path):
+                    logging.warning(f"Image file not found for row {row_num}: {img_path}")
+                else:
+                    img = OpenpyxlImage(img_path)
+                    # Resize image if needed
+                    img.width = 80
+                    img.height = 80
+                    img.anchor = f"{openpyxl.utils.get_column_letter(photo_col_idx)}{row_num}"
+                    ws.add_image(img)
+                    # Adjust row height
+                    ws.row_dimensions[row_num].height = 60
             except Exception as e:
                 logging.error(f"Failed to embed image for row {row_num}: {e}")
         row_num += 1

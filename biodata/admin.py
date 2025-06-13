@@ -10,31 +10,8 @@ import io
 import zipfile
 import re
 import sys
-import mimetypes
 from .models import CandidateBiodata, GalleryImage
 from ckeditor.widgets import CKEditorWidget
-
-# Add missing mimetype for .mpo files to avoid KeyError in openpyxl
-def add_custom_mimetypes():
-    # Regular handling for Python < 3.13
-    mimetypes.add_type('image/mpo', '.mpo')
-    
-    # Special handling for Python 3.13+
-    if sys.version_info >= (3, 13):
-        if not hasattr(mimetypes, '_custom_types_map'):
-            mimetypes._custom_types_map = {}
-        mimetypes._custom_types_map['.mpo'] = 'image/mpo'
-        try:
-            if hasattr(mimetypes, 'types_map'):
-                new_types_map = dict(mimetypes.types_map)
-                new_types_map['.mpo'] = 'image/mpo'
-                mimetypes.types_map = new_types_map
-                if hasattr(mimetypes, '_types_map'):
-                    mimetypes._types_map = new_types_map
-        except Exception as e:
-            logging.error(f"Error setting MIME type for .mpo: {e}")
-
-add_custom_mimetypes()
 
 @admin.action(description='Export selected biodata records to Excel with embedded photographs')
 def export_to_excel(modeladmin, request, queryset):
@@ -71,13 +48,17 @@ def export_to_excel(modeladmin, request, queryset):
         if photo_field:
             try:
                 img_path = photo_field.path
-                if os.path.exists(img_path):
+                ext = os.path.splitext(img_path)[1].lower()
+                if os.path.exists(img_path) and ext != '.mpo':
                     image_found = 'Yes'
                 else:
-                    logging.warning(f"Image file not found for row {row_num}: {img_path}")
+                    if ext == '.mpo':
+                        logging.info(f"Skipping unsupported file format for row {row_num}: {img_path}")
+                    else:
+                        logging.warning(f"Image file not found or unsupported format for row {row_num}: {img_path}")
             except Exception as e:
                 logging.error(f"Error checking image file for row {row_num}: {e}")
-        
+
         row.append(image_found)
         ws.append(row)
 
@@ -91,7 +72,7 @@ def export_to_excel(modeladmin, request, queryset):
                 ws.row_dimensions[row_num].height = 60
             except Exception as e:
                 logging.error(f"Failed to embed image for row {row_num}: {e}")
-        
+
         row_num += 1
 
     try:
@@ -110,13 +91,13 @@ def download_selected_images(modeladmin, request, queryset):
             if photo_field and photo_field.name:
                 try:
                     img_path = photo_field.path
-                    if os.path.exists(img_path):
+                    ext = os.path.splitext(img_path)[1].lower()
+                    if os.path.exists(img_path) and ext != '.mpo':
                         candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
                         mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
                         dob_value = obj.dob
                         dob_str = dob_value.strftime('%d%m%Y') if hasattr(dob_value, 'strftime') else 'unknownDOB'
                         serial_number = idx
-                        ext = os.path.splitext(img_path)[1]
                         filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
                         with open(img_path, 'rb') as img_file:
                             img_data = img_file.read()

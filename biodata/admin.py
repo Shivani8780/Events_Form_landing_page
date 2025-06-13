@@ -128,12 +128,10 @@ def export_to_excel(modeladmin, request, queryset):
 def download_selected_images(modeladmin, request, queryset):
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
-        # Get all CandidateBiodata ordered by id ascending
-        all_candidates = list(CandidateBiodata.objects.order_by('id'))
-        # Create a mapping from candidate id to serial number starting from 1
-        id_to_serial = {candidate.id: idx + 1 for idx, candidate in enumerate(all_candidates)}
-
-        for obj in queryset:
+        # Reverse order queryset by id descending
+        ordered_queryset = queryset.order_by('-id')
+        total = ordered_queryset.count()
+        for idx, obj in enumerate(ordered_queryset, start=1):
             photo_field = getattr(obj, 'photograph')
             if photo_field and photo_field.name:
                 try:
@@ -143,7 +141,7 @@ def download_selected_images(modeladmin, request, queryset):
                         candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
                         mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
                         dob_str = str(obj.dob) if obj.dob else 'unknownDOB'
-                        serial_number = id_to_serial.get(obj.id, 0)
+                        serial_number = idx
                         filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
                         with open(img_path, 'rb') as img_file:
                             img_data = img_file.read()

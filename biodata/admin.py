@@ -84,6 +84,13 @@ def export_to_excel(modeladmin, request, queryset):
         wb.save(response)
     except Exception as e:
         logging.error(f"Error saving Excel file: {e}")
+        # Add fallback: remove all images and try saving again to avoid .mpo related errors
+        try:
+            # Remove all images from worksheet
+            ws._images = []
+            wb.save(response)
+        except Exception as e2:
+            logging.error(f"Fallback save without images also failed: {e2}")
 
     return response
 

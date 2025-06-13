@@ -127,7 +127,7 @@ def export_to_excel(modeladmin, request, queryset):
 @admin.action(description='Download selected candidate images as zip')
 def download_selected_images(modeladmin, request, queryset):
     zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
         # Reverse order queryset by id descending
         ordered_queryset = queryset.order_by('-id')
         total = ordered_queryset.count()

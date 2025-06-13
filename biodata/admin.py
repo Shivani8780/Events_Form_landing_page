@@ -14,7 +14,10 @@ if sys.version_info >= (3, 13):
     # Also add to types_map if possible
     if hasattr(mimetypes, 'types_map'):
         try:
-            mimetypes.types_map['.mpo'] = 'image/mpo'
+            # types_map is a MappingProxyType, so create a new dict and assign back
+            new_types_map = dict(mimetypes.types_map)
+            new_types_map['.mpo'] = 'image/mpo'
+            mimetypes.types_map = new_types_map
         except Exception:
             pass
 else:

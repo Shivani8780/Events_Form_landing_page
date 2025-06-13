@@ -17,7 +17,10 @@ if sys.version_info >= (3, 13):
             # types_map is a MappingProxyType, so create a new dict and assign back
             new_types_map = dict(mimetypes.types_map)
             new_types_map['.mpo'] = 'image/mpo'
+            # Assign back to both types_map and _types_map for compatibility
             mimetypes.types_map = new_types_map
+            if hasattr(mimetypes, '_types_map'):
+                mimetypes._types_map = new_types_map
         except Exception:
             pass
 else:
@@ -47,18 +50,24 @@ def export_to_excel(modeladmin, request, queryset):
     wb = openpyxl.Workbook()
     ws = wb.active
 
-    # Write headers
+    # Write headers plus an extra column for image status
     headers = [field.name for field in CandidateBiodata._meta.fields if field.name != 'id']
+    headers.append('image_found')
     ws.append(headers)
 
-    # Set column width for photograph column (assuming last column)
+    # Set column width for photograph column (assuming last column before image_found)
     photo_col_idx = headers.index('photograph') + 1
     ws.column_dimensions[openpyxl.utils.get_column_letter(photo_col_idx)].width = 20
+
+    # Set column width for image_found column
+    image_found_col_idx = headers.index('image_found') + 1
+    ws.column_dimensions[openpyxl.utils.get_column_letter(image_found_col_idx)].width = 15
 
     # Write data rows
     row_num = 2
     for obj in queryset:
         row = []
+        image_found = 'No'
         for field in CandidateBiodata._meta.fields:
             if field.name != 'id':
                 if field.name == 'photograph':
@@ -67,26 +76,35 @@ def export_to_excel(modeladmin, request, queryset):
                 else:
                     value = getattr(obj, field.name)
                     row.append(str(value))
-        ws.append(row)
-
-        # Insert image if exists and file exists
+        # Check if image file exists
         photo_field = getattr(obj, 'photograph')
         if photo_field:
             try:
                 img_path = photo_field.path
-                if not os.path.exists(img_path):
-                    logging.warning(f"Image file not found for row {row_num}: {img_path}")
+                if os.path.exists(img_path):
+                    image_found = 'Yes'
                 else:
-                    img = OpenpyxlImage(img_path)
-                    # Resize image if needed
-                    img.width = 80
-                    img.height = 80
-                    img.anchor = f"{openpyxl.utils.get_column_letter(photo_col_idx)}{row_num}"
-                    ws.add_image(img)
-                    # Adjust row height
-                    ws.row_dimensions[row_num].height = 60
-            except FileNotFoundError:
-                logging.warning(f"Image file not found for row {row_num}: {img_path}")
+                    image_found = 'No'
+                    logging.warning(f"Image file not found for row {row_num}: {img_path}")
+            except Exception as e:
+                image_found = 'No'
+                logging.error(f"Error checking image file for row {row_num}: {e}")
+        else:
+            image_found = 'No'
+        row.append(image_found)
+        ws.append(row)
+
+        # Insert image if exists and file exists
+        if photo_field and image_found == 'Yes':
+            try:
+                img = OpenpyxlImage(img_path)
+                # Resize image if needed
+                img.width = 80
+                img.height = 80
+                img.anchor = f"{openpyxl.utils.get_column_letter(photo_col_idx)}{row_num}"
+                ws.add_image(img)
+                # Adjust row height
+                ws.row_dimensions[row_num].height = 60
             except Exception as e:
                 logging.error(f"Failed to embed image for row {row_num}: {e}")
         row_num += 1

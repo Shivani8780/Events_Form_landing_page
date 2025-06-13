@@ -84,3 +84,7 @@ def gallery_page(request):
 def contact_us_page(request):
     # Render the contact us page
     return render(request, 'biodata/contact_us.html')
+
+def about_us_page(request):
+    # Render the about us page
+    return render(request, 'biodata/about_us.html')

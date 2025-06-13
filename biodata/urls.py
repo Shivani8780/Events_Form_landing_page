@@ -10,4 +10,5 @@ urlpatterns = [
     path('confirmation/', views.confirmation_redirect, name='confirmation_redirect'),
     path('gallery/', views.gallery_page, name='gallery_page'),
     path('contact-us/', views.contact_us_page, name='contact_us_page'),
+    path('about-us/', views.about_us_page, name='about_us_page'),
 ]

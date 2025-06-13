@@ -129,7 +129,7 @@ def download_selected_images(modeladmin, request, queryset):
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
         # Reverse order queryset by id descending
-        ordered_queryset = queryset.order_by('-id')
+        ordered_queryset = queryset.order_by('id')
         total = ordered_queryset.count()
         for idx, obj in enumerate(ordered_queryset, start=1):
             photo_field = getattr(obj, 'photograph')

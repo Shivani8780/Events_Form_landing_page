@@ -1,5 +1,7 @@
 import os
 import logging
+import mimetypes
+import sys
 from django.contrib import admin
 from django.http import HttpResponse
 import openpyxl
@@ -9,9 +11,11 @@ from django.utils.html import format_html
 import io
 import zipfile
 import re
-import sys
 from .models import CandidateBiodata, GalleryImage
 from ckeditor.widgets import CKEditorWidget
+
+# Removed .mpo mimetype registration to avoid integration of .mpo files
+# Skipping .mpo files in export and download actions instead
 
 @admin.action(description='Export selected biodata records to Excel with embedded photographs')
 def export_to_excel(modeladmin, request, queryset):
@@ -57,6 +61,7 @@ def export_to_excel(modeladmin, request, queryset):
                     else:
                         logging.warning(f"Image file not found or unsupported format for row {row_num}: {img_path}")
             except Exception as e:
+                image_found = 'No'
                 logging.error(f"Error checking image file for row {row_num}: {e}")
 
         row.append(image_found)

@@ -36,7 +36,22 @@ def export_to_excel(modeladmin, request, queryset):
     ws.column_dimensions[openpyxl.utils.get_column_letter(image_found_col_idx)].width = 15
 
     row_num = 2
+    # Filter out objects with .mpo images to avoid errors
+    filtered_queryset = []
     for obj in queryset:
+        photo_field = getattr(obj, 'photograph')
+        if photo_field:
+            try:
+                img_path = photo_field.path
+                ext = os.path.splitext(img_path)[1].lower()
+                if ext == '.mpo':
+                    logging.info(f"Excluding object with .mpo image: {img_path}")
+                    continue
+            except Exception as e:
+                logging.error(f"Error checking image file extension: {e}")
+        filtered_queryset.append(obj)
+
+    for obj in filtered_queryset:
         row = []
         image_found = 'No'
         for field in CandidateBiodata._meta.fields:

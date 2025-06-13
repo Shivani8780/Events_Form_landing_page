@@ -80,7 +80,11 @@ def download_selected_images(modeladmin, request, queryset):
                         # Sanitize candidate name and mobile number for filename
                         candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
                         mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
-                        dob_str = obj.dob.strftime('%d%m%Y') if obj.dob else 'unknownDOB'
+                        dob_value = obj.dob
+                        if hasattr(dob_value, 'strftime'):
+                            dob_str = dob_value.strftime('%d%m%Y')
+                        else:
+                            dob_str = str(dob_value) if dob_value else 'unknownDOB'
                         serial_number = idx  # Use enumerated index as serial number
                         ext = os.path.splitext(img_path)[1]
                         filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"

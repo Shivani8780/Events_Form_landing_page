@@ -163,6 +163,7 @@ class GalleryImageAdminForm(forms.ModelForm):
 
 @admin.register(CandidateBiodata)
 class CandidateBiodataAdmin(admin.ModelAdmin):
+    list_max_show_all = 1000 
     search_fields = ['candidate_name']
 
     def get_list_display(self, request):

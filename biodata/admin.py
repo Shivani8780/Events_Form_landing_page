@@ -85,6 +85,8 @@ def export_to_excel(modeladmin, request, queryset):
                     ws.add_image(img)
                     # Adjust row height
                     ws.row_dimensions[row_num].height = 60
+            except FileNotFoundError:
+                logging.warning(f"Image file not found for row {row_num}: {img_path}")
             except Exception as e:
                 logging.error(f"Failed to embed image for row {row_num}: {e}")
         row_num += 1

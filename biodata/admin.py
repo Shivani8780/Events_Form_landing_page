@@ -22,7 +22,7 @@ def export_to_excel(modeladmin, request, queryset):
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     )
-    response['Content-Disposition'] = 'attachment; filename=biodata_records_with_photos.xlsx'
+    response['Content-Disposition'] = 'attachment; filename="biodata_records_with_photos.xlsx"'
     wb = openpyxl.Workbook()
     ws = wb.active
 
@@ -99,11 +99,21 @@ def export_to_excel(modeladmin, request, queryset):
         wb.save(response)
     except Exception as e:
         logging.error(f"Error saving Excel file: {e}")
-        # Add fallback: remove all images and try saving again to avoid .mpo related errors
+        # Add fallback: create new workbook without images and save to new response
         try:
-            # Remove all images from worksheet
-            ws._images = []
-            wb.save(response)
+            new_response = HttpResponse(
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            )
+            new_response['Content-Disposition'] = 'attachment; filename=biodata_records_without_images.xlsx'
+            new_wb = openpyxl.Workbook()
+            new_ws = new_wb.active
+            # Copy headers
+            new_ws.append(headers)
+            # Copy rows without images
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                new_ws.append(row)
+            new_wb.save(new_response)
+            return new_response
         except Exception as e2:
             logging.error(f"Fallback save without images also failed: {e2}")
 

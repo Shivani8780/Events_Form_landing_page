@@ -181,13 +181,24 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
                 new_list_display.append('any_disability_details')
             else:
                 new_list_display.append(field_name)
-        return new_list_display
+        return ['serial_number'] + new_list_display
 
     actions = [export_to_excel, download_selected_images]
 
     def any_disability_details(self, obj):
         return obj.kuldevi
     any_disability_details.short_description = 'Any Disability/Details'
+
+    def serial_number(self, obj):
+        # Get all primary keys in order by submission DESC (latest first)
+        qs = CandidateBiodata.objects.order_by('-submitted_at').values_list('pk', flat=True)
+        total = qs.count()
+        try:
+            position = list(qs).index(obj.pk)
+            return total - position
+        except ValueError:
+            return '-'
+    serial_number.short_description = 'Serial Number'
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):

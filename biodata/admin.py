@@ -16,6 +16,7 @@ import zipfile
 import re
 from .models import CandidateBiodata, GalleryImage
 from ckeditor.widgets import CKEditorWidget
+from datetime import datetime
 
 # Removed .mpo mimetype registration to avoid integration of .mpo files
 # Skipping .mpo files in export and download actions instead

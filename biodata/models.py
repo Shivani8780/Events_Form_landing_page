@@ -124,6 +124,7 @@ class CandidateBiodata(models.Model):
         ('Disagree', 'Disagree (ઉપર મુજબ હું નહિ માનું)  - મારો બાયોડેટા કેન્સલ કરી દેજો'),
     ]
     declaration = models.CharField(max_length=20, choices=DECLARATION_CHOICES, blank=True, null=True)
+    education_details = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.candidate_name

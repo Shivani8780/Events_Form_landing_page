@@ -79,7 +79,7 @@ class CandidateBiodata(models.Model):
     monthly_income = models.CharField(max_length=100, blank=True, null=True)
     SHANI_MANGAL_CHOICES = [
         ('Yes ( Nirdosh )', 'Yes ( Nirdosh )'),
-        ('Yes ( Normal)', 'Yes ( Normal)'),
+        ('Yes ( Heavy)', 'Yes ( Heavy)'),
         ('No', 'No'),
         ("Don't Know", "Don't Know"),
         ("Dont't Believe", "Dont't Believe"),

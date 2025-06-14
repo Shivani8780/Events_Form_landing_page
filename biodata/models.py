@@ -65,6 +65,7 @@ class CandidateBiodata(models.Model):
     OCCUPATION_CHOICES = [
         ('Government Job', 'Government Job'),
         ('Private MNC Job', 'Private MNC Job'),
+        ('Job', 'Job'),
         ('Self Employed (Own Practice)', 'Self Employed (Own Practice)'),
         ('Own Business', 'Own Business'),
         ('Job + Business', 'Job + Business'),

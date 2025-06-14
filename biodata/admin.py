@@ -30,7 +30,13 @@ def export_to_excel(modeladmin, request, queryset):
     wb = openpyxl.Workbook()
     ws = wb.active
 
-    headers = [field.name for field in CandidateBiodata._meta.fields if field.name != 'id']
+    headers = []
+    for field in CandidateBiodata._meta.fields:
+        if field.name != 'id':
+            if field.name == 'education_details':
+                headers.append('Education Details')  # Use friendly name
+            else:
+                headers.append(field.name)
     headers.append('image_found')
     ws.append(headers)
 

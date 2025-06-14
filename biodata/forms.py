@@ -105,7 +105,6 @@ class CandidateBiodataForm(forms.ModelForm):
             'weight',
             'education',
             'education_details',
-            'education_custom',
             'occupation',
             'occupation_details',
             'monthly_income',

@@ -150,11 +150,6 @@ class CandidateBiodataForm(forms.ModelForm):
         label="Details on Job / Business / Occupation",
     )
 
-    education_custom = forms.CharField(
-        max_length=255,
-        required=False,
-        label="Education",
-    )
 
     height = forms.CharField(
         max_length=50,

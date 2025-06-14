@@ -172,10 +172,9 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
     def get_list_display(self, request):
         fields = [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status_details')]
         if 'visa_status' not in fields:
-            return fields
-        visa_index = fields.index('visa_status')
-        list_display = fields[:visa_index] + ['visa_status'] + fields[visa_index+1:]
-         else:
+            visa_index = fields.index('visa_status')
+            list_display = fields[:visa_index] + ['visa_status'] + fields[visa_index+1:]
+        else:
             list_display = fields
 
         # Insert 'education_details' after 'education', only if not already there
@@ -216,7 +215,7 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
     serial_number.short_description = 'Serial Number'
     def education_details(self, obj):
         # Put any logic you want here, or simply display a placeholder
-        return "Custom details here"  # Or: return obj.education, or any logic you want
+        return obj.education_details  # Or: return obj.education, or any logic you want
     education_details.short_description = 'Education Details'
 
 @admin.register(GalleryImage)

@@ -173,7 +173,7 @@ class GalleryImageAdminForm(forms.ModelForm):
 class CandidateBiodataAdmin(admin.ModelAdmin):
     list_max_show_all = 1000 
     list_per_page = 500
-    search_fields = ['candidate_name', 'registrant_number', 'dob']
+    search_fields = ['candidate_name', 'registrant_mobile', 'registration_by', 'dob']
 
     def get_list_display(self, request):
         fields = [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status_details')]

@@ -175,11 +175,20 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
             return fields
         visa_index = fields.index('visa_status')
         list_display = fields[:visa_index] + ['visa_status'] + fields[visa_index+1:]
-        elif 'education' in fields:
-            idx = fields.index('education') + 1
-            fields = fields[:idx] + ['education_details'] + fields[idx:]
-        else:
-            fields.append('education_details')
+         else:
+            list_display = fields
+
+        # Insert 'education_details' after 'education', only if not already there
+        if 'education' in list_display and 'education_details' in list_display:
+            # Remove education_details if it's before education
+            list_display.remove('education_details')
+            idx = list_display.index('education') + 1
+            list_display = list_display[:idx] + ['education_details'] + list_display[idx:]
+        elif 'education' in list_display:
+            idx = list_display.index('education') + 1
+            list_display = list_display[:idx] + ['education_details'] + list_display[idx:]
+        elif 'education_details' not in list_display:
+            list_display.append('education_details')
         new_list_display = []
         
         for field_name in list_display:

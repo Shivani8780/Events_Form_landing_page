@@ -175,7 +175,13 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
             return fields
         visa_index = fields.index('visa_status')
         list_display = fields[:visa_index] + ['visa_status'] + fields[visa_index+1:]
+        elif 'education' in fields:
+            idx = fields.index('education') + 1
+            fields = fields[:idx] + ['education_details'] + fields[idx:]
+        else:
+            fields.append('education_details')
         new_list_display = []
+        
         for field_name in list_display:
             if field_name == 'kuldevi':
                 new_list_display.append('any_disability_details')
@@ -199,6 +205,10 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
         except ValueError:
             return '-'
     serial_number.short_description = 'Serial Number'
+    def education_details(self, obj):
+        # Put any logic you want here, or simply display a placeholder
+        return "Custom details here"  # Or: return obj.education, or any logic you want
+    education_details.short_description = 'Education Details'
 
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):

@@ -70,7 +70,7 @@ def export_to_excel(modeladmin, request, queryset):
                     row.append('')
                 else:
                     value = getattr(obj, field.name)
-                    row.append(str(value))
+                    row.append(str(value) if value is not None else '')
 
         photo_field = getattr(obj, 'photograph')
         img_url = None

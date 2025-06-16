@@ -132,39 +132,39 @@ def export_to_excel(modeladmin, request, queryset):
 
 @admin.action(description='Download selected candidate images as zip')
 def download_selected_images(modeladmin, request, queryset):
-        zip_buffer = io.BytesIO()
-        # Get all primary keys in order by submission DESC (latest first)
-        all_ids = list(CandidateBiodata.objects.order_by('-submitted_at').values_list('pk', flat=True))
-        total = len(all_ids)
-    
-        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-            ordered_queryset = queryset.order_by('id')
-            for obj in ordered_queryset:
-                photo_field = getattr(obj, 'photograph')
-                if photo_field and photo_field.name:
-                    try:
-                        img_path = photo_field.path
-                        ext = os.path.splitext(img_path)[1].lower()
-                        if os.path.exists(img_path) and ext != '.mpo':
-                            candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
-                            mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
-                            dob_str = str(obj.dob) if obj.dob else 'unknownDOB'
-                            try:
-                                position = all_ids.index(obj.pk)
-                                serial_number = total - position
-                            except ValueError:
-                                serial_number = "-"
-                            filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
-                            with open(img_path, 'rb') as img_file:
-                                img_data = img_file.read()
-                            zip_file.writestr(filename, img_data)
-                    except Exception as e:
-                        logging.error(f"Failed to add image for candidate {obj.candidate_name}: {e}")
-        zip_buffer.seek(0)
-        response = HttpResponse(zip_buffer, content_type='application/zip')
-        zip_filename = f"selected_candidate_images_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
-        response['Content-Disposition'] = f'attachment; filename={zip_filename}'
-        return response
+    zip_buffer = io.BytesIO()
+    # Get all primary keys in order by submission DESC (latest first)
+    all_ids = list(CandidateBiodata.objects.order_by('-submitted_at').values_list('pk', flat=True))
+    total = len(all_ids)
+
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        ordered_queryset = queryset.order_by('id')
+        for obj in ordered_queryset:
+            photo_field = getattr(obj, 'photograph')
+            if photo_field and photo_field.name:
+                try:
+                    img_path = photo_field.path
+                    ext = os.path.splitext(img_path)[1].lower()
+                    if os.path.exists(img_path) and ext != '.mpo':
+                        candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
+                        mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
+                        dob_str = str(obj.dob) if obj.dob else 'unknownDOB'
+                        try:
+                            position = all_ids.index(obj.pk)
+                            serial_number = total - position
+                        except ValueError:
+                            serial_number = "-"
+                        filename = f"{serial_number}_{candidate_name}_{dob_str}_{mobile_number}{ext}"
+                        with open(img_path, 'rb') as img_file:
+                            img_data = img_file.read()
+                        zip_file.writestr(filename, img_data)
+                except Exception as e:
+                    logging.error(f"Failed to add image for candidate {obj.candidate_name}: {e}")
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    zip_filename = f"selected_candidate_images_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
+    response['Content-Disposition'] = f'attachment; filename={zip_filename}'
+    return response
 class GalleryImageAdminForm(forms.ModelForm):
     description = forms.CharField(widget=CKEditorWidget(config_name='custom'))
 

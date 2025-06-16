@@ -1,45 +1,46 @@
-from django.core.management.base import BaseCommand
 import os
-from django.conf import settings
-import cloudinary
-import cloudinary.uploader
+import requests
+from django.core.management.base import BaseCommand
 from biodata.models import CandidateBiodata
+from django.conf import settings
+from urllib.parse import urlparse
 
 class Command(BaseCommand):
-    help = "Migrate local CandidateBiodata images to Cloudinary and update their model URLs."
+    help = 'Migrate Cloudinary images to local storage and update database fields'
 
-    def handle(self, *args, **options):
-        # Configure Cloudinary using Django settings
-        cloudinary.config(
-            cloud_name=settings.CLOUDINARY_STORAGE['CLOUD_NAME'],
-            api_key=settings.CLOUDINARY_STORAGE['API_KEY'],
-            api_secret=settings.CLOUDINARY_STORAGE['API_SECRET']
-        )
-
+    def handle(self, *args, **kwargs):
+        media_root = settings.MEDIA_ROOT
         migrated = 0
         skipped = 0
-        not_found = 0
 
         for obj in CandidateBiodata.objects.all():
-            photo_field = obj.photograph
-            if photo_field and not str(photo_field).startswith("http"):
-                local_path = os.path.join(settings.MEDIA_ROOT, str(photo_field))
-                if os.path.exists(local_path):
-                    self.stdout.write(f"Migrating: {local_path}")
-                    try:
-                        result = cloudinary.uploader.upload(local_path)
-                        obj.photograph = result['secure_url']
-                        obj.save()
-                        self.stdout.write(self.style.SUCCESS(f"Done: {obj.photograph}"))
-                        migrated += 1
-                    except Exception as e:
-                        self.stdout.write(self.style.ERROR(f"Failed to upload {local_path}: {e}"))
-                        skipped += 1
-                else:
-                    self.stdout.write(self.style.WARNING(f"File not found: {local_path}"))
-                    not_found += 1
+            photo_url = str(obj.photograph)
+            if photo_url.startswith('http'):
+                parsed_url = urlparse(photo_url)
+                filename = os.path.basename(parsed_url.path)
+                local_path = os.path.join('photographs', filename)
+                full_local_path = os.path.join(media_root, local_path)
+                os.makedirs(os.path.dirname(full_local_path), exist_ok=True)
 
-        self.stdout.write(self.style.SUCCESS(f"\nMigration finished!"))
-        self.stdout.write(self.style.SUCCESS(f"Migrated: {migrated}"))
-        self.stdout.write(self.style.WARNING(f"Skipped (errors): {skipped}"))
-        self.stdout.write(self.style.WARNING(f"Not found: {not_found}"))
+                # Download from Cloudinary if not already present
+                if not os.path.exists(full_local_path):
+                    self.stdout.write(f'Downloading {photo_url} ...')
+                    try:
+                        response = requests.get(photo_url, timeout=20)
+                        response.raise_for_status()
+                        with open(full_local_path, 'wb') as f:
+                            f.write(response.content)
+                    except Exception as e:
+                        self.stdout.write(self.style.ERROR(f'Failed to download {photo_url}: {e}'))
+                        skipped += 1
+                        continue
+
+                # Update the database record to point to the new local file
+                obj.photograph = local_path
+                obj.save(update_fields=['photograph'])
+                self.stdout.write(self.style.SUCCESS(f'Updated {obj.pk}: {local_path}'))
+                migrated += 1
+            else:
+                skipped += 1
+
+        self.stdout.write(self.style.SUCCESS(f'Complete! {migrated} images migrated, {skipped} already local or skipped.'))

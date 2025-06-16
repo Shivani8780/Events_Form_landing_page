@@ -202,8 +202,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # ALLOWED_HOSTS setup for current domain
 ALLOWED_HOSTS = ['Shivani19.pythonanywhere.com','127.0.0.1' ,'localhost', 'bhudevnetwork.pythonanywhere.com']
 
-import cloudinary
+# import cloudinary
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = '/media/'  # Not actually used for serving files; you get Cloudinary URLs instead
-MEDIA_ROOT = '/home/BhudevNetwork/Events_Form_landing_page/media'  # Not used for uploads with Cloudinary
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# MEDIA_URL = '/media/'  # Not actually used for serving files; you get Cloudinary URLs instead
+# MEDIA_ROOT = '/home/BhudevNetwork/Events_Form_landing_page/media'  # Not used for uploads with Cloudinary

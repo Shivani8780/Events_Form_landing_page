@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'biodata',
     'widget_tweaks',
-    'cloudinary',
-    'cloudinary_storage',
+    # 'cloudinary',
+    # 'cloudinary_storage',
 ]
 
 CKEDITOR_CONFIGS = {
@@ -76,11 +76,11 @@ CKEDITOR_CONFIGS = {
 
 #Cloudinary configuration
 # Disabled Cloudinary settings for PythonAnywhere free plan compatibility
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dlapbhavc',  # Replace with your Cloudinary cloud name
-    'API_KEY': '837941825354552',        # Replace with your Cloudinary API key
-    'API_SECRET': 'SnwE8QAwc_LE-jz5hDlS922DrXM',  # Replace with your Cloudinary API secret
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'dlapbhavc',  # Replace with your Cloudinary cloud name
+#     'API_KEY': '837941825354552',        # Replace with your Cloudinary API key
+#     'API_SECRET': 'SnwE8QAwc_LE-jz5hDlS922DrXM',  # Replace with your Cloudinary API secret
+# }
 
 # Use local media storage instead of Cloudinary
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'

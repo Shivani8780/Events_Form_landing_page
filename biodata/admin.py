@@ -1,6 +1,5 @@
 import os
 import logging
-import mimetypes
 import sys
 from django.contrib import admin
 from django.http import HttpResponse

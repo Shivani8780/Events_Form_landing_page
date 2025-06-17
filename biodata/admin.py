@@ -149,6 +149,7 @@ def download_selected_images(modeladmin, request, queryset):
                         candidate_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.candidate_name.strip())
                         mobile_number = re.sub(r'[^0-9]', '', obj.registrant_mobile or '')
                         dob_str = str(obj.dob) if obj.dob else 'unknownDOB'
+                        dob_str = re.sub(r'[\\/:"*?<>|]+', '-', dob_str) 
                         try:
                             position = all_ids.index(obj.pk)
                             serial_number = total - position
@@ -177,6 +178,7 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
     list_max_show_all = 1000 
     list_per_page = 500
     search_fields = ['candidate_name', 'registrant_mobile', 'registration_by', 'dob']
+    list_filter = ['gender']
 
     def get_list_display(self, request):
         fields = [field.name for field in CandidateBiodata._meta.fields if field.name not in ('id', 'visa_status_details')]

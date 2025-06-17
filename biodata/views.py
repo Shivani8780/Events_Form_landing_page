@@ -53,7 +53,7 @@ def confirmation_page(request, candidate_id):
         pdf_buffer.seek(0)
         email = EmailMessage(
             subject='Your Biodata Submission Confirmation',
-            body='\n\nThank you for submitting your biodata form. We have received your details successfully.\n\nRegards,\nBhudev Network Vivah Team'.',
+            body='\n\nThank you for submitting your biodata form. We have received your details successfully.\n\nRegards,\nBhudev Network Vivah Team.',
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[candidate.email],
         )

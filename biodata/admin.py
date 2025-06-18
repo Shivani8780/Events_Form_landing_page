@@ -206,13 +206,37 @@ class CandidateBiodataAdmin(admin.ModelAdmin):
                 new_list_display.append('any_disability_details')
             else:
                 new_list_display.append(field_name)
-        return ['serial_number'] + new_list_display
+        return ['serial_number','duplicate_flag'] + new_list_display
 
     actions = [export_to_excel, download_selected_images]
 
     def any_disability_details(self, obj):
         return obj.kuldevi
     any_disability_details.short_description = 'Any Disability/Details'
+
+     # --- Duplicate detection logic begins here ---
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Count occurrences of (candidate_name, dob)
+        from collections import defaultdict
+        seen = defaultdict(list)
+        for obj in qs:
+            key = (obj.candidate_name, obj.dob)
+            seen[key].append(obj.pk)
+        # Store duplicate indices for quick access
+        self.duplicate_indices = set()
+        for key, ids in seen.items():
+            if len(ids) > 1:
+                # Mark all except the first as duplicate
+                self.duplicate_indices.update(ids[1:])
+        return qs
+
+    def duplicate_flag(self, obj):
+        if hasattr(self, 'duplicate_indices') and obj.pk in self.duplicate_indices:
+            # You can return HTML with a style or icon, or just a flag for CSS
+            return format_html('<span style="background-color: #ffcccc; color: red; font-weight: bold;">DUPLICATE</span>')
+        return ""
+    duplicate_flag.short_description = "Duplicate?"
 
     def serial_number(self, obj):
         # Get all primary keys in order by submission DESC (latest first)

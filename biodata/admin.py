@@ -45,6 +45,10 @@ def export_to_excel(modeladmin, request, queryset):
     ws.column_dimensions[openpyxl.utils.get_column_letter(image_found_col_idx)].width = 15
 
     row_num = 2
+     # Get all PKs in order by submission ASC (serial 1 = oldest)
+    all_ids = list(CandidateBiodata.objects.order_by('submitted_at').values_list('pk', flat=True))
+    pk_to_serial = {pk: idx + 1 for idx, pk in enumerate(all_ids)}  # serial 1 = oldest
+
     # Filter out objects with .mpo images to avoid errors
     filtered_queryset = []
     for obj in queryset:
@@ -62,6 +66,9 @@ def export_to_excel(modeladmin, request, queryset):
 
     for obj in filtered_queryset:
         row = []
+        # Serial number as first column
+        serial_number = pk_to_serial.get(obj.pk, '-')
+        row.append(serial_number)
         image_found = 'No'
         for field in CandidateBiodata._meta.fields:
             if field.name != 'id':

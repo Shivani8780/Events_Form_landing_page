@@ -29,7 +29,7 @@ def export_to_excel(modeladmin, request, queryset):
     wb = openpyxl.Workbook()
     ws = wb.active
 
-    headers = []
+    headers = ['serial_number']
     for field in CandidateBiodata._meta.fields:
         if field.name != 'id':
             if field.name == 'education_details':

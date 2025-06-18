@@ -63,6 +63,12 @@ def export_to_excel(modeladmin, request, queryset):
             except Exception as e:
                 logging.error(f"Error checking image file extension: {e}")
         filtered_queryset.append(obj)
+        # Order filtered_queryset by submitted_at ASC (oldest first)
+        filtered_queryset = sorted(
+            filtered_queryset,
+            key=lambda obj: getattr(obj, 'submitted_at', None) or datetime.min,
+            reverse=False
+        )
 
     for obj in filtered_queryset:
         row = []

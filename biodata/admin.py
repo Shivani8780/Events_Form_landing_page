@@ -84,36 +84,36 @@ def export_to_excel(modeladmin, request, queryset):
                     value = getattr(obj, field.name)
                     row.append(str(value) if value is not None else '')
 
-        # photo_field = getattr(obj, 'photograph')
-        # img_url = None
-        # if photo_field:
-        #     try:
-        #         # Use Cloudinary URL if available
-        #         img_url = photo_field.url
-        #         # Fix relative URLs by prepending domain or base URL
-        #         if img_url.startswith('/'):
-        #             # Assuming MEDIA_URL is /media/, prepend full domain or base URL
-        #             base_url = 'https://bhudevnetwork.pythonanywhere.com/'  # Replace with your actual domain or base URL
-        #             img_url = base_url + img_url
-        #         ext = os.path.splitext(img_url)[1].lower()
-        #         if ext == '.mpo':
-        #             logging.info(f"Skipping unsupported file format for row {row_num}: {img_url}")
-        #         else:
-        #             image_found = 'Yes'
-        #     except Exception as e:
-        #         image_found = 'No'
-        #         logging.error(f"Error checking image URL for row {row_num}: {e}")
-        # In your export_to_excel, replace the image embedding code with:
+        photo_field = getattr(obj, 'photograph')
+        img_url = None
         if photo_field:
             try:
+                # Use Cloudinary URL if available
                 img_url = photo_field.url
-                # (your logic for constructing img_url)
-            except Exception:
-                img_url = ''
-            # Instead of embedding, just put the URL in a column
-            row.append(img_url)
-        else:
-            row.append('')
+                # Fix relative URLs by prepending domain or base URL
+                if img_url.startswith('/'):
+                    # Assuming MEDIA_URL is /media/, prepend full domain or base URL
+                    base_url = 'https://bhudevnetwork.pythonanywhere.com/'  # Replace with your actual domain or base URL
+                    img_url = base_url + img_url
+                ext = os.path.splitext(img_url)[1].lower()
+                if ext == '.mpo':
+                    logging.info(f"Skipping unsupported file format for row {row_num}: {img_url}")
+                else:
+                    image_found = 'Yes'
+            except Exception as e:
+                image_found = 'No'
+                logging.error(f"Error checking image URL for row {row_num}: {e}")
+        # In your export_to_excel, replace the image embedding code with:
+        # if photo_field:
+        #     try:
+        #         img_url = photo_field.url
+        #         # (your logic for constructing img_url)
+        #     except Exception:
+        #         img_url = ''
+        #     # Instead of embedding, just put the URL in a column
+        #     row.append(img_url)
+        # else:
+        #     row.append('')
 
         row.append(image_found)
         ws.append(row)

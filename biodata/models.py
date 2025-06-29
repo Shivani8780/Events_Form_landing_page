@@ -139,3 +139,21 @@ class GalleryImage(models.Model):
     def __str__(self):
         return self.title if self.title else f"Image {self.id}"
 
+class AdvancePassBooking(models.Model):
+    name = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    whatsapp_number = models.CharField(max_length=20)
+    email = models.EmailField()
+    entry_token_quantity = models.PositiveIntegerField(default=0)
+    tea_coffee_quantity = models.PositiveIntegerField(default=0)
+    unlimited_buffet_quantity = models.PositiveIntegerField(default=0)
+    payment_screenshot = models.ImageField(upload_to='payment_screenshots/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.name} - Entry Token: {self.entry_token_quantity}, Tea-Coffee: {self.tea_coffee_quantity}, Buffet: {self.unlimited_buffet_quantity}"
+
+
+

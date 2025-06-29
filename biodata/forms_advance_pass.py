@@ -43,17 +43,28 @@ class AdvancePassBookingForm(forms.Form):
         tea_coffee_qty = int(cleaned_data.get('tea_coffee_quantity', '0') or '0')
         unlimited_buffet_selected = cleaned_data.get('unlimited_buffet_selected')
         unlimited_buffet_qty = int(cleaned_data.get('unlimited_buffet_quantity', '0') or '0')
-
+    
+        # At least one pass must be selected
         if not (entry_token_selected or tea_coffee_selected or unlimited_buffet_selected):
             raise forms.ValidationError("Please select at least one pass type.")
-
+    
+        # For each pass: if selected, quantity must be > 0; if not selected, quantity must be 0
         if entry_token_selected and entry_token_qty == 0:
             self.add_error('entry_token_quantity', 'Please select quantity for Entry Token Pass.')
-
+        if not entry_token_selected and entry_token_qty > 0:
+            self.add_error('entry_token_selected', 'You must select Entry Token Pass if you want to set quantity.')
+            self.add_error('entry_token_quantity', 'Set quantity to 0 if pass is not selected.')
+    
         if tea_coffee_selected and tea_coffee_qty == 0:
             self.add_error('tea_coffee_quantity', 'Please select quantity for Tea - Coffee Pass.')
-
+        if not tea_coffee_selected and tea_coffee_qty > 0:
+            self.add_error('tea_coffee_selected', 'You must select Tea - Coffee Pass if you want to set quantity.')
+            self.add_error('tea_coffee_quantity', 'Set quantity to 0 if pass is not selected.')
+    
         if unlimited_buffet_selected and unlimited_buffet_qty == 0:
             self.add_error('unlimited_buffet_quantity', 'Please select quantity for Unlimited Buffet Lunch.')
-
+        if not unlimited_buffet_selected and unlimited_buffet_qty > 0:
+            self.add_error('unlimited_buffet_selected', 'You must select Unlimited Buffet Lunch if you want to set quantity.')
+            self.add_error('unlimited_buffet_quantity', 'Set quantity to 0 if pass is not selected.')
+    
         return cleaned_data

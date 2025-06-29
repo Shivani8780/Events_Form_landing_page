@@ -4,6 +4,7 @@ from django.urls import reverse
 from .forms import CandidateBiodataForm
 from .models import CandidateBiodata
 from biodata.views_weasyprint import generate_pdf
+from .forms_advance_pass import AdvancePassBookingForm
 
 from .forms import CandidateBiodataForm
 

@@ -24,6 +24,80 @@ def home_page(request):
         form = CandidateBiodataForm()
     return render(request, 'biodata/home.html', {'form': form})
 
+import threading
+
+def send_email_async(email):
+    try:
+        email.send(fail_silently=False)
+    except Exception as e:
+        logger.error(f"Failed to send email asynchronously: {e}")
+
+def advance_pass_booking(request):
+    if request.method == 'POST':
+        form = AdvancePassBookingForm(request.POST, request.FILES)
+        if form.is_valid():
+            entry_token_selected = form.cleaned_data.get('entry_token_selected')
+            entry_token_qty = int(form.cleaned_data.get('entry_token_quantity', 0)) if entry_token_selected else 0
+            tea_coffee_selected = form.cleaned_data.get('tea_coffee_selected')
+            tea_coffee_qty = int(form.cleaned_data.get('tea_coffee_quantity', 0)) if tea_coffee_selected else 0
+            unlimited_buffet_selected = form.cleaned_data.get('unlimited_buffet_selected')
+            unlimited_buffet_qty = int(form.cleaned_data.get('unlimited_buffet_quantity', 0)) if unlimited_buffet_selected else 0
+
+            total_amount = (entry_token_qty * 20 +
+                            tea_coffee_qty * 30 +
+                            unlimited_buffet_qty * 200)
+
+            # Check for duplicate entry
+            existing_booking = AdvancePassBooking.objects.filter(
+                email=form.cleaned_data['email'],
+                entry_token_quantity=entry_token_qty,
+                tea_coffee_quantity=tea_coffee_qty,
+                unlimited_buffet_quantity=unlimited_buffet_qty,
+            ).first()
+
+            if existing_booking:
+                error_message = "A booking with the same details already exists. Duplicate submission is not allowed."
+                return render(request, 'biodata/advance_pass_booking.html', {'form': form, 'error_message': error_message})
+
+            advance_pass_booking = AdvancePassBooking(
+                name=form.cleaned_data['name'],
+                city=form.cleaned_data['city'],
+                whatsapp_number=form.cleaned_data['whatsapp_number'],
+                email=form.cleaned_data['email'],
+                entry_token_quantity=entry_token_qty,
+                tea_coffee_quantity=tea_coffee_qty,
+                unlimited_buffet_quantity=unlimited_buffet_qty,
+                payment_screenshot=form.cleaned_data['payment_screenshot'],
+                total_amount=total_amount,
+            )
+            advance_pass_booking.save()
+
+            # Send confirmation email asynchronously
+            email_subject = 'Advance Pass Booking Confirmation'
+            email_body = f"Dear {form.cleaned_data['name']},\n\nThank you for your advance pass booking.\n\nDetails:\n"
+            if entry_token_qty > 0:
+                email_body += f"Entry Token Pass x {entry_token_qty}\n"
+            if tea_coffee_qty > 0:
+                email_body += f"Tea - Coffee Pass x {tea_coffee_qty}\n"
+            if unlimited_buffet_qty > 0:
+                email_body += f"Unlimited Buffet Lunch x {unlimited_buffet_qty}\n"
+            email_body += f"Total Amount: ₹{total_amount}\n\nThis booking Confirmation is valid only if your Payment is valid and if we have duly received your Payment as per your information given to us.\n\nRegards,\nEvent Team"
+            print(f"Sending email from: {settings.DEFAULT_FROM_EMAIL} to: {form.cleaned_data['email']}")
+            email = EmailMessage(
+                email_subject,
+                email_body,
+                settings.DEFAULT_FROM_EMAIL,
+                [form.cleaned_data['email']],
+            )
+            threading.Thread(target=send_email_async, args=(email,)).start()
+
+            return render(request, 'biodata/advance_pass_booking_success.html', {'form': form, 'total_amount': total_amount})
+        else:
+            return render(request, 'biodata/advance_pass_booking.html', {'form': form})
+    else:
+        form = AdvancePassBookingForm()
+    return render(request, 'biodata/advance_pass_booking.html', {'form': form})
+
 def biodata_form(request):
     # Deprecated: form handled in home_page now
     return redirect('home_page')

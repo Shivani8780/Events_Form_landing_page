@@ -24,13 +24,7 @@ def home_page(request):
         form = CandidateBiodataForm()
     return render(request, 'biodata/home.html', {'form': form})
 
-import threading
 
-def send_email_async(email):
-    try:
-        email.send(fail_silently=False)
-    except Exception as e:
-        logger.error(f"Failed to send email asynchronously: {e}")
 
 def advance_pass_booking(request):
     if request.method == 'POST':

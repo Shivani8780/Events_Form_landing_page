@@ -120,7 +120,7 @@ logger = logging.getLogger(__name__)
 
 def confirmation_page(request, candidate_id):
     candidate = get_object_or_404(CandidateBiodata, id=candidate_id)
-    whatsapp_group_link = "https://chat.whatsapp.com/BltytlRjrZm1HWYvhley24"
+    whatsapp_group_link = "https://chat.whatsapp.com/K2kgtdbwtpu5PWXVkE6RVj"
     email_sent = True
     try:
         pdf_buffer = generate_pdf(candidate)

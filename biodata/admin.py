@@ -285,3 +285,124 @@ class GalleryImageAdmin(admin.ModelAdmin):
     def description_display(self, obj):
         return format_html('<div style="font-size:14px;">{}</div>', obj.description)
     description_display.short_description = 'Description'
+from django.utils.safestring import mark_safe
+
+@admin.register(AdvancePassBooking)
+class AdvancePassBookingAdmin(admin.ModelAdmin):
+    list_display = ['name', 'city', 'whatsapp_number', 'email', 'entry_token_quantity', 'tea_coffee_quantity', 'unlimited_buffet_quantity', 'total_amount', 'payment_screenshot_preview', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['name', 'city', 'whatsapp_number', 'email']
+
+    readonly_fields = ['payment_screenshot_preview']
+
+    actions = ['export_selected_to_excel', 'export_payment_screenshots_zip']
+
+    def payment_screenshot_preview(self, obj):
+        if obj.payment_screenshot:
+            return mark_safe(f'<img src="{obj.payment_screenshot.url}" style="max-height: 100px; max-width: 100px;" />')
+        return "-"
+    payment_screenshot_preview.short_description = 'Payment Screenshot'
+
+    @admin.action(description='Export selected advance pass bookings to Excel')
+    def export_selected_to_excel(self, request, queryset):
+        import openpyxl
+        from openpyxl.utils import get_column_letter
+        from openpyxl.drawing.image import Image as OpenpyxlImage
+        from io import BytesIO
+        from django.http import HttpResponse
+        import requests
+        from PIL import Image as PILImage
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Advance Pass Bookings"
+
+        # Define headers
+        headers = ['Name', 'City', 'WhatsApp Number', 'Email', 'Pass Type', 'Quantity', 'Total Amount', 'Payment Screenshot', 'Created At']
+        ws.append(headers)
+
+        # Set column widths
+        column_widths = [20, 20, 20, 30, 15, 10, 15, 20, 20]
+        for i, width in enumerate(column_widths, 1):
+            ws.column_dimensions[get_column_letter(i)].width = width
+
+        row_num = 2
+        for obj in queryset:
+            row = [
+                obj.name,
+                obj.city,
+                obj.whatsapp_number,
+                obj.email,
+                obj.pass_type,
+                obj.quantity,
+                obj.total_amount,
+                '',  # Placeholder for image
+                obj.created_at.strftime('%Y-%m-%d %H:%M:%S') if obj.created_at else '',
+            ]
+            ws.append(row)
+
+            # Embed payment screenshot image if available
+            if obj.payment_screenshot:
+                try:
+                    img_url = obj.payment_screenshot.url
+                    if img_url.startswith('/'):
+                        base_url = 'https://bhudevnetwork.pythonanywhere.com/'  # Replace with your actual domain or base URL
+                        img_url = base_url + img_url
+                    response_img = requests.get(img_url)
+                    response_img.raise_for_status()
+                    img_data = BytesIO(response_img.content)
+                    pil_img = PILImage.open(img_data)
+                    img_byte_arr = BytesIO()
+                    pil_img.save(img_byte_arr, format='PNG')
+                    img_byte_arr.seek(0)
+                    img = OpenpyxlImage(img_byte_arr)
+                    img.width = 80
+                    img.height = 80
+                    img.anchor = f"{get_column_letter(8)}{row_num}"
+                    ws.add_image(img)
+                    ws.row_dimensions[row_num].height = 60
+                except Exception as e:
+                    # Log error or pass silently
+                    pass
+            row_num += 1
+
+        # Prepare response
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        )
+        response['Content-Disposition'] = 'attachment; filename=advance_pass_bookings.xlsx'
+
+        # Save workbook to response
+        wb.save(response)
+        return response
+
+    @admin.action(description='Export payment screenshots of selected advance pass bookings as ZIP')
+    def export_payment_screenshots_zip(self, request, queryset):
+        import zipfile
+        import os
+        from django.http import HttpResponse
+        from io import BytesIO
+        import re
+
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            for obj in queryset:
+                if obj.payment_screenshot:
+                    try:
+                        img_path = obj.payment_screenshot.path
+                        ext = os.path.splitext(img_path)[1].lower()
+                        if os.path.exists(img_path):
+                            # Sanitize name and whatsapp number for filename
+                            safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.name.strip())
+                            safe_whatsapp = re.sub(r'[^0-9]', '', obj.whatsapp_number)
+                            filename = f"{safe_name}_{safe_whatsapp}{ext}"
+                            with open(img_path, 'rb') as img_file:
+                                img_data = img_file.read()
+                            zip_file.writestr(filename, img_data)
+                    except Exception as e:
+                        # Log error or pass silently
+                        pass
+        zip_buffer.seek(0)
+        response = HttpResponse(zip_buffer, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=payment_screenshots.zip'
+        return response

@@ -84,7 +84,7 @@ def advance_pass_booking(request):
                 settings.DEFAULT_FROM_EMAIL,
                 [form.cleaned_data['email']],
             )
-            threading.Thread(target=send_email_async, args=(email,)).start()
+            email.send(fail_silently=False)
 
             return render(request, 'biodata/advance_pass_booking_success.html', {'form': form, 'total_amount': total_amount})
         else:

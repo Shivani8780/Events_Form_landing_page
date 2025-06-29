@@ -1,0 +1,21 @@
+{% load static %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 40px auto; padding: 30px; background: #f0f0f0; border-radius: 15px; text-align: center;">
+    <h2>Advance Pass Booking Successful</h2>
+    <p>Thank you for booking your pass. Your submission has been received successfully.</p>
+    <p>We will contact you shortly with further details.</p>
+    <p><strong>Note :</strong></p>
+    <ol style="text-align: left; max-width: 500px; margin: 20px auto;">
+      <li>This booking Confirmation is valid only if your Payment is valid and if we have duly received your Payment as per your information given to us.</li>
+      <li>Confirmation Email has been sent to your Email id.</li>
+      <li>You will receive confirmation phone call in 2-3 days from our Office. For immediate Manual Confirmation, you can call on these numbers :<br/>
+        ક્રિષ્ના : 9428642903<br/>
+        હેતલ : 7990856889<br/>
+        મૈત્રી : 9099048986<br/>
+        Office : 6352144677
+      </li>
+    </ol>
+    <a href="{% url 'home_page' %}" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #d6336c; color: white; border-radius: 8px; text-decoration: none;">Back to Home</a>
+</div>
+{% endblock %}

@@ -6,7 +6,7 @@ from .models import CandidateBiodata,AdvancePassBooking
 from biodata.views_weasyprint import generate_pdf
 from .forms_advance_pass import AdvancePassBookingForm
 
-from .forms import CandidateBiodataForm
+
 
 def home_page(request):
     if request.method == 'POST':

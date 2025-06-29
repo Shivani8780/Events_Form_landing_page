@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import CandidateBiodataForm
-from .models import CandidateBiodata
+from .models import CandidateBiodata,AdvancePassBooking
 from biodata.views_weasyprint import generate_pdf
 from .forms_advance_pass import AdvancePassBookingForm
 

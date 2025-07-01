@@ -1,0 +1,160 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advance Pass Booking Success - Bhudev Foundation</title>
+  <style>
+    body {
+      background-image: url('https://i0.wp.com/detechter.com/wp-content/uploads/2017/07/Hindu-Wedding-India.jpg?fit=886%2C535&ssl=1');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+      padding: 40px 40px 120px 40px; /* Added bottom padding for button space */
+      box-sizing: border-box;
+      position: relative;
+    }
+    .container {
+      background: #ffffff;
+      max-width: 600px;
+      margin: 40px auto 24px auto;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
+    .container:hover {
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    }
+    .banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+    .banner img {
+      width: 100px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .banner img:hover {
+      transform: scale(1.05);
+    }
+    .banner-text {
+      text-align: left;
+      flex: 1;
+    }
+    .banner-text h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #d9534f;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    .orange-text {
+      color: #f37021;
+    }
+    .blue-text {
+      color: #1d4e89;
+    }
+    .reg-text {
+      font-size: 16px;
+      color: #555;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .advance-info-container {
+      background: #fff8f0;
+      max-width: 600px;
+      margin: 10px auto 24px auto;
+      padding: 18px 35px 18px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(243,112,33,0.3);
+      font-size: 17px;
+      color: #5a3e1b;
+      line-height: 1.6;
+      font-weight: 600;
+      border: 2px solid #f37021;
+      box-sizing: border-box;
+      text-align: left;
+    }
+    .advance-info-container .advance-form-highlight {
+      color: #d6336c;
+      font-weight: 700;
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 20px 0 100px 0;
+        background-attachment: scroll !important;
+      }
+      .container,
+      .advance-info-container {
+        max-width: 85%;
+        padding: 16px 8px 12px;
+        margin: 14px auto;
+        font-size: 15px;
+      }
+      .banner img { width: 50px; }
+      .banner-text h1 { font-size: 18px; }
+      .reg-text { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+{% block content %}
+  <!-- First container: Foundation Banner -->
+  <div class="container">
+    <div class="banner">
+      <img src="{% static 'images/foundation_logo.png' %}" alt="Foundation Logo">
+      <div class="banner-text">
+        <h1>
+          <span class="orange-text">BHUDEV NETWORK</span><br>
+          <span class="blue-text">CHARITABLE FOUNDATION</span>
+        </h1>
+        <div class="reg-text">(Trust, NGO Reg. No. # AHMD / 120129)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second container: Info in Gujarati -->
+  <div class="advance-info-container">
+    33મુ ભુદેવ જીવનસાથી સંમેલન,<br>
+    તા. 20-07-2025, મણિનગર, અમદાવાદ.<br>
+    <span class="advance-form-highlight">(Advance Pass Booking Form)</span>
+    <br><br>
+    એડવાન્સ બુકીંગ થી આયોજક team ને ખબર પડશે કે અમારે કેટલું ભોજન (Lunch Dish) ની વ્યવસ્થા કરવાની છે.<br>
+    ભોજન ખૂટે પણ નહિ અને ભોજન નો બગાડ પણ ના થાય.
+  </div>
+
+  <!-- Success message container -->
+  <div style="max-width: 600px; margin: 40px auto; padding: 30px; background: #f0f0f0; border-radius: 15px; text-align: center;">
+    <h2>Advance Pass Booking Successful</h2>
+    <p>Thank you for booking your pass. Your submission has been received successfully.</p>
+    <p>We will contact you shortly with further details.</p>
+    <p><strong>Note :</strong></p>
+    <ol style="text-align: left; max-width: 500px; margin: 20px auto;">
+      <li>This booking Confirmation is valid only if your Payment is valid and if we have duly received your Payment as per your information given to us.</li>
+      <li>Confirmation Email has been sent to your Email id.</li>
+      <li>You will receive confirmation phone call in 2-3 days from our Office. For immediate Manual Confirmation, you can call on these numbers :<br/>
+        ક્રિષ્ના : 9428642903<br/>
+        હેતલ : 7990856889<br/>
+        મૈત્રી : 9099048986<br/>
+        Office : 6352144677
+      </li>
+    </ol>
+    <a href="{% url 'home_page' %}" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #d6336c; color: white; border-radius: 8px; text-decoration: none;">Back to Home</a>
+  </div>
+{% endblock %}
+</body>
+</html>

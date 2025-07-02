@@ -155,5 +155,18 @@ class AdvancePassBooking(models.Model):
     def __str__(self):
         return f"{self.name} - Entry Token: {self.entry_token_quantity}, Tea-Coffee: {self.tea_coffee_quantity}, Buffet: {self.unlimited_buffet_quantity}"
 
+class AdvanceBookletBooking(models.Model):
+    name = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    whatsapp_number = models.CharField(max_length=20)
+    email = models.EmailField()
+    girls_booklet_with = models.BooleanField(default=False)
+    boys_booklet_with = models.BooleanField(default=False)
+    courier_address = models.TextField(blank=True, null=True)
+    payment_screenshot = models.ImageField(upload_to='payment_screenshots/')
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.name} - With Courier: {self.with_courier}"
 

@@ -175,7 +175,6 @@
     {% endif %}
     <form method="post" enctype="multipart/form-data" id="bookletBookingForm">
         {% csrf_token %}
-
         <div class="form-group">
             <label for="{{ form.name.id_for_label }}">1. Your Name:</label>
             {{ form.name }}

@@ -160,6 +160,7 @@ class AdvanceBookletBooking(models.Model):
     city = models.CharField(max_length=255)
     whatsapp_number = models.CharField(max_length=20)
     email = models.EmailField()
+    with_courier = models.BooleanField(default=True)
     girls_booklet_with = models.BooleanField(default=False)
     boys_booklet_with = models.BooleanField(default=False)
     courier_address = models.TextField(blank=True, null=True)

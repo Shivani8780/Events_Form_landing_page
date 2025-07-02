@@ -147,7 +147,10 @@ class AdvancePassBooking(models.Model):
     entry_token_quantity = models.PositiveIntegerField(default=0)
     tea_coffee_quantity = models.PositiveIntegerField(default=0)
     unlimited_buffet_quantity = models.PositiveIntegerField(default=0)
-    payment_screenshot = models.ImageField(upload_to='payment_screenshots/')
+    payment_screenshot = models.ImageField(
+        upload_to='payment_screenshots/',
+        storage=RawMediaCloudinaryStorage()
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -164,7 +167,10 @@ class AdvanceBookletBooking(models.Model):
     girls_booklet_with = models.BooleanField(default=False)
     boys_booklet_with = models.BooleanField(default=False)
     courier_address = models.TextField(blank=True, null=True)
-    payment_screenshot = models.ImageField(upload_to='payment_screenshots/')
+    payment_screenshot = models.ImageField(
+        upload_to='payment_screenshots/',
+        storage=RawMediaCloudinaryStorage()
+    )
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -12,4 +12,7 @@ urlpatterns = [
     path('contact-us/', views.contact_us_page, name='contact_us_page'),
     path('about-us/', views.about_us_page, name='about_us_page'),
     path('advance-pass-booking/', views.advance_pass_booking, name='advance_pass_booking'),
+    path('advance-booklet-booking/', views.advance_booklet_booking, name='advance_booklet_booking'),
+    path('advance-booklet-booking/confirmation/<int:booking_id>/', views.advance_booklet_booking_confirmation, name='advance_booklet_booking_confirmation'),
+]
 ]

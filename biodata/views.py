@@ -3,7 +3,6 @@ import os
 import zipfile
 import pandas as pd
 import logging
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse
 from django.urls import reverse

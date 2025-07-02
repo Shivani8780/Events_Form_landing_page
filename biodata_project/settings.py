@@ -74,8 +74,8 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-Cloudinary configuration
-Disabled Cloudinary settings for PythonAnywhere free plan compatibility
+# Cloudinary configuration
+# Disabled Cloudinary settings for PythonAnywhere free plan compatibility
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dlapbhavc',  # Replace with your Cloudinary cloud name
     'API_KEY': '837941825354552',        # Replace with your Cloudinary API key

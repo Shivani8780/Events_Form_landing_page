@@ -188,6 +188,10 @@ def export_booklet_booking_and_images(request):
     response['Content-Disposition'] = 'attachment; filename=booklet_bookings_and_images.zip'
     return response
 
+def advance_booklet_booking_confirmation(request, booking_id):
+    booking = get_object_or_404(AdvanceBookletBooking, id=booking_id)
+    return render(request, 'biodata/advance_booklet_booking_success.html', {'booking': booking})
+
 def biodata_form(request):
     # Deprecated: form handled in home_page now
     return redirect('home_page')

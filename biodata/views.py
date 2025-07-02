@@ -101,7 +101,7 @@ def advance_pass_booking(request):
         form = AdvancePassBookingForm()
     return render(request, 'biodata/advance_pass_booking.html', {'form': form})
 
-@csrf_exempt
+
 def advance_booklet_booking(request):
     logger.info(f"advance_booklet_booking called with method: {request.method}")
     if request.method == 'POST':

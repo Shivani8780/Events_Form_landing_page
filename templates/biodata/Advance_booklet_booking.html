@@ -203,16 +203,15 @@
                     {{ form.boys_booklet_with }}
                     <label for="{{ form.boys_booklet_with.id_for_label }}">Boys Biodata Booklet (₹500)</label><br>
                 </div>
-                <label style="margin-top:8px; display:block; margin-bottom: 10px;">Total (number of booklet * 500 + 100 ) (₹):</label>
-                <input type="text" id="totalWith" readonly value="0" name="total_with" style="width:90px; margin-left:10px; margin-bottom: 20px;" />
-                <label for="{{ form.courier_address.id_for_label }}" style="margin-top:8px; display:block;">Courier Address:</label>
-                {{ form.courier_address }}
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="grandTotal">Grand Total Payable Amount (₹):</label>
-            <input type="text" id="grandTotal" name="total_amount" readonly value="0" />
-        </div>
+        <label style="margin-top:8px; display:block; margin-bottom: 10px;">Total (number of booklet * 500 + 100 ) (₹):</label>
+        <input type="text" id="totalWith" readonly value="0" name="total_with" style="width:90px; margin-left:10px; margin-bottom: 20px;" />
+        <label for="{{ form.courier_address.id_for_label }}" style="margin-top:8px; display:block;">Courier Address:</label>
+        {{ form.courier_address }}
+    </div>
+</div>
+<div class="form-group">
+    <label>Grand Total Payable Amount (₹): <span id="grandTotal" style="font-weight: 700; font-size: 1.2rem; margin-top: 5px;">₹0</span></label>
+</div>
     
         <div class="form-group payment-info">
             <p style="font-weight: 700;">6. Payment Process:</p>
@@ -262,7 +261,7 @@
             total += courierCharge;
         }
         totalWith.value = total;
-        grandTotal.value = total;
+        grandTotal.textContent = total;
     }
 
     if (girlsBookletWith) {

@@ -142,11 +142,11 @@ def advance_booklet_booking(request):
             logger.info("Form is invalid")
             logger.error(f"Form errors: {form.errors}")
             logger.error(f"Non-field errors: {form.non_field_errors()}")
-            return render(request, 'biodata/Advance_booklet_booking.html', {'form': form})
+            return render(request, 'biodata/advance_booklet_booking.html', {'form': form})
     else:
         logger.info("GET request, rendering form")
         form = AdvanceBookletBookingForm()
-    return render(request, 'biodata/Advance_booklet_booking.html', {'form': form})
+    return render(request, 'biodata/advance_booklet_booking.html', {'form': form})
 
 def export_booklet_booking_and_images(request):
     bookings = AdvanceBookletBooking.objects.all()

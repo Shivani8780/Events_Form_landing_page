@@ -1,10 +1,18 @@
+
+import io
+import os
+import zipfile
+import pandas as pd
+import logging
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import CandidateBiodataForm
-from .models import CandidateBiodata,AdvancePassBooking
+from .models import CandidateBiodata, AdvancePassBooking, AdvanceBookletBooking, GalleryImage
 from biodata.views_weasyprint import generate_pdf
 from .forms_advance_pass import AdvancePassBookingForm
+from .forms_advance_booklet import AdvanceBookletBookingForm
 
 
 
@@ -92,6 +100,94 @@ def advance_pass_booking(request):
     else:
         form = AdvancePassBookingForm()
     return render(request, 'biodata/advance_pass_booking.html', {'form': form})
+
+@csrf_exempt
+def advance_booklet_booking(request):
+    logger.info(f"advance_booklet_booking called with method: {request.method}")
+    if request.method == 'POST':
+        form = AdvanceBookletBookingForm(request.POST, request.FILES)
+        if form.is_valid():
+            logger.info("Form is valid")
+            total_amount = form.cleaned_data.get('total_amount', 0)
+
+            advance_booklet_booking = form.save(commit=False)
+            advance_booklet_booking.total_amount = total_amount
+            advance_booklet_booking.with_courier = True
+            advance_booklet_booking.save()
+
+            # Send confirmation email
+            email_subject = 'Advance Booklet Booking Confirmation'
+            email_body = f"Dear {form.cleaned_data['name']},\n\nThank you for your advance booklet booking.\n\nDetails:\n"
+            if form.cleaned_data.get('girls_booklet_with'):
+                email_body += "Girls Biodata Booklet (With Courier)\n"
+            if form.cleaned_data.get('boys_booklet_with'):
+                email_body += "Boys Biodata Booklet (With Courier)\n"
+            email_body += f"Courier Address: {form.cleaned_data.get('courier_address')}\n"
+            email_body += f"Total Amount: ₹{total_amount}\n\nThis booking Confirmation is valid only if your Payment is valid and if we have duly received your Payment as per your information given to us.\n\nRegards,\nEvent Team"
+            try:
+                logger.info(f"Sending email from: {settings.DEFAULT_FROM_EMAIL} to: {form.cleaned_data['email']}")
+                email = EmailMessage(
+                    email_subject,
+                    email_body,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [form.cleaned_data['email']],
+                )
+                email.send(fail_silently=False)
+            except Exception as e:
+                logger.error(f"Failed to send confirmation email: {e}")
+
+            logger.info("Redirecting to confirmation page")
+            return redirect('advance_booklet_booking_confirmation', booking_id=advance_booklet_booking.id)
+        else:
+            logger.info("Form is invalid")
+            logger.error(f"Form errors: {form.errors}")
+            logger.error(f"Non-field errors: {form.non_field_errors()}")
+            return render(request, 'biodata/Advance_booklet_booking.html', {'form': form})
+    else:
+        logger.info("GET request, rendering form")
+        form = AdvanceBookletBookingForm()
+    return render(request, 'biodata/Advance_booklet_booking.html', {'form': form})
+
+def export_booklet_booking_and_images(request):
+    bookings = AdvanceBookletBooking.objects.all()
+    data = []
+    for booking in bookings:
+        data.append({
+            'Name': booking.name,
+            'City': booking.city,
+            'Whatsapp Number': booking.whatsapp_number,
+            'Email': booking.email,
+            'Girls Booklet With': booking.girls_booklet_with,
+            'Boys Booklet With': booking.boys_booklet_with,
+            'Courier Address': booking.courier_address,
+            'Total Amount': booking.total_amount,
+            'Payment Screenshot': os.path.basename(booking.payment_screenshot.name) if booking.payment_screenshot else '',
+        })
+
+    df = pd.DataFrame(data)
+
+    excel_buffer = io.BytesIO()
+    with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Bookings')
+
+    excel_buffer.seek(0)
+
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+        zip_file.writestr('booklet_bookings.xlsx', excel_buffer.read())
+
+        for booking in bookings:
+            if booking.payment_screenshot:
+                image_path = os.path.join(settings.MEDIA_ROOT, booking.payment_screenshot.name)
+                if os.path.exists(image_path):
+                    zip_file.write(image_path, os.path.basename(image_path))
+
+    zip_buffer.seek(0)
+
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=booklet_bookings_and_images.zip'
+    return response
+
 
 def biodata_form(request):
     # Deprecated: form handled in home_page now

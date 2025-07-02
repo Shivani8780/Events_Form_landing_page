@@ -1,4 +1,3 @@
-
 import io
 import os
 import zipfile
@@ -8,13 +7,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.core.mail import EmailMessage
+from django.conf import settings
+
 from .forms import CandidateBiodataForm
 from .models import CandidateBiodata, AdvancePassBooking, AdvanceBookletBooking, GalleryImage
 from biodata.views_weasyprint import generate_pdf
 from .forms_advance_pass import AdvancePassBookingForm
 from .forms_advance_booklet import AdvanceBookletBookingForm
 
-
+logger = logging.getLogger(__name__)
 
 def home_page(request):
     if request.method == 'POST':
@@ -32,8 +34,6 @@ def home_page(request):
     else:
         form = CandidateBiodataForm()
     return render(request, 'biodata/home.html', {'form': form})
-
-
 
 def advance_pass_booking(request):
     if request.method == 'POST':
@@ -75,7 +75,7 @@ def advance_pass_booking(request):
             )
             advance_pass_booking.save()
 
-            # Send confirmation email asynchronously
+            # Send confirmation email
             email_subject = 'Advance Pass Booking Confirmation'
             email_body = f"Dear {form.cleaned_data['name']},\n\nThank you for your advance pass booking.\n\nDetails:\n"
             if entry_token_qty > 0:
@@ -188,7 +188,6 @@ def export_booklet_booking_and_images(request):
     response['Content-Disposition'] = 'attachment; filename=booklet_bookings_and_images.zip'
     return response
 
-
 def biodata_form(request):
     # Deprecated: form handled in home_page now
     return redirect('home_page')
@@ -202,12 +201,6 @@ def download_biodata_pdf(request, candidate_id):
     except FileNotFoundError:
         # Handle missing image file gracefully
         return HttpResponse("Error: Some image files are missing. Please contact support.", status=404)
-
-from django.core.mail import EmailMessage
-from django.conf import settings
-import logging
-
-logger = logging.getLogger(__name__)
 
 def confirmation_page(request, candidate_id):
     candidate = get_object_or_404(CandidateBiodata, id=candidate_id)
@@ -238,8 +231,6 @@ def confirmation_page(request, candidate_id):
 
 def confirmation_redirect(request):
     return HttpResponseRedirect(reverse('home_page'))
-
-from .models import CandidateBiodata, GalleryImage
 
 def gallery_page(request):
     # Query all gallery images from the database

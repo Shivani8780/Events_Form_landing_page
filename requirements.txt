@@ -3,3 +3,4 @@ weasyprint>=57.0
 requests>=2.25.1
 openpyxl>=3.0.0
 cloudinary>=1.25.0
+django-cloudinary-storage>=0.3.0

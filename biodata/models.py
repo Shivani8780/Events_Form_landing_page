@@ -1,5 +1,5 @@
 from django.db import models
-from django.db import models
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 class CandidateBiodata(models.Model):
     # Personal Details

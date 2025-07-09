@@ -16,7 +16,106 @@ import re
 from .models import CandidateBiodata, GalleryImage
 from ckeditor.widgets import CKEditorWidget
 from datetime import datetime
-from .models import AdvancePassBooking , AdvanceBookletBooking
+from .models import AdvancePassBooking , AdvanceBookletBooking, StageRegistration
+
+
+@admin.action(description='Export selected stage registrations to Excel')
+def export_selected_to_excel(modeladmin, request, queryset):
+    import openpyxl
+    from openpyxl.utils import get_column_letter
+    from openpyxl.drawing.image import Image as OpenpyxlImage
+    from io import BytesIO
+    from django.http import HttpResponse
+    import requests
+    from PIL import Image as PILImage
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Stage Registrations"
+
+    # Define headers
+    headers = ['Name of Candidate', 'DOB', 'Gender', 'Current City', 'Booklet Sr No', 'Maritial Status', 'Education', 'Job/Business', 'Hobbies', 'Partner Choice', 'Photograph']
+    ws.append(headers)
+
+    # Set column widths
+    column_widths = [20, 15, 10, 20, 15, 15, 20, 20, 20, 20, 20]
+    for i, width in enumerate(column_widths, 1):
+        ws.column_dimensions[get_column_letter(i)].width = width
+
+
+    row_num = 2
+    for obj in queryset:
+        row = [
+            obj.name_of_candidate,
+            obj.dob if isinstance(obj.dob, str) else (obj.dob.strftime('%Y-%m-%d') if obj.dob else ''),
+            obj.gender,
+            obj.current_city,
+            obj.booklet_sr_no,
+            obj.maritial_status,
+            obj.education,
+            obj.job_business,
+            obj.hobbies,
+            obj.partner_choice,
+        ]
+        ws.append(row)
+        row_num += 1
+
+    # Prepare response
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+    response['Content-Disposition'] = 'attachment; filename=stage_registrations.xlsx'
+
+    # Save workbook to response
+    wb.save(response)
+    return response
+
+@admin.action(description='Download selected stage registration images as zip')
+def download_selected_images(modeladmin, request, queryset):
+    import zipfile
+    import os
+    from django.http import HttpResponse
+    from io import BytesIO
+    import re
+
+    zip_buffer = BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        for obj in queryset:
+            if obj.photograph:
+                try:
+                    img_path = obj.photograph.path
+                    ext = os.path.splitext(img_path)[1].lower()
+                    if os.path.exists(img_path):
+                        safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.name_of_candidate.strip())
+                        filename = f"{safe_name}{ext}"
+                        with open(img_path, 'rb') as img_file:
+                            img_data = img_file.read()
+                        zip_file.writestr(filename, img_data)
+                except Exception as e:
+                    pass
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=stage_registration_images.zip'
+    return response
+
+@admin.register(StageRegistration)
+class StageRegistrationAdmin(admin.ModelAdmin):
+    list_display = ['name_of_candidate', 'dob', 'gender', 'current_city', 'booklet_sr_no', 'maritial_status', 'education', 'job_business', 'hobbies', 'partner_choice', 'photograph_preview']
+    search_fields = ['name_of_candidate', 'current_city', 'booklet_sr_no', 'maritial_status', 'education', 'job_business', 'partner_choice']
+    readonly_fields = ['photograph_preview']
+
+    actions = ['export_selected_to_excel', 'download_selected_images']
+
+    export_selected_to_excel = export_selected_to_excel
+    download_selected_images = download_selected_images
+
+    def photograph_preview(self, obj):
+        if obj.photograph:
+            return format_html('<img src="{}" style="max-height: 100px; max-width: 100px;" />', obj.photograph.url)
+        return "-"
+    photograph_preview.short_description = 'Photograph Preview'
+
+from .models import CandidateBiodata, GalleryImage, AdvancePassBooking, AdvanceBookletBooking
 
 
 @admin.register(AdvanceBookletBooking)

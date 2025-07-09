@@ -10,10 +10,11 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 
 from .forms import CandidateBiodataForm
-from .models import CandidateBiodata, AdvancePassBooking, AdvanceBookletBooking, GalleryImage
+from .models import CandidateBiodata, AdvancePassBooking, AdvanceBookletBooking, GalleryImage, StageRegistration
 from biodata.views_weasyprint import generate_pdf
 from .forms_advance_pass import AdvancePassBookingForm
 from .forms_advance_booklet import AdvanceBookletBookingForm
+from .form_register_stage import StageRegistrationForm
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +34,28 @@ def home_page(request):
     else:
         form = CandidateBiodataForm()
     return render(request, 'biodata/home.html', {'form': form})
+def stage_registration(request):
+    import logging
+    logger = logging.getLogger(__name__)
+    if request.method == 'POST':
+        logger.info("Received POST request in stage_registration view")
+        form = StageRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            logger.info("StageRegistrationForm is valid")
+            instance = form.save()
+            logger.info(f"Saved instance with id: {instance.id}")
+            # Redirect to stage registration confirmation page after successful submission
+            return redirect('stage_registration_confirmation', registration_id=instance.id)
+        else:
+            logger.warning(f"StageRegistrationForm is invalid: {form.errors}")
+            return render(request, 'biodata/Stage Registration Form.html', {'form': form})
+    else:
+        form = StageRegistrationForm()
+    return render(request, 'biodata/Stage Registration Form.html', {'form': form})
+
+def stage_registration_confirmation(request, registration_id):
+    registration = get_object_or_404(StageRegistration, id=registration_id)
+    return render(request, 'biodata/stage_registration_confirmation.html', {'stage_registration': registration})
 
 def advance_pass_booking(request):
     if request.method == 'POST':

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stage Registration Confirmation</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #eebde3 0%, #ad509e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        .confirmation-container {
+            max-width: 700px;
+            width: 100%;
+            background: #f0f4f8;
+            padding: 60px 50px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 800;
+            font-size: 3rem;
+            text-transform: uppercase;
+        }
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+        }
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <h1>Thank you, {{ stage_registration.name_of_candidate }}!</h1>
+        <p>Your stage registration form has been successfully submitted.</p>
+        <p>We will contact you soon with further details.</p>
+    </div>
+</body>
+</html>

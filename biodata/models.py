@@ -177,3 +177,19 @@ class AdvanceBookletBooking(models.Model):
     def __str__(self):
         return f"{self.name} - With Courier: {self.with_courier}"
 
+class StageRegistration(models.Model):
+    name_of_candidate = models.CharField(max_length=255)
+    dob = models.CharField(max_length=50)  # Changed from DateField to CharField to treat as string
+    gender = models.CharField(max_length=50)
+    current_city = models.CharField(max_length=100)
+    booklet_sr_no = models.CharField(max_length=100)
+    maritial_status = models.CharField(max_length=50)
+    education = models.CharField(max_length=255)
+    job_business = models.CharField(max_length=255)
+    hobbies = models.CharField(max_length=255)
+    partner_choice = models.CharField(max_length=255)
+    photograph = models.ImageField(upload_to='payment_screenshots/')
+
+    def __str__(self):
+        return self.name_of_candidate
+

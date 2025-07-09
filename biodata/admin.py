@@ -19,6 +19,7 @@ from datetime import datetime
 from .models import AdvancePassBooking , AdvanceBookletBooking, StageRegistration
 
 
+
 @admin.action(description='Export selected stage registrations to Excel')
 def export_selected_to_excel(modeladmin, request, queryset):
     import openpyxl

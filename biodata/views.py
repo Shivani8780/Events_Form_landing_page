@@ -48,10 +48,10 @@ def stage_registration(request):
             return redirect('stage_registration_confirmation', registration_id=instance.id)
         else:
             logger.warning(f"StageRegistrationForm is invalid: {form.errors}")
-            return render(request, 'biodata/Stage Registration Form.html', {'form': form})
+            return render(request, 'biodata/stage_registration_form.html', {'form': form})
     else:
         form = StageRegistrationForm()
-    return render(request, 'biodata/Stage Registration Form.html', {'form': form})
+    return render(request, 'biodata/stage_registration_form.html', {'form': form})
 
 def stage_registration_confirmation(request, registration_id):
     registration = get_object_or_404(StageRegistration, id=registration_id)

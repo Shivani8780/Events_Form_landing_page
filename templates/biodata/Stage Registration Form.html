@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stage Registration Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            background-image: url('https://i0.wp.com/detechter.com/wp-content/uploads/2017/07/Hindu-Wedding-India.jpg?fit=886%2C535&ssl=1');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      min-height: 100vh;
+      padding: 40px 40px 120px 40px; /* Added bottom padding for button space */
+      box-sizing: border-box;
+      position: relative;
+        }
+      .banner img {
+        width: 50px;
+      }
+
+        
+        header.header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        header.header img.logo {
+            max-width: 290px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0 auto;
+            flex-grow: 1;
+        }
+        h1 {
+            text-align: center;
+            color: rgb(0, 0, 0);
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+        form {
+            background: white;
+            width: 100%;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+            /* Removed backdrop-filter blur */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #222222;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px 0;
+            margin-bottom: 30px;
+            border: none;
+            border-bottom: 2px solid #a0aec0;
+            background: transparent;
+            color: #222222;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        input[type="text"]::placeholder {
+            color: #cbd5e0;
+            font-style: italic;
+        }
+        input[type="text"]:focus,
+        input[type="file"]:focus {
+            border-bottom-color: #00bcd4;
+            outline: none;
+            box-shadow: 0 2px 8px #00bcd4aa;
+        }
+        button[type="submit"] {
+            background: #0077a3;
+            color: white;
+            border: none;
+            padding: 18px 0;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            letter-spacing: 3px;
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+            text-transform: uppercase;
+            box-shadow: 0 6px 15px #0077a3aa;
+        }
+        button[type="submit"]:hover {
+            background: #005f73;
+            box-shadow: 0 8px 20px #005f73cc;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 10px;
+                height: auto;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+            form {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            button[type="submit"] {
+                font-size: 16px;
+                padding: 14px 0;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+    <body>
+        
+
+
+        <header class="header">
+            <img src="/static/images/logo.png" alt="Logo" class="logo" />
+        </header>
+        <div class="container">
+            <form action="{% url 'stage_registration' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1>Stage Registration Form</h1>
+                <div style="margin-bottom: 100px;"></div>
+                <label for="name_of_candidate">1.  Name of Candidate:</label><br />
+                <input type="text" id="name_of_candidate" name="name_of_candidate" required /><br /><br />
+
+                <label for="dob">2.  Date of Birth:</label><br />
+                <input type="text" id="dob" name="dob" required /><br /><br />
+
+                <label for="gender">3.  Gender:</label><br />
+                <input type="text" id="gender" name="gender" required /><br /><br />
+
+                <label for="current_city">4.  Current City:</label><br />
+                <input type="text" id="current_city" name="current_city" required /><br /><br />
+
+                <label for="booklet_sr_no">5.  Booklet Sr No:</label><br />
+                <input type="text" id="booklet_sr_no" name="booklet_sr_no" required /><br /><br />
+
+                <label for="maritial_status">6.  Maritial Status:</label><br />
+                <input type="text" id="maritial_status" name="maritial_status" required /><br /><br />
+
+                <label for="education">7.  Education:</label><br />
+                <input type="text" id="education" name="education" required /><br /><br />
+
+                <label for="job_business">8.  Job/Business:</label><br />
+                <input type="text" id="job_business" name="job_business" required /><br /><br />
+
+                <label for="hobbies">9.  Hobbies:</label><br />
+                <input type="text" id="hobbies" name="hobbies" required /><br /><br />
+
+                <label for="partner_choice">10.  Partner Choice:</label><br />
+                <input type="text" id="partner_choice" name="partner_choice" required /><br /><br />
+
+                <label for="photograph">11.  Photograph:</label><br />
+                <input type="file" id="photograph" name="photograph" accept="image/*" required /><br /><br />
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </body>
+</html>

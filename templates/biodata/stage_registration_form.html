@@ -5,187 +5,610 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Stage Registration Form</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
         body {
-            background-image: url('https://i0.wp.com/detechter.com/wp-content/uploads/2017/07/Hindu-Wedding-India.jpg?fit=886%2C535&ssl=1');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      min-height: 100vh;
-      padding: 40px 40px 120px 40px; /* Added bottom padding for button space */
-      box-sizing: border-box;
-      position: relative;
+            font-family: 'Poppins', Arial, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #fef7f0 0%, #fef2f2 100%);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
         }
-      .banner img {
-        width: 50px;
-      }
-
-        
-        header.header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        header.header img.logo {
-            max-width: 290px;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 600px;
-            width: 100%;
-            box-sizing: border-box;
-            margin: 0 auto;
-            flex-grow: 1;
+        .form-wrapper {
+            max-width: 820px;
+            margin: 40px auto 0 auto;
+            background: rgba(255,255,255,0.98);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.07), 0 1.5px 3px rgba(0,0,0,0.03);
+            border-radius: 16px;
+            padding: 32px 24px 24px 24px;
         }
         h1 {
             text-align: center;
-            color: rgb(0, 0, 0);
-            font-weight: 600;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            color: #f37021;
+            margin-bottom: 34px;
+            letter-spacing: 1px;
         }
-        form {
-            background: white;
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            margin-top: 12px;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            right: -50%;
             width: 100%;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 12px 32px rgba(0,0,0,0.5);
-            box-sizing: border-box;
-            /* Removed backdrop-filter blur */
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 3px;
+            background: #e5e7eb;
+            z-index: -1;
+        }
+        .step.completed .step-number, .step.active .step-number {
+            background: linear-gradient(45deg, #f37021, #d9534f);
+            color: #fff;
+        }
+        .step.completed .step-label, .step.active .step-label {
+            color: #f37021;
+            font-weight: bold;
+        }
+        .step .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            transition: background 0.25s, color 0.25s;
+        }
+        .step-label {
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+            width: 90px;
         }
         label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 600;
-            color: #222222;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
         }
-        input[type="text"],
-        input[type="file"] {
+        input[type="text"], input[type="file"] {
             width: 100%;
-            padding: 10px 0;
-            margin-bottom: 30px;
-            border: none;
-            border-bottom: 2px solid #a0aec0;
-            background: transparent;
-            color: #222222;
+            padding: 11px 13px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
             font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            margin-bottom: 16px;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        input[type="text"]::placeholder {
-            color: #cbd5e0;
-            font-style: italic;
-        }
-        input[type="text"]:focus,
-        input[type="file"]:focus {
-            border-bottom-color: #00bcd4;
+        input[type="text"]:focus, input[type="file"]:focus {
+            border-color: #f37021;
             outline: none;
-            box-shadow: 0 2px 8px #00bcd4aa;
+            box-shadow: 0 0 0 2px rgba(243,112,33,0.07);
         }
-        button[type="submit"] {
-            background: #0077a3;
-            color: white;
+        input[type="text"]:hover, input[type="file"]:hover {
+            border-color: #f37021;
+        }
+        .field-error {
+            color: #e11d48;
+            font-size: 13px;
+            margin-top: -12px;
+            margin-bottom: 8px;
+            display: none;
+        }
+        .photo-preview {
+            display: none;
+            margin-bottom: 12px;
+            margin-top: -7px;
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid #f37021;
+        }
+        .btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .btn {
+            flex: 1;
+            padding: 13px 0;
+            background: linear-gradient(45deg, #f37021, #d9534f);
+            color: #fff;
             border: none;
-            padding: 18px 0;
-            font-size: 20px;
+            border-radius: 30px;
+            font-size: 17px;
             font-weight: 700;
-            border-radius: 40px;
-            cursor: pointer;
-            width: 100%;
-            letter-spacing: 3px;
-            transition: background 0.4s ease, box-shadow 0.4s ease;
             text-transform: uppercase;
-            box-shadow: 0 6px 15px #0077a3aa;
+            letter-spacing: 1.3px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
         }
-        button[type="submit"]:hover {
-            background: #005f73;
-            box-shadow: 0 8px 20px #005f73cc;
+        .btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
         }
-
-        /* Responsive styles */
-        @media (max-width: 480px) {
-            body {
-                padding: 20px 10px;
-                height: auto;
-            }
-            .container {
-                max-width: 100%;
-                padding: 0 10px;
-            }
-            form {
-                padding: 30px 20px;
-            }
-            h1 {
-                font-size: 20px;
-                margin-bottom: 20px;
-            }
-            button[type="submit"] {
-                font-size: 16px;
-                padding: 14px 0;
-                letter-spacing: 2px;
-            }
+        .btn:hover:not(:disabled) {
+            background: linear-gradient(45deg, #ff9957, #e96464);
+            box-shadow: 0 6px 18px rgba(243,112,33,0.11);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .summary {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .summary-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #f37021;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .summary-list {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.7;
+        }
+        .summary-photo {
+            text-align: center;
+            margin-top: 12px;
+        }
+        .success-message {
+            text-align: center;
+            color: #10b981;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 30px 0 10px 0;
+        }
+        @media (max-width: 600px) {
+            .form-wrapper { padding: 18px 6px;}
+            h1 { font-size: 21px; }
+            .step-label { width: 60px; font-size: 11px;}
+            .summary { font-size: 14px; padding: 13px;}
+        }
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+       
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .header-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #f37021, #d9534f);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+        
+        .header-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+        
+        .orange-text {
+            color: #f37021;
+        }
+        
+        .blue-text {
+            color: #1d4e89;
+        }
+        
+        .reg-text {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
         }
     </style>
 </head>
-    <body>
-        
-
-
-        <header class="header">
-            <img src="/static/images/logo.png" alt="Logo" class="logo" />
-        </header>
-        <div class="container">
-            <form action="{% url 'stage_registration' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <h1>Stage Registration Form</h1>
-                <div style="margin-bottom: 100px;"></div>
-                <label for="name_of_candidate">1.  Name of Candidate:</label><br />
-                <input type="text" id="name_of_candidate" name="name_of_candidate" required /><br /><br />
-
-                <label for="dob">2.  Date of Birth:</label><br />
-                <input type="text" id="dob" name="dob" required /><br /><br />
-
-                <label for="gender">3.  Gender:</label><br />
-                <input type="text" id="gender" name="gender" required /><br /><br />
-
-                <label for="current_city">4.  Current City:</label><br />
-                <input type="text" id="current_city" name="current_city" required /><br /><br />
-
-                <label for="booklet_sr_no">5.  Booklet Sr No:</label><br />
-                <input type="text" id="booklet_sr_no" name="booklet_sr_no" required /><br /><br />
-
-                <label for="maritial_status">6.  Maritial Status:</label><br />
-                <input type="text" id="maritial_status" name="maritial_status" required /><br /><br />
-
-                <label for="education">7.  Education:</label><br />
-                <input type="text" id="education" name="education" required /><br /><br />
-
-                <label for="job_business">8.  Job/Business:</label><br />
-                <input type="text" id="job_business" name="job_business" required /><br /><br />
-
-                <label for="hobbies">9.  Hobbies:</label><br />
-                <input type="text" id="hobbies" name="hobbies" required /><br /><br />
-
-                <label for="partner_choice">10.  Partner Choice:</label><br />
-                <input type="text" id="partner_choice" name="partner_choice" required /><br /><br />
-
-                <label for="photograph">11.  Photograph:</label><br />
-                <input type="file" id="photograph" name="photograph" accept="image/*" required /><br /><br />
-
-                <button type="submit">Submit</button>
-            </form>
+<body>
+     <div class="container">
+        <!-- Header -->
+        <div class="header-card">
+            <div class="header-content">
+                <div class="logo">BN</div>
+                <div class="header-text">
+                    <h1>
+                        <span class="orange-text">BHUDEV NETWORK</span><br>
+                        <span class="blue-text">CHARITABLE FOUNDATION</span>
+                    </h1>
+                    <div class="reg-text">(Trust, NGO Reg. No. # AHMD / 120129)</div>
+                </div>
+            </div>
         </div>
-    </body>
+   
+     <div class="form-wrapper">
+            <h1>Stage Registration Form</h1>
+            {% if success_message %}
+                <div class="success-message" style="text-align:center; font-size:20px; color:#10b981; font-weight:bold; margin:30px 0 10px 0;">
+                    {{ success_message }}
+                </div>
+            {% else %}
+            <div class="stepper" id="stepper">
+                <div class="step active"><div class="step-number">👤</div><div class="step-label">Personal</div></div>
+                <div class="step"><div class="step-number">📄</div><div class="step-label">Details</div></div>
+                <div class="step"><div class="step-number">💖</div><div class="step-label">Preferences</div></div>
+                <div class="step"><div class="step-number">✅</div><div class="step-label">Review</div></div>
+            </div>
+            <form id="stageRegistrationForm" method="post" action="{% url 'stage_registration' %}" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                    <!-- Non-field/form errors -->
+                {% if form.non_field_errors %}
+                    <div class="field-error">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                <!-- Step 1 -->
+                <div class="step-pane" data-step="1">
+                    <label for="name_of_candidate">1. Name of Candidate:</label>
+                    <input type="text" id="name_of_candidate" name="name_of_candidate" required />
+                    <div class="field-error" id="err_name_of_candidate" style="display:none;">
+                        {% if form.name_of_candidate.errors %}
+                            {{ form.name_of_candidate.errors.0 }}
+                        {% endif %}
+                    </div>
+
+                    <label for="dob">2. Date of Birth:</label>
+                    <input type="text" id="dob" name="dob" placeholder="YYYY-MM-DD" required />
+                    <div class="field-error" id="err_dob" style="display:none;">
+                        {% if form.dob.errors %}
+                            {{ form.dob.errors.0 }}
+                        {% endif %}
+                    </div>
+
+                    <label for="gender">3. Gender:</label>
+                    <input type="text" id="gender" name="gender" required />
+                    <div class="field-error" id="err_gender" style="display:none;">
+                        {% if form.gender.errors %}
+                            {{ form.gender.errors.0 }}
+                        {% endif %}
+                    </div>
+
+                    <label for="current_city">4. Current City:</label>
+                    <input type="text" id="current_city" name="current_city" required />
+                    <div class="field-error" id="err_current_city" style="display:none;">
+                        {% if form.current_city.errors %}
+                            {{ form.current_city.errors.0 }}
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="step-pane" data-step="2" style="display:none">
+                    <label for="booklet_sr_no">5. Booklet Sr No:</label>
+                    <input type="text" id="booklet_sr_no" name="booklet_sr_no" required />
+                    <div class="field-error" id="err_booklet_sr_no" style="display:none;">
+                        {% if form.booklet_sr_no.errors %}
+                            {{ form.booklet_sr_no.errors.0 }}
+                        {% endif %}
+                    </div>
+
+                    <label for="maritial_status">6. Marital Status:</label>
+                    <input type="text" id="maritial_status" name="maritial_status" required />
+                    <div class="field-error" id="err_maritial_status" style="display:none;">
+                        {% if form.maritial_status.errors %}
+                            {{ form.maritial_status.errors.0 }}
+                        {% endif %}
+                    </div>
+
+                    <label for="education">7. Education:</label>
+                    <input type="text" id="education" name="education" required />
+                    <div class="field-error" id="err_education" style="display:none;">
+                        {% if form.education.errors %}
+                            {{ form.education.errors.0 }}
+                        {% endif %}
+                    </div>
+
+                    <label for="job_business">8. Job/Business:</label>
+                    <input type="text" id="job_business" name="job_business" required />
+                    <div class="field-error" id="err_job_business" style="display:none;">
+                        {% if form.job_business.errors %}
+                            {{ form.job_business.errors.0 }}
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="step-pane" data-step="3" style="display:none">
+                    <label for="hobbies">9. Hobbies:</label>
+                    <input type="text" id="hobbies" name="hobbies" required />
+                    <div class="field-error" id="err_hobbies" style="display:none;">
+                        {% if form.hobbies.errors %}
+                            {{ form.hobbies.errors.0 }}
+                        {% endif %}
+                    </div>
+
+                    <label for="partner_choice">10. Partner Choice:</label>
+                    <input type="text" id="partner_choice" name="partner_choice" required />
+                    <div class="field-error" id="err_partner_choice" style="display:none;">
+                        {% if form.partner_choice.errors %}
+                            {{ form.partner_choice.errors.0 }}
+                        {% endif %}
+                    </div>
+                    <label for="photograph">11. Photograph:</label>
+                    <input type="file" id="photograph" name="photograph" accept="image/*" required />
+                    <div class="field-error" id="err_photograph" style="display:none;">
+                        {% if form.photograph.errors %}
+                            {{ form.photograph.errors.0 }}
+                        {% endif %}
+                    </div>
+                    <img id="photoPreview" class="photo-preview" alt="Photo Preview">
+                </div>
+                <!-- Step 4: Review -->
+                <div class="step-pane" data-step="4" style="display:none">
+                    <div class="summary">
+                        <div class="summary-title">Review your Information</div>
+                        <div class="summary-list" id="review-list"></div>
+                        <div class="summary-photo" id="review-photo"></div>
+                    </div>
+                </div>
+                <!-- Success message -->
+                <div class="step-pane" data-step="5" style="display:none">
+                    <div class="success-message">
+                        ✅ Registration submitted! <br>Thank you for your submission.
+                    </div>
+                </div>
+                <div class="btns" id="step-nav">
+                    <button type="button" class="btn" id="backBtn" disabled>Back</button>
+                    <button type="button" class="btn" id="nextBtn">Next</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        const STEPS = 4;
+        let currentStep = 1;
+        const fieldsByStep = [
+            ["name_of_candidate", "dob", "gender", "current_city"],
+            ["booklet_sr_no", "maritial_status", "education", "job_business"],
+            ["hobbies", "partner_choice", "photograph"]
+        ];
+        function updateStepDisplay() {
+            // Step panes
+            document.querySelectorAll(".step-pane").forEach(pane => {
+                pane.style.display = (parseInt(pane.getAttribute("data-step")) === currentStep) ? "" : "none";
+            });
+            // Stepper
+            document.querySelectorAll(".stepper .step").forEach((stepEl, idx) => {
+                stepEl.classList.toggle("active", idx + 1 === currentStep);
+                stepEl.classList.toggle("completed", idx + 1 < currentStep);
+            });
+            // Nav buttons
+            document.getElementById("backBtn").disabled = currentStep === 1;
+            const nextBtn = document.getElementById("nextBtn");
+            if (currentStep === STEPS) {
+                nextBtn.textContent = "Submit";
+                nextBtn.type = "button";
+            } else {
+                nextBtn.textContent = "Next";
+                nextBtn.type = "button";
+            }
+
+            
+        }
+        function nextStep() {
+            if (currentStep <= STEPS) {
+                if (!validateStep(currentStep)) return;
+                if (currentStep === STEPS) {
+                    showReview();
+                    submitForm();
+                    return;
+                }
+                currentStep++;
+                if (currentStep === STEPS) showReview();
+                updateStepDisplay();
+            }
+        }
+        function prevStep() {
+            if (currentStep > 1 && currentStep <= STEPS) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+        // Simple validation for each step
+        function validateStep(stepNo) {
+        if (stepNo > fieldsByStep.length) return true;
+        let valid = true;
+        fieldsByStep[stepNo - 1].forEach(function(field) {
+            const input = document.getElementById(field);
+            const error = document.getElementById("err_" + field);
+            if (!input) {
+                if (error) {
+                    error.style.display = "block";
+                    if (error.innerHTML.trim() === "") {
+                        error.innerHTML = "This field is required.";
+                    }
+                }
+                valid = false;
+                return;
+            }
+            if (!error) {
+                valid = false;
+                return;
+            }
+            if (input.type === "file") {
+                if (!input.files || input.files.length === 0) {
+                    if (error.innerHTML.trim() === "") {
+                        error.innerHTML = "Please upload a photo.";
+                    }
+                    error.style.display = "block";
+                    valid = false;
+                    input.classList.add("input-error");
+                    error.style.color = "red";
+                } else {
+                    error.style.display = "none";
+                    input.classList.remove("input-error");
+                }
+            } else if (!input.value.trim()) {
+                if (error.innerHTML.trim() === "") {
+                    error.innerHTML = "This field is required.";
+                }
+                error.style.display = "block";
+                valid = false;
+                input.classList.add("input-error");
+                error.style.color = "red";
+            } else {
+                error.style.display = "none";
+                input.classList.remove("input-error");
+            }
+        });
+        return valid;
+}
+
+        // Remove error on input and show error on blur if empty, highlight input border
+        Array.from(document.querySelectorAll("input[type='text'], input[type='file']")).forEach(function(input) {
+            input.addEventListener("input", function() {
+                const errElem = document.getElementById("err_" + this.id);
+                if (errElem) {
+                    errElem.style.display = "none";
+                }
+                this.classList.remove("input-error");
+            });
+            input.addEventListener("blur", function() {
+                const errElem = document.getElementById("err_" + this.id);
+                if (errElem) {
+                    if (input.type === "file") {
+                        if (!input.files || input.files.length === 0) {
+                            errElem.style.display = "block";
+                            input.classList.add("input-error");
+                        } else {
+                            errElem.style.display = "none";
+                            input.classList.remove("input-error");
+                        }
+                    } else {
+                        if (!input.value.trim()) {
+                            errElem.style.display = "block";
+                            input.classList.add("input-error");
+                        } else {
+                            errElem.style.display = "none";
+                            input.classList.remove("input-error");
+                        }
+                    }
+                }
+            });
+        });
+        // Photo preview
+        document.getElementById("photograph").addEventListener("change", function(e) {
+            const preview = document.getElementById("photoPreview");
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                preview.style.display = "none";
+            }
+            document.getElementById("err_photograph").style.display = "none";
+        });
+        // Step navigation
+        document.getElementById("backBtn").onclick = prevStep;
+        document.getElementById("nextBtn").onclick = nextStep;
+        // Review step
+        function showReview() {
+            const reviewFields = [
+                { label: "Name of Candidate", id: "name_of_candidate" },
+                { label: "Date of Birth", id: "dob" },
+                { label: "Gender", id: "gender" },
+                { label: "Current City", id: "current_city" },
+                { label: "Booklet Sr No", id: "booklet_sr_no" },
+                { label: "Marital Status", id: "maritial_status" },
+                { label: "Education", id: "education" },
+                { label: "Job/Business", id: "job_business" },
+                { label: "Hobbies", id: "hobbies" },
+                { label: "Partner Choice", id: "partner_choice" }
+            ];
+            let html = "<ul>";
+            reviewFields.forEach(f => {
+                html += `<li><strong>${f.label}:</strong> ${document.getElementById(f.id).value}</li>`;
+            });
+            html += "</ul>";
+            document.getElementById("review-list").innerHTML = html;
+            // Photo preview
+            const photoInput = document.getElementById("photograph");
+            if (photoInput.files && photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("review-photo").innerHTML = `<img src="${e.target.result}" style="max-width:110px;max-height:110px;border-radius:8px;border:2px solid #f37021;">`;
+                };
+                reader.readAsDataURL(photoInput.files[0]);
+            }
+        }
+        // Submit
+        function submitForm() {
+            // Programmatically submit the form
+            document.getElementById('stageRegistrationForm').submit();
+            // Here, replace with your AJAX or form submit as needed
+            setTimeout(() => {
+                document.querySelector(".step-pane[data-step='4']").style.display = "none";
+                document.querySelector(".step-pane[data-step='5']").style.display = "";
+                document.getElementById("step-nav").style.display = "none";
+                // Optionally reset after a delay
+            }, 600);
+        }
+        // Initialization
+        updateStepDisplay();
+    </script>
+</body>
 </html>

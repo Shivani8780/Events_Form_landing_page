@@ -188,7 +188,7 @@ class StageRegistration(models.Model):
     job_business = models.CharField(max_length=255)
     hobbies = models.CharField(max_length=255)
     partner_choice = models.CharField(max_length=255)
-    photograph = models.ImageField(upload_to='payment_screenshots/')
+    photograph = models.ImageField(upload_to='new_photographs/')
 
     def __str__(self):
         return self.name_of_candidate

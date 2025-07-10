@@ -1,5 +1,5 @@
 from django.db import models
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class CandidateBiodata(models.Model):
     # Personal Details
@@ -149,7 +149,7 @@ class AdvancePassBooking(models.Model):
     unlimited_buffet_quantity = models.PositiveIntegerField(default=0)
     payment_screenshot = models.ImageField(
         upload_to='payment_screenshots/',
-        storage=RawMediaCloudinaryStorage()
+        storage=MediaCloudinaryStorage()
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -169,7 +169,7 @@ class AdvanceBookletBooking(models.Model):
     courier_address = models.TextField(blank=True, null=True)
     payment_screenshot = models.ImageField(
         upload_to='payment_screenshots/',
-        storage=RawMediaCloudinaryStorage()
+        storage=MediaCloudinaryStorage()
     )
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)

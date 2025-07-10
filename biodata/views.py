@@ -40,18 +40,26 @@ def stage_registration(request):
     if request.method == 'POST':
         logger.info("Received POST request in stage_registration view")
         form = StageRegistrationForm(request.POST, request.FILES)
+        logger.info(f"POST data received: {request.POST}")
+        logger.info(f"FILES data received: {request.FILES}")
         if form.is_valid():
             logger.info("StageRegistrationForm is valid")
             instance = form.save()
             logger.info(f"Saved instance with id: {instance.id}")
-            # Redirect to stage registration confirmation page after successful submission
-            return redirect('stage_registration_confirmation', registration_id=instance.id)
+            # Additional debug info
+            logger.info(f"Saved instance data: {instance.__dict__}")
+            # Render the form page with success message instead of redirecting
+            form = StageRegistrationForm()  # reset form
+            success_message = "Registration submitted successfully! Thank you."
+            return render(request, 'biodata/stage_registration_form.html', {'form': form, 'success_message': success_message})
         else:
             logger.warning(f"StageRegistrationForm is invalid: {form.errors}")
-            return render(request, 'biodata/stage_registration_form.html', {'form': form})
+            logger.warning(f"Form errors details: {form.errors.as_json()}")
+            return render(request, 'biodata/stage_registration_form.html', {'form': form, 'form_errors': form.errors})
     else:
         form = StageRegistrationForm()
     return render(request, 'biodata/stage_registration_form.html', {'form': form})
+
 
 def stage_registration_confirmation(request, registration_id):
     registration = get_object_or_404(StageRegistration, id=registration_id)

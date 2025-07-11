@@ -16,7 +16,7 @@ import re
 from .models import CandidateBiodata, GalleryImage
 from ckeditor.widgets import CKEditorWidget
 from datetime import datetime
-from .models import AdvancePassBooking , AdvanceBookletBooking, StageRegistration
+from .models import AdvancePassBooking , AdvanceBookletBooking, StageRegistration, SpotAdvanceBookletBooking
 
 
 
@@ -311,34 +311,34 @@ def export_to_excel(modeladmin, request, queryset):
 
         photo_field = getattr(obj, 'photograph')
         img_url = None
-        if photo_field:
-            try:
-                # Use Cloudinary URL if available
-                img_url = photo_field.url
-                # Fix relative URLs by prepending domain or base URL
-                if img_url.startswith('/'):
-                    # Assuming MEDIA_URL is /media/, prepend full domain or base URL
-                    base_url = 'https://bhudevnetwork.pythonanywhere.com/'  # Replace with your actual domain or base URL
-                    img_url = base_url + img_url
-                ext = os.path.splitext(img_url)[1].lower()
-                if ext == '.mpo':
-                    logging.info(f"Skipping unsupported file format for row {row_num}: {img_url}")
-                else:
-                    image_found = 'Yes'
-            except Exception as e:
-                image_found = 'No'
-                logging.error(f"Error checking image URL for row {row_num}: {e}")
-        # In your export_to_excel, replace the image embedding code with:
         # if photo_field:
         #     try:
+        #         # Use Cloudinary URL if available
         #         img_url = photo_field.url
-        #         # (your logic for constructing img_url)
-        #     except Exception:
-        #         img_url = ''
-        #     # Instead of embedding, just put the URL in a column
-        #     row.append(img_url)
-        # else:
-        #     row.append('')
+        #         # Fix relative URLs by prepending domain or base URL
+        #         if img_url.startswith('/'):
+        #             # Assuming MEDIA_URL is /media/, prepend full domain or base URL
+        #             base_url = 'https://bhudevnetwork.pythonanywhere.com/'  # Replace with your actual domain or base URL
+        #             img_url = base_url + img_url
+        #         ext = os.path.splitext(img_url)[1].lower()
+        #         if ext == '.mpo':
+        #             logging.info(f"Skipping unsupported file format for row {row_num}: {img_url}")
+        #         else:
+        #             image_found = 'Yes'
+        #     except Exception as e:
+        #         image_found = 'No'
+        #         logging.error(f"Error checking image URL for row {row_num}: {e}")
+        # In your export_to_excel, replace the image embedding code with:
+        if photo_field:
+            try:
+                img_url = photo_field.url
+                # (your logic for constructing img_url)
+            except Exception:
+                img_url = ''
+            # Instead of embedding, just put the URL in a column
+            row.append(img_url)
+        else:
+            row.append('')
 
         row.append(image_found)
         ws.append(row)
@@ -631,3 +631,122 @@ class AdvancePassBookingAdmin(admin.ModelAdmin):
         response = HttpResponse(zip_buffer, content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename=payment_screenshots.zip'
         return response
+
+@admin.register(SpotAdvanceBookletBooking)
+class SpotAdvanceBookletBookingAdmin(admin.ModelAdmin):
+    list_display = ['name', 'city', 'whatsapp_number', 'email', 'girls_booklet_with', 'boys_booklet_with', 'courier_address', 'total_amount', 'payment_screenshot_preview', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['name', 'city', 'whatsapp_number', 'email']
+
+    readonly_fields = ['payment_screenshot_preview']
+
+    actions = ['export_selected_to_excel', 'export_payment_screenshots_zip']
+
+    def payment_screenshot_preview(self, obj):
+        if obj.payment_screenshot:
+            return format_html(f'<img src="{obj.payment_screenshot.url}" style="max-height: 100px; max-width: 100px;" />')
+        return "-"
+
+    @admin.action(description='Export selected spot advance booklet bookings to Excel')
+    def export_selected_to_excel(self, request, queryset):
+        import openpyxl
+        from openpyxl.utils import get_column_letter
+        from openpyxl.drawing.image import Image as OpenpyxlImage
+        from io import BytesIO
+        import requests
+        from PIL import Image as PILImage
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Spot Advance Booklet Bookings"
+
+        # Define headers
+        headers = ['Name', 'City', 'Whatsapp Number', 'Email', 'Girls Booklet With', 'Boys Booklet With', 'Courier Address', 'Total Amount', 'Created At', 'Payment Screenshot']
+        ws.append(headers)
+
+        # Set column widths
+        column_widths = [20, 20, 20, 30, 20, 20, 40, 15, 20, 20]
+        for i, width in enumerate(column_widths, 1):
+            ws.column_dimensions[get_column_letter(i)].width = width
+
+        row_num = 2
+        for obj in queryset:
+            row = [
+                obj.name,
+                obj.city,
+                obj.whatsapp_number,
+                obj.email,
+                obj.girls_booklet_with,
+                obj.boys_booklet_with,
+                obj.courier_address,
+                obj.total_amount,
+                obj.created_at.strftime('%Y-%m-%d %H:%M:%S') if obj.created_at else '',
+                '',  # Placeholder for image
+            ]
+            ws.append(row)
+
+            # Embed payment screenshot image if available
+            if obj.payment_screenshot:
+                try:
+                    img_url = obj.payment_screenshot.url
+                    if img_url.startswith('/'):
+                        base_url = 'https://bhudevnetwork.pythonanywhere.com/'  # Replace with your actual domain or base URL
+                        img_url = base_url + img_url
+                    response_img = requests.get(img_url)
+                    response_img.raise_for_status()
+                    img_data = BytesIO(response_img.content)
+                    pil_img = PILImage.open(img_data)
+                    img_byte_arr = BytesIO()
+                    pil_img.save(img_byte_arr, format='PNG')
+                    img_byte_arr.seek(0)
+                    img = OpenpyxlImage(img_byte_arr)
+                    img.width = 80
+                    img.height = 80
+                    img.anchor = f"{get_column_letter(10)}{row_num}"
+                    ws.add_image(img)
+                    ws.row_dimensions[row_num].height = 60
+                except Exception as e:
+                    # Log error or pass silently
+                    pass
+            row_num += 1
+
+        # Prepare response
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        )
+        response['Content-Disposition'] = 'attachment; filename=spot_advance_booklet_bookings.xlsx'
+
+        # Save workbook to response
+        wb.save(response)
+        return response
+
+    @admin.action(description='Export payment screenshots of selected spot advance booklet bookings as ZIP')
+    def export_payment_screenshots_zip(self, request, queryset):
+        import zipfile
+        import os
+        from io import BytesIO
+        import re
+
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            for obj in queryset:
+                if obj.payment_screenshot:
+                    try:
+                        img_path = obj.payment_screenshot.path
+                        ext = os.path.splitext(img_path)[1].lower()
+                        if os.path.exists(img_path):
+                            # Sanitize name and whatsapp number for filename
+                            safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', obj.name.strip())
+                            safe_whatsapp = re.sub(r'[^0-9]', '', obj.whatsapp_number)
+                            filename = f"{safe_name}_{safe_whatsapp}{ext}"
+                            with open(img_path, 'rb') as img_file:
+                                img_data = img_file.read()
+                            zip_file.writestr(filename, img_data)
+                    except Exception as e:
+                        # Log error or pass silently
+                        pass
+        zip_buffer.seek(0)
+        response = HttpResponse(zip_buffer, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=spot_advance_booklet_payment_screenshots.zip'
+        return response
+

@@ -11,6 +11,7 @@ from django.conf import settings
 
 from .forms import CandidateBiodataForm
 from .models import CandidateBiodata, AdvancePassBooking, AdvanceBookletBooking, GalleryImage, StageRegistration
+from .form_spot import AdvanceBookletBookingForm
 from biodata.views_weasyprint import generate_pdf
 from .forms_advance_pass import AdvancePassBookingForm
 from .forms_advance_booklet import AdvanceBookletBookingForm
@@ -278,3 +279,21 @@ def contact_us_page(request):
 def about_us_page(request):
     # Render the about us page
     return render(request, 'biodata/about_us.html')
+
+def spot_advance_booklet_view(request):
+    from .form_spot import AdvanceBookletBookingForm as SpotAdvanceBookletBookingForm
+    if request.method == 'POST':
+        form = SpotAdvanceBookletBookingForm(request.POST, request.FILES)
+        if form.is_valid():
+            booking = form.save()
+            return redirect('spot_advance_booklet_confirmation', booking_id=booking.id)
+    else:
+        form = SpotAdvanceBookletBookingForm()
+    return render(request, 'biodata/spot_advance_booklet.html', {'form': form})
+
+from .models import SpotAdvanceBookletBooking
+
+def spot_advance_booklet_confirmation(request, booking_id):
+    booking = get_object_or_404(SpotAdvanceBookletBooking, id=booking_id)
+    return render(request, 'biodata/spot_advance_booklet_confirmation.html', {'booking': booking})
+

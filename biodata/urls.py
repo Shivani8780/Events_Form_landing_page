@@ -16,5 +16,6 @@ urlpatterns = [
     path('advance-booklet-booking/confirmation/<int:booking_id>/', views.advance_booklet_booking_confirmation, name='advance_booklet_booking_confirmation'),
     path('stage-registration/', views.stage_registration, name='stage_registration'),
     path('stage-registration/confirmation/<int:registration_id>/', views.stage_registration_confirmation, name='stage_registration_confirmation'),
-
+    path('spot-advance-booklet/', views.spot_advance_booklet_view, name='spot_advance_booklet'),
+    path('spot-advance-booklet/confirmation/<int:booking_id>/', views.spot_advance_booklet_confirmation, name='spot_advance_booklet_confirmation'),
 ]

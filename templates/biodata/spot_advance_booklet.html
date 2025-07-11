@@ -1,0 +1,278 @@
+{% load static %}
+{% block content %}
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        color: #333;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        overscroll-behavior-y: none;
+        box-sizing: border-box;
+        background-image: url('https://i0.wp.com/detechter.com/wp-content/uploads/2017/07/Hindu-Wedding-India.jpg?fit=886%2C535&ssl=1');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+        padding: 40px 40px 160px 40px;
+        position: relative;
+    }
+    .form-container {
+        max-width: 600px !important;
+        margin: 20px auto 40px auto !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 30px 35px !important;
+        border-radius: 20px !important;
+        box-shadow: 0 0 30px rgba(0,0,0,0.2) !important;
+        box-sizing: border-box !important;
+    }
+    .form-container h2 {
+        text-align: center;
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 35px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 2rem;
+    }
+    @media (max-width: 800px) {
+        .form-container {
+            max-width: 100% !important;
+            padding: 20px 25px !important;
+        }
+        .form-container h2 {
+            font-size: 1.8rem;
+        }
+        label {
+            font-size: 1.2rem;
+        }
+        input[type="text"], input[type="email"], select, input[type="file"], textarea {
+            font-size: 1rem;
+        }
+        button[type="submit"] {
+            font-size: 1.1rem;
+            padding: 16px;
+        }
+    }
+    @media (max-width: 650px) {
+        .form-container {
+            padding: 15px 20px !important;
+            margin: 15px 10px 30px 10px !important;
+        }
+        .form-container h2 {
+            font-size: 1.6rem;
+        }
+        label {
+            font-size: 1rem;
+        }
+        input[type="text"], input[type="email"], select, input[type="file"], textarea {
+            font-size: 0.9rem;
+        }
+        button[type="submit"] {
+            font-size: 1rem;
+            padding: 14px;
+        }
+    }
+    @media (max-width: 480px) {
+        html, body {
+            padding: 20px 10px 120px 10px;
+        }
+        .form-container {
+            max-width: 100% !important;
+            margin: 10px 5px 20px 5px !important;
+            padding: 12px 15px !important;
+            border-radius: 15px !important;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15) !important;
+        }
+        .form-container h2 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+        }
+        label {
+            font-size: 0.9rem;
+        }
+        input[type="text"], input[type="email"], select, input[type="file"], textarea {
+            font-size: 0.85rem;
+        }
+        button[type="submit"] {
+            font-size: 0.95rem;
+            padding: 12px;
+        }
+    }
+    .form-group {
+        margin-bottom: 25px;
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #2c3e50;
+        font-size: 1.1rem;
+    }
+    input[type="text"], input[type="email"], select, input[type="file"], textarea {
+        padding: 10px 12px;
+        font-size: 1.1rem;
+        border: 2px solid #2c3e50;
+        border-radius: 8px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, select:focus, input[type="file"]:focus, textarea:focus {
+        border-color: #d6336c;
+        outline: none;
+    }
+    input[readonly] {
+        background-color: #f0f0f0;
+        cursor: not-allowed;
+    }
+    button[type="submit"] {
+        width: 100%;
+        padding: 14px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        background-color: #d6336c;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+        background-color: #b52a58;
+    }
+    .payment-info p {
+        font-size: 1rem;
+        color: #2c3e50;
+        margin: 5px 0;
+    }
+    .payment-info img {
+        width: 160px;
+        height: 160px;
+        margin-top: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="form-container">
+    <h2>Advance Booklet Booking Form</h2>
+    {% if form.errors %}
+      <div class="form-errors" style="color: red;">
+        <ul>
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li>{{ field.label }}: {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data" id="bookletBookingForm">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">1. Your Name:</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.city.id_for_label }}">2. Your City:</label>
+            {{ form.city }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.whatsapp_number.id_for_label }}">3. Your WhatsApp Number:</label>
+            {{ form.whatsapp_number }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">4. Your Email ID:</label>
+            {{ form.email }}
+        </div>
+        <div class="form-group">
+            <label>5. Booklet</label>
+            <div style="margin-left:30px; margin-top:10px;">
+                <div>
+                    {{ form.girls_booklet_with }}
+                    <label for="{{ form.girls_booklet_with.id_for_label }}">Girls Biodata Booklet (₹500)</label><br>
+                </div>
+                <div>
+                    {{ form.boys_booklet_with }}
+                    <label for="{{ form.boys_booklet_with.id_for_label }}">Boys Biodata Booklet (₹500)</label><br>
+                </div>
+        <label style="margin-top:8px; display:block; margin-bottom: 10px;">Total (number of booklet * 500  ) (₹):</label>
+        <input type="text" id="totalWith" readonly value="0" name="total_with" style="width:90px; margin-left:10px; margin-bottom: 20px;" />
+        <label for="{{ form.courier_address.id_for_label }}" style="margin-top:8px; display:block;">Courier Address:</label>
+        {{ form.courier_address }}
+    </div>
+</div>
+<div class="form-group">
+    <label>Grand Total Payable Amount (₹): <span id="grandTotal" style="font-weight: 700; font-size: 1.2rem; margin-top: 5px;">₹0</span></label>
+</div>
+    
+        <div class="form-group payment-info">
+            <p style="font-weight: 700;">6. Payment Process:</p>
+            <p>Pay via GPay number: 1234567890</p>
+            <img src="{% static 'images/gpay_qr_code.jpeg' %}" alt="GPay QR Code" />
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.payment_screenshot.id_for_label }}">7. Attach Your Payment Success Screenshot:</label>
+            {{ form.payment_screenshot }}
+        </div>
+        <div class="form-group">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Prices
+    const pricePerBooklet = 500;
+    const courierCharge = 0;
+
+    // Elements
+    const withCourierOptions = document.getElementById('withCourierOptions');
+    const girlsBookletWith = document.getElementById('id_girls_booklet_with');
+    const boysBookletWith = document.getElementById('id_boys_booklet_with');
+    const totalWith = document.getElementById('totalWith');
+    const grandTotal = document.getElementById('grandTotal');
+
+    // Since with_courier is always true, show options
+    if (withCourierOptions) {
+        withCourierOptions.style.display = 'block';
+    }
+
+    function updateTotal() {
+        let total = 0;
+        let selected = 0;
+        if (girlsBookletWith && girlsBookletWith.checked) {
+            total += pricePerBooklet;
+            selected++;
+        }
+        if (boysBookletWith && boysBookletWith.checked) {
+            total += pricePerBooklet;
+            selected++;
+        }
+        if (selected > 0) {
+            total += courierCharge;
+        }
+        totalWith.value = total;
+        grandTotal.textContent = total;
+    }
+
+    if (girlsBookletWith) {
+        girlsBookletWith.addEventListener('change', updateTotal);
+    }
+    if (boysBookletWith) {
+        boysBookletWith.addEventListener('change', updateTotal);
+    }
+
+    window.onload = function() {
+        updateTotal();
+    };
+</script>
+{% endblock %}

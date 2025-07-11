@@ -312,8 +312,9 @@
         <li><a href="{% url 'home_page' %}">Home</a></li>
         <li><a href="{% url 'gallery_page' %}">Gallery</a></li>
         <li><a href="{% url 'contact_us_page' %}">Contact Us</a></li>
-        <li><a href="{% url 'advance_pass_booking' %}">Advance Pass Booking</a></li>
-        <li><a href="{% url 'advance_booklet_booking' %}">Advance Booklet Booking</a></li>
+        <li><a href="{% url 'advance_pass_booking' %}">Advance Pass </a></li>
+        <li><a href="{% url 'spot_advance_booklet' %}">Advance Booklet</a></li>
+        <li><a href="{% url 'advance_booklet_booking' %}">Courier Booklet</a></li>
         <li><a href="{% url 'stage_registration' %}">Stage Registration</a></li>
       </ul>
     </nav>
@@ -354,7 +355,7 @@
       text-decoration: none;
       font-weight: 700;
       font-size: 15px;
-      padding: 12px 22px;
+      padding: 12px 10px;
       border-radius: 6px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       transition: background-color 0.35s ease, box-shadow 0.35s ease;
@@ -460,10 +461,10 @@
 
   <div class="info-container">
     <div class="info-highlight">
-    તા. 20-07-2025 ને રવિવારે 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન - અમદાવાદ  માં // Online બાયોડેટા રેજીસ્ટ્રેશન છે // Last Date for  Online Biodata Registration  :  10-07-2025 (Thursday)
+        🔴 Registration Form is now Closed. 🔴
     </div>
     
-💢 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન
+<!-- 💢 33મુ Mega ભૂદેવ જીવનસાથી પરિચય સંમેલન
 (સમસ્ત બ્રાહ્મણ - ભૂદેવ ઉમેદવારો માટે)
 
 🔴  ખાસ નોંધ :  આ  ફોર્મ સબમિટ કર્યા પછી Form Confirmation -  Registration Number મેળવવા માટે,  આપ નીચે આપેલા નંબર પર કોલ કરી ને આપનું ફોર્મ નું Confirmation કરાવી દેવું : ( Phone Time : 10:00 am to 06:00 pm Only )
@@ -489,19 +490,19 @@ M # 9099798986, 9499701462
 ભૂદેવ નેટવર્ક ટ્રસ્ટ ઓફિસ
 601,602, 603, 604A 6th Floor, Galav Chambers, 
 Near Dairy Den Circle, Sayajigunj, Vadodara-390020,
-M :  9099798986, 9099828986
+M :  9099798986, 9099828986 -->
   </div>
-  <div class="image-container">
+<!--   <div class="image-container">
     <img src="{% static 'images/Banner.jpeg' %}">
   </div>
   <div class="team-container">
     Bhudev Network , MangalFera Vivah & Employa Technologies Team
     <img src="{% static 'images/Team_Banner.jpeg' %}"  class="team-image">
-  </div>
-  <div class="new-info-container">
+  </div> -->
+<!--   <div class="new-info-container">
      સમસ્ત ગુજરાતી બ્રાહ્મણ-ભૂદેવ 33st જીવનસાથી પરિચય સંમેલન - મેળો  ( Shree Shyama Prasad Vasavada AC Hall (1st Floor), Khokhra, Maninagar (East), Amdavad.)<br><br>
     🔵🟣નીચે આપેલા free બાયોડેટા ઓનલાઇન ફોર્મ ભરવાનું રહેશે.
-  </div>
+  </div> -->
 
   <!-- Spacer div to create gap below last container for fixed button -->
   
@@ -673,7 +674,7 @@ M :  9099798986, 9099828986
             font-weight: 600;
         }
   </style>
-  <div class="form-container">
+<!--   <div class="form-container">
     <h1>Free Biodata Online Form</h1>
     <form method="post" action="{% url 'home_page' %}" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
@@ -762,7 +763,7 @@ M :  9099798986, 9099828986
     <div class="image-box" style="width: 100%; border: 1px solid #ccc; border-radius: 8px; overflow: hidden;">
       <img src="{% static 'images/happy5.png' %}" alt="Image 5" style="width: 100%; height: auto; display: block;">
     </div>
-  </div>
+  </div> -->
   <script>
     const toggle = document.getElementById('js-nav-toggle');
     const menu = document.getElementById('js-menu');

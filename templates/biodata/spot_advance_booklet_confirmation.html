@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spot Advance Booklet Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fef7f0;
+            padding: 20px;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            color: #333;
+        }
+        h1 {
+            color: #f37021;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .details strong {
+            color: #d9534f;
+        }
+        .back-link {
+            display: block;
+            margin-top: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: #1d4e89;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        ul.confirmation-info {
+            margin-top: 20px;
+            font-size: 15px;
+            color: #444;
+        }
+        ul.confirmation-info li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Spot Advance Booklet Booking Confirmation</h1>
+    <div class="details">
+        <p>Thank you, <strong>{{ booking.name }}</strong>, for your booking.</p>
+        <p>City: {{ booking.city }}</p>
+        <p>WhatsApp Number: {{ booking.whatsapp_number }}</p>
+        <p>Email: {{ booking.email }}</p>
+        <p>Girls Booklet With Courier: {{ booking.girls_booklet_with }}</p>
+        <p>Boys Booklet With Courier: {{ booking.boys_booklet_with }}</p>
+        <p>Courier Address: {{ booking.courier_address }}</p>
+        <p>Total Amount: ₹{{ booking.total_amount }}</p>
+        <p>Booking Date: {{ booking.created_at }}</p>
+    </div>
+    <ul class="confirmation-info">
+        <li><strong style="color: red;">This booking Confirmation is valid only if your Payment is valid and if we have duly received your Payment as per your information given to us.</strong></li>
+        <li><strong>Confirmation Email has been sent to your Email id.</strong></li>
+        <li><strong>You will receive confirmation phone call in 2-3 days from our Office. For immediate Manual Confirmation, you can call on these numbers :<br/>
+            ક્રિષ્ના : 9428642903<br/>
+            હેતલ : 7990856889<br/>
+            મૈત્રી : 9099048986<br/>
+            Office : 6352144677
+        </strong></li>
+    </ul>
+    <a href="{% url 'spot_advance_booklet' %}" class="back-link">Make another booking</a>
+</body>
+</html>
